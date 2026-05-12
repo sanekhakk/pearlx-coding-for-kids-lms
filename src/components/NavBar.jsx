@@ -1,4 +1,4 @@
-// src/components/NavBar.jsx
+// src/components/NavBar.jsx - CORRECTED VERSION
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -9,12 +9,12 @@ import PearlxLogo from "../assets/flat_logo_dark.webp";
 const navLinks = [
   { label: "Home", to: "/" },
   { label: "Classes", to: "/services/education" },
-   { label: "Pricing", to: "/pricing" },
+  { label: "Pricing", to: "/pricing" },
   { label: "Web Dev", to: "/services/web-development" },
- 
 ];
 
-const NavBar = () => {
+// ✅ Accept openDemoModal as prop
+const NavBar = ({ openDemoModal }) => {
   const { role = "guest", logout, openLoginModal } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -71,7 +71,6 @@ const NavBar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 z-10">
               <img src={PearlxLogo} alt="Pearlx" className="h-20 w-auto object-contain" style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.25))" }} />
-              
             </Link>
 
             {/* Desktop links */}
@@ -121,15 +120,16 @@ const NavBar = () => {
                   >
                     Log in
                   </button>
-                  <motion.a
-                    href="https://wa.link/2sqe3g"
+                  {/* ✅ CHANGED: motion.a to motion.button, onClick instead of href */}
+                  <motion.button
+                    onClick={() => openDemoModal("Demo")}
                     whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(16,185,129,0.5)" }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-slate-900"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-slate-900 border-none cursor-pointer"
                     style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)", boxShadow: "0 4px 16px rgba(16,185,129,0.3)" }}
                   >
                     <Sparkles className="w-4 h-4" /> Start Free Trial
-                  </motion.a>
+                  </motion.button>
                 </>
               ) : (
                 <button
@@ -206,13 +206,14 @@ const NavBar = () => {
               >
                 Log in
               </button>
-              <a
-                href="https://wa.link/5pk793"
-                className="w-full text-center py-3 rounded-xl font-bold text-slate-900"
+              {/* ✅ CHANGED: a tag to button */}
+              <button
+                onClick={() => { openDemoModal("navbar_mobile_cta"); setIsOpen(false); }}
+                className="w-full py-3 rounded-xl font-bold text-slate-900 border-none cursor-pointer"
                 style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)" }}
               >
                 Start Free Trial 🚀
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

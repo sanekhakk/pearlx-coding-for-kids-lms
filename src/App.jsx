@@ -1,10 +1,10 @@
-// src/App.jsx
-import React from "react";
+// src/App.jsx - COMPLETE FIXED VERSION
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { motion } from "framer-motion";
 import { COLORS } from "./utils/theme";
-
+import DemoBookingModal from "./components/DemoBookingModal";
 import NavBar from "./components/NavBar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
@@ -15,19 +15,18 @@ import WebServicesSection from "./components/WebServicesSection";
 import ProcessSection from "./components/ProcessSection";
 import WhyPearlxSection from "./components/WhyPearlxSection";
 import AuthModal from "./components/AuthModal";
-
 import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import TutorDashboard from "./pages/TutorDashboard";
-
 import ComputerScienceClasses from "./pages/ComputerScienceClasses";
 import WebDevelopmentServices from "./pages/WebDevelopmentServices";
 import Pricing from "./pages/Pricing";
 
-function GuestHome() {
+// ✅ GuestHome receives openDemoModal as prop
+function GuestHome({ openDemoModal }) {
   return (
     <>
-      <HeroSection />
+      <HeroSection openDemoModal={openDemoModal} />
       <SubjectSection />
       <ServicesSection />
       <WhyPearlxSection />
@@ -39,6 +38,14 @@ function GuestHome() {
 
 function MainApp() {
   const { role, isAuthReady } = useAuth();
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
+  const [demoSource, setDemoSource] = useState("general");
+
+  // ✅ Define openDemoModal HERE
+  const openDemoModal = (source = "general") => {
+    setDemoSource(source);
+    setDemoModalOpen(true);
+  };
 
   if (!isAuthReady) {
     return (
@@ -59,17 +66,29 @@ function MainApp() {
   return (
     <div className="grain" style={{ background: COLORS.bgPrimary }}>
       <ScrollToTop />
-      <NavBar />
+      {/* ✅ Pass openDemoModal to NavBar */}
+      <NavBar openDemoModal={openDemoModal} />
       <main>
         <Routes>
-          <Route path="/" element={<GuestHome />} />
-          <Route path="/services/education" element={<ComputerScienceClasses />} />
-          <Route path="/services/web-development" element={<WebDevelopmentServices />} />
-          <Route path="/pricing" element={<Pricing />} />
+          {/* ✅ Pass openDemoModal to GuestHome */}
+          <Route path="/" element={<GuestHome openDemoModal={openDemoModal} />} />
+          
+          {/* ✅ Pass openDemoModal to all page routes */}
+          <Route path="/services/education" element={<ComputerScienceClasses openDemoModal={openDemoModal} />} />
+          <Route path="/services/web-development" element={<WebDevelopmentServices openDemoModal={openDemoModal} />} />
+          <Route path="/pricing" element={<Pricing openDemoModal={openDemoModal} />} />
         </Routes>
       </main>
-      <Footer />
+      {/* ✅ Pass openDemoModal to Footer */}
+      <Footer openDemoModal={openDemoModal} />
       <AuthModal />
+      
+      {/* ✅ Demo Modal component */}
+      <DemoBookingModal
+        isOpen={demoModalOpen}
+        onClose={() => setDemoModalOpen(false)}
+        source={demoSource}
+      />
     </div>
   );
 }

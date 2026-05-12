@@ -37,7 +37,7 @@ const PARTICLES = [
   { size: 8,  left: "90%", top: "15%", color: "#6366F1", duration: 19, delay: 0.8 },
 ];
 
-const HeroSection = () => {
+const HeroSection = ({ openDemoModal }) => {
   const [phraseIdx, setPhraseIdx] = useState(0);
   const containerRef = useRef(null);
 
@@ -238,8 +238,8 @@ const HeroSection = () => {
               transition={{ delay: 0.5 }}
               className="flex flex-wrap gap-4 mb-12"
             >
-              <motion.a
-                href="https://wa.link/2sqe3g"
+              <motion.button
+                onClick={() => openDemoModal("Demo")}
                 whileHover={{ scale: 1.05, boxShadow: "0 16px 40px rgba(16,185,129,0.4)" }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 px-8 py-4 rounded-2xl text-base font-bold text-white"
@@ -249,7 +249,7 @@ const HeroSection = () => {
                 }}
               >
                 🚀 Book Free Trial
-              </motion.a>
+              </motion.button >
               <motion.a
                 href="#curriculum"
                 whileHover={{ scale: 1.05, borderColor: "#0EA5E9" }}

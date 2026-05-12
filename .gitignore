@@ -6,12 +6,17 @@ Backend/node_modules
 .env
 Backend/.env
 
-# Firebase admin SDK
-serviceAccountKey.json
-Backend/serviceAccountKey.json
 
 # Build output
 dist
 
 # Logs
 *.log
+
+# Firebase Admin SDK
+service-account-key.json
+serviceAccountKey.json
+Backend/service-account-key.json
+Backend/serviceAccountKey.json
+*.json
+

@@ -16,12 +16,12 @@ const LEVELS = [
     color:"#FFD166",glow:"rgba(255,209,102,0.28)",border:"rgba(255,209,102,0.45)",
     textColor:"#A8760A",bg:"linear-gradient(145deg,#FFFBEB,#FFF3C4)",
     modules:[
-      {icon:"🖥️",label:"Coding Fundamentals"},{icon:"🔬",label:"Science Explore"},
-      {icon:"🎮",label:"Game Dev"},{icon:"📱",label:"App Development"},
-      {icon:"🐍",label:"Python Basics"},{icon:"🔢",label:"CodiMath"},
-      {icon:"🌐",label:"HTML & CSS"},{icon:"⚡",label:"JavaScript"},
+      {icon:"🖥️",label:"Coding Fundamentals"},{icon:"🔬",label:"Scientific Exploration"},
+      {icon:"🎮",label:"Game Development"},{icon:"📱",label:"App Development"},
+      {icon:"🐍",label:"Python Basics"},{icon:"🌐",label:"HTML & CSS"},
       {icon:"🏆",label:"Capstone Project"},
     ],
+    moduleCount:7,lessonCount:84,
     tools:["Scratch Jr","Code.org","Trinket.io"],
     highlight:"Drag-and-drop blocks — no typing needed!",
     kidImg:lp1,
@@ -34,13 +34,13 @@ const LEVELS = [
     color:"#06D6A0",glow:"rgba(6,214,160,0.28)",border:"rgba(6,214,160,0.45)",
     textColor:"#047857",bg:"linear-gradient(145deg,#ECFDF5,#D1FAE5)",
     modules:[
-      {icon:"🖥️",label:"Coding Fundamentals"},{icon:"🔬",label:"Science Explore"},
+      {icon:"🖥️",label:"Coding Fundamentals"},{icon:"🔬",label:"Scientific Exploration"},
       {icon:"🎮",label:"Game Development"},{icon:"📱",label:"App Development"},
-      {icon:"🐍",label:"Python Intermediate"},{icon:"🔢",label:"CodiMath"},
-      {icon:"🌐",label:"HTML & CSS"},{icon:"⚡",label:"JavaScript"},
+      {icon:"🐍",label:"Python Basics"},{icon:"🌐",label:"HTML & CSS"},
       {icon:"🏆",label:"Capstone Project"},
     ],
-    tools:["Scratch","Thunkable","Replit"],
+    moduleCount:6,lessonCount:72,
+    tools:["Scratch","Code.org App Lab","Thunkable","Trinket.io"],
     highlight:"Block coding + intro to real text code!",
     kidImg:bp1,
     desc:"Students start building real games and apps. Advanced Scratch projects transition naturally into Python, creating the confidence needed for text-based programming.",
@@ -52,13 +52,15 @@ const LEVELS = [
     color:"#A78BFA",glow:"rgba(167,139,250,0.28)",border:"rgba(167,139,250,0.45)",
     textColor:"#6D28D9",bg:"linear-gradient(145deg,#F5F3FF,#EDE9FE)",
     modules:[
-      {icon:"🖥️",label:"Coding Fundamentals"},{icon:"🎮",label:"Advanced Game Dev"},
-      {icon:"📱",label:"Mobile App Dev"},{icon:"🐍",label:"Python OOP"},
-      {icon:"🌐",label:"HTML CSS JS"},{icon:"🔢",label:"Algorithms"},
-      {icon:"🔬",label:"Science Projects"},{icon:"🌍",label:"Real-World Apps"},
-      {icon:"🏆",label:"Capstone Showcase"},
+      {icon:"🖥️",label:"Coding Fundamentals"},{icon:"🔬",label:"Scientific Exploration"},
+      {icon:"🎮",label:"Game Development"},{icon:"📱",label:"App Development"},
+      {icon:"🐍",label:"Python Basics"},{icon:"🐍⚡",label:"Python Intermediate"},
+      {icon:"🐍🔥",label:"Python Advanced"},{icon:"🔢",label:"CodiMath"},
+      {icon:"🌐",label:"HTML & CSS"},{icon:"⚡",label:"JavaScript"},
+      {icon:"🏆",label:"Capstone Project"},
     ],
-    tools:["Replit","GitHub Pages","Thunkable"],
+    moduleCount:10,lessonCount:120,
+    tools:["Replit","GitHub Pages","Thunkable","VS Code"],
     highlight:"Python, JS, web dev — real text coding!",
     kidImg:rp1,
     desc:"Pro-grade programming that matters. Python OOP, full-stack web development, mobile apps — students graduate with a real portfolio they can show universities and employers.",
@@ -190,7 +192,7 @@ const LevelCard = ({level,index}) => {
     
     {/* Stats Strip */}
     <div className="absolute bottom-0 left-0 right-0 flex bg-white/80 backdrop-blur-sm p-2">
-      {[{v:"9",l:"Modules"},{v:"44",l:"Lessons"},{v:"6+",l:"Projects"}].map((s,si)=>(
+      {[{v:`${level.moduleCount}`,l:"Modules"},{v:`${level.lessonCount}`,l:"Lessons"},{v:"6+",l:"Projects"}].map((s,si)=>(
         <div key={si} className="flex-1 text-center">
           <div className="font-black text-sm" style={{color:level.textColor}}>{s.v}</div>
           <div className="text-[9px] text-slate-400 uppercase tracking-wide font-semibold">{s.l}</div>
@@ -206,7 +208,7 @@ const LevelCard = ({level,index}) => {
           className="flex items-center gap-2 text-sm font-bold mb-4"
           style={{color:level.textColor}}>
           <motion.div animate={{rotate:expanded?180:0}}><ChevronDown className="w-4 h-4" /></motion.div>
-          {expanded?"Hide":"View"} all 9 modules
+          {expanded?"Hide":"View"} all {level.moduleCount} modules
         </button>
         <AnimatePresence>
           {expanded && (
@@ -302,7 +304,7 @@ const ComputerScienceClasses = () => (
         </motion.h1>
         <motion.p initial={{opacity:0}} whileInView={{opacity:1}} viewport={{once:true}}
           transition={{delay:0.2}} className="text-slate-500 max-w-2xl mx-auto text-lg font-medium mb-8">
-          Our 11-module, 132-lesson project-based curriculum takes kids from zero to confident coder.
+          Our project-based project-based curriculum takes kids from zero to confident coder.
           Block coding always comes first — then text code when they're truly ready. ✨
         </motion.p>
         {/* Hero stats */}
@@ -310,7 +312,7 @@ const ComputerScienceClasses = () => (
           transition={{delay:0.3}} className="flex flex-wrap justify-center gap-4 mb-8">
           {[
             {icon:<Users className="w-4 h-4"/>,v:"500+",l:"Kids Taught",c:T.green},
-            {icon:<BookOpen className="w-4 h-4"/>,v:"132",l:"Lessons",c:T.sky},
+            {icon:<BookOpen className="w-4 h-4"/>,v:"276",l:"Lessons",c:T.sky},
             {icon:<Star className="w-4 h-4"/>,v:"4.9★",l:"Parent Rating",c:T.yellow},
             {icon:<Clock className="w-4 h-4"/>,v:"3",l:"Age Levels",c:T.purple},
           ].map((s,i)=>(
@@ -347,7 +349,7 @@ const ComputerScienceClasses = () => (
             Ages 5–15
           </span>
         </motion.h2>
-        <p className="text-center text-slate-500 mb-10">Each level follows our 11-module, 132-lesson project-based curriculum.</p>
+        <p className="text-center text-slate-500 mb-10">Each level follows our project-based project-based curriculum.</p>
         <div className="grid gap-8">
           {LEVELS.map((level,i)=><LevelCard key={i} level={level} index={i} />)}
         </div>

@@ -4,20 +4,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 
-const adminRoutes = require("./routes/admin");
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(bodyParser.json({ limit: "1mb" }));
-app.use(bodyParser.urlencoded({ extended: true }));
-
+// ✅ Middleware MUST come before routes so request bodies are parsed
 app.use(cors({
   origin: [
     "https://pearlx-webstudio.vercel.app",
-    "https://www.pearlx.in",   // ← ADD THIS
-    "https://pearlx.in",       // ← ADD THIS (non-www too)
-
+    "https://www.pearlx.in",
+    "https://pearlx.in",
     "http://localhost:5173"
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -25,8 +20,16 @@ app.use(cors({
   credentials: true
 }));
 
-app.options("*", cors()); 
+app.options("*", cors());
 
+app.use(bodyParser.json({ limit: "1mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// ✅ Routes come AFTER middleware
+const adminRoutes = require("./routes/admin");
+const demoBookingRoutes = require("./routes/demoBooking");
+
+app.use("/api", demoBookingRoutes);
 app.use("/admin", adminRoutes);
 
 app.get("/", (req, res) => {
@@ -46,4 +49,3 @@ if (process.env.NODE_ENV === "production") {
       .catch(err => console.error("Keep-alive failed:", err));
   }, 10 * 60 * 1000); // ping every 10 minutes
 }
-
