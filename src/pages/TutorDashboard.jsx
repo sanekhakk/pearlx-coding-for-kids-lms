@@ -1083,17 +1083,17 @@ export default function TutorDashboard() {
   );
 
   return (
-    <div style={{ display: "flex", height: "100dvh", overflowY: "auto", paddingBottom: 100, background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
       <AnimatePresence>
         {isMobile && sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", zIndex: 999, backdropFilter: "blur(4px)" }} />
+            style={{ position: "fixed", height: "100dvh",overflowY: "auto", inset: 0, background: "rgba(15,23,42,0.45)", zIndex: 999, backdropFilter: "blur(4px)" }} />
         )}
       </AnimatePresence>
 
       <motion.div initial={false} animate={isMobile ? { x: sidebarOpen ? 0 : -280 } : { x: 0 }} transition={{ type: "spring", damping: 28, stiffness: 300 }}
-        style={{ width: 256, minWidth: 256, height: "100vh", background: C.sidebar, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0, position: isMobile ? "fixed" : "relative", zIndex: isMobile ? 1000 : "auto", top: 0, left: 0 }}>
+        style={{ width: 256, minWidth: 256, height: "100dvh", background: C.sidebar, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0, position: isMobile ? "fixed" : "relative", zIndex: isMobile ? 1000 : "auto", top: 0, left: 0 }}>
         <SidebarContent />
       </motion.div>
 
