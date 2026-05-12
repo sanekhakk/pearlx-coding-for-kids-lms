@@ -124,34 +124,33 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
   try {
     // IMPORTANT: Full backend URL
     const response = await fetch(
-      "https://brainbugz-learning-management-system.onrender.com/api/submit-demo-booking",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+  "https://brainbugz-learning-management-system.onrender.com/api/submit-demo-booking",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  }
+);
 
-    // Safe JSON parsing
-    let result = {};
+const text = await response.text();
 
-    try {
-      result = await response.json();
-    } catch (jsonError) {
-      throw new Error("Invalid server response");
-    }
+let result = {};
 
-    // Handle API errors
-    if (!response.ok) {
-      throw new Error(
-        result.error || "Failed to submit booking"
-      );
-    }
+try {
+  result = JSON.parse(text);
+} catch {
+  result = { message: text };
+}
 
-    // Success
-    setSuccess(true);
+console.log("API RESPONSE:", result);
+
+if (!response.ok) {
+  throw new Error(result.error || "Failed to submit booking");
+}
+
+setSuccess(true);
 
     setTimeout(() => {
       onClose();
