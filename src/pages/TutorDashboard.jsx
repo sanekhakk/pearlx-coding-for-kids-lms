@@ -1083,7 +1083,7 @@ export default function TutorDashboard() {
   );
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ display: "flex", height: "100dvh", overflowY: "auto", paddingBottom: 100, background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
       <AnimatePresence>
         {isMobile && sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}

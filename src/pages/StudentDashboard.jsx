@@ -545,7 +545,7 @@ export default function StudentDashboard() {
         {isMobile && sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", zIndex: 999, backdropFilter: "blur(4px)" }} />
+            style={{ position: "fixed",height: "100dvh",overflowY: "auto",  inset: 0, background: "rgba(15,23,42,0.45)", zIndex: 999, backdropFilter: "blur(4px)" }} />
         )}
       </AnimatePresence>
 
@@ -555,7 +555,7 @@ export default function StudentDashboard() {
         animate={isMobile ? { x: sidebarOpen ? 0 : -280 } : { x: 0 }}
         transition={{ type: "spring", damping: 28, stiffness: 300 }}
         style={{
-          width: 256, minWidth: 256, height: "100vh",
+          width: 256, minWidth: 256, height: "100dvh",overflowY: "auto",paddingBottom: 100,
           background: C.sidebar, borderRight: `1px solid ${C.border}`,
           display: "flex", flexDirection: "column", flexShrink: 0,
           position: isMobile ? "fixed" : "relative",
