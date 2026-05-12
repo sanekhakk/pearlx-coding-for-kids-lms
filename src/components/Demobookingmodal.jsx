@@ -109,43 +109,65 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-    setError(null);
+  e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+  if (loading) return;
 
-    setLoading(true);
+  setError(null);
 
-    try {
-      // Call backend to submit to Google Sheets
-      const response = await fetch("/api/submit-demo-booking", {
+  if (!validateForm()) {
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    // IMPORTANT: Full backend URL
+    const response = await fetch(
+      "https://brainbugz-learning-management-system.onrender.com/api/submit-demo-booking",
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to submit booking");
       }
+    );
 
-      setSuccess(true);
-      setTimeout(() => {
-        onClose();
-      }, 3000);
-    } catch (err) {
-      console.error("Booking submission error:", err);
-      setError(err.message || "Failed to submit booking. Please try again.");
-    } finally {
-      setLoading(false);
+    // Safe JSON parsing
+    let result = {};
+
+    try {
+      result = await response.json();
+    } catch (jsonError) {
+      throw new Error("Invalid server response");
     }
-  };
+
+    // Handle API errors
+    if (!response.ok) {
+      throw new Error(
+        result.error || "Failed to submit booking"
+      );
+    }
+
+    // Success
+    setSuccess(true);
+
+    setTimeout(() => {
+      onClose();
+    }, 3000);
+
+  } catch (err) {
+    console.error("Booking submission error:", err);
+
+    setError(
+      err.message ||
+      "Failed to submit booking. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <AnimatePresence>
