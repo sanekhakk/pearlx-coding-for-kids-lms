@@ -110,6 +110,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
     setError(null);
 
     if (!validateForm()) {

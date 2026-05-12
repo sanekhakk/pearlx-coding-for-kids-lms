@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { motion } from "framer-motion";
 import { COLORS } from "./utils/theme";
-import DemoBookingModal from "./components/DemoBookingModal";
+import DemoBookingModal from "./components/Demobookingmodal";
 import NavBar from "./components/NavBar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
