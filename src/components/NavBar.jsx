@@ -208,7 +208,7 @@ const NavBar = ({ openDemoModal }) => {
               </button>
               {/* ✅ CHANGED: a tag to button */}
               <button
-                onClick={() => { openDemoModal("navbar_mobile_cta"); setIsOpen(false); }}
+                onClick={() => { openDemoModal("demo"); setIsOpen(false); }}
                 className="w-full py-3 rounded-xl font-bold text-slate-900 border-none cursor-pointer"
                 style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)" }}
               >

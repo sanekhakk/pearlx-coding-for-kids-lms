@@ -18,7 +18,10 @@
 //     customOrder  : number[]    // optional custom ordering of module numbers
 //     updatedAt    : timestamp
 // ─────────────────────────────────────────────────────────────────────────────
-import { collection, addDoc, getDocs, query, where, serverTimestamp, doc, setDoc, getDoc } from "firebase/firestore";
+import { 
+  collection, addDoc, getDocs, query, where, serverTimestamp, 
+  doc, setDoc, getDoc, updateDoc, orderBy 
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 export const CATEGORIES = [
@@ -473,6 +476,166 @@ export const CURRICULUM_SUMMARY = {
  * Call this once from the admin panel — it checks for existing data first.
  * @returns {{ seeded: number, skipped: number }}
  */
+
+
+export async function fetchAllCurriculumModules() {
+  const snap = await getDocs(
+    query(collection(db, "curriculum"), orderBy("category"), orderBy("moduleNumber"))
+  );
+  return snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
+}
+
+export async function fetchAllCurriculumLessons() {
+  const modules = await fetchAllCurriculumModules();
+  const lessons = [];
+  
+  modules.forEach(mod => {
+    (mod.lessons || []).forEach(lesson => {
+      lessons.push({
+        ...lesson,
+        moduleId: mod.id,
+        moduleName: mod.moduleName,
+        moduleNumber: mod.moduleNumber,
+        category: mod.category,
+        moduleEmoji: mod.moduleEmoji,
+      });
+    });
+  });
+  
+  return lessons;
+}
+
+export async function saveStudentCurriculumOverride(studentId, assignedModuleIds, assignedLessons) {
+  const ref = doc(db, "studentCurriculum", studentId);
+  
+  // Fetch module details for denormalization
+  const moduleDetails = {};
+  for (const moduleId of assignedModuleIds) {
+    const modRef = doc(db, "curriculum", moduleId);
+    const modSnap = await getDoc(modRef);
+    if (modSnap.exists()) {
+      const data = modSnap.data();
+      moduleDetails[moduleId] = {
+        moduleName: data.moduleName,
+        category: data.category,
+        moduleNumber: data.moduleNumber,
+      };
+    }
+  }
+
+   // Process assigned lessons with module context
+  const processedLessons = assignedLessons.map(lesson => ({
+    lessonId: lesson.id,
+    moduleDocId: lesson.moduleId,
+    lessonTitle: lesson.title,
+    category: lesson.category,
+    thumbnailUrl: lesson.thumbnailUrl || "",
+  }));
+  
+  // Format assigned modules
+  const formattedModules = assignedModuleIds.map(moduleId => ({
+    moduleDocId: moduleId,
+    ...moduleDetails[moduleId],
+  }));
+  
+  await setDoc(ref, {
+    studentId,
+    assignedModules: formattedModules,
+    assignedLessons: processedLessons,
+    updatedAt: serverTimestamp(),
+  }, { merge: true });
+}
+
+/** Fetch all modules for a given category, ordered by moduleNumber */
+export async function fetchCurriculumForCategory(category) {
+  const snap = await getDocs(
+    query(collection(db, "curriculum"), where("category", "==", category))
+  );
+  return snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => a.moduleNumber - b.moduleNumber);
+}
+
+// ── Per-student curriculum override helpers ────────────────────────────────────
+
+/**
+ * Save which modules are enabled for a student.
+ * enabledModuleIds: array of Firestore doc IDs from the "curriculum" collection
+ */
+export async function fetchStudentCurriculumOverride(studentId) {
+  const ref = doc(db, "studentCurriculum", studentId);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return null;
+  return snap.data();
+}
+
+export async function getStudentCurriculumWithDetails(studentId) {
+  const override = await fetchStudentCurriculumOverride(studentId);
+  if (!override) return { modules: [], lessons: [] };
+  
+  // Fetch full module details
+  const modules = [];
+  for (const assignedMod of override.assignedModules || []) {
+    const modRef = doc(db, "curriculum", assignedMod.moduleDocId);
+    const modSnap = await getDoc(modRef);
+    if (modSnap.exists()) {
+      modules.push({
+        id: assignedMod.moduleDocId,
+        ...modSnap.data(),
+      });
+    }
+  }
+
+   // Fetch full lesson details
+  const lessonsMap = {};
+  modules.forEach(mod => {
+    (mod.lessons || []).forEach(lesson => {
+      lessonsMap[lesson.id] = { ...lesson, moduleName: mod.moduleName, moduleId: mod.id };
+    });
+  });
+  
+  const lessons = (override.assignedLessons || [])
+    .map(assignedLesson => lessonsMap[assignedLesson.lessonId])
+    .filter(Boolean);
+  
+  return { modules, lessons };
+}
+
+/**
+ * HELPER: Get lesson with full details including thumbnail
+ */
+export async function getLessonWithDetails(moduleId, lessonId) {
+  const modRef = doc(db, "curriculum", moduleId);
+  const modSnap = await getDoc(modRef);
+  
+  if (!modSnap.exists()) return null;
+  
+  const mod = modSnap.data();
+  const lesson = (mod.lessons || []).find(l => l.id === lessonId);
+  
+  return lesson ? { ...lesson, moduleName: mod.moduleName, category: mod.category } : null;
+}
+
+/**
+ * HELPER: Upload lesson thumbnail to Firestore (store as URL or Base64)
+ * In production, use Firebase Storage
+ */
+export async function updateLessonThumbnail(moduleId, lessonId, thumbnailUrl) {
+  const modRef = doc(db, "curriculum", moduleId);
+  const modSnap = await getDoc(modRef);
+  
+  if (!modSnap.exists()) throw new Error("Module not found");
+  
+  const lessons = (modSnap.data().lessons || []).map(l =>
+    l.id === lessonId ? { ...l, thumbnailUrl } : l
+  );
+  
+  await updateDoc(modRef, { lessons, updatedAt: serverTimestamp() });
+}
+
 export async function seedCurriculumToFirestore(onProgress) {
   const categoryModuleMap = {
     little_pearls: LITTLE_PEARLS_MODULES,
@@ -520,38 +683,3 @@ export async function seedCurriculumToFirestore(onProgress) {
   return { seeded, skipped };
 }
 
-/** Fetch all modules for a given category, ordered by moduleNumber */
-export async function fetchCurriculumForCategory(category) {
-  const snap = await getDocs(
-    query(collection(db, "curriculum"), where("category", "==", category))
-  );
-  return snap.docs
-    .map(d => ({ id: d.id, ...d.data() }))
-    .sort((a, b) => a.moduleNumber - b.moduleNumber);
-}
-
-// ── Per-student curriculum override helpers ────────────────────────────────────
-
-/**
- * Save which modules are enabled for a student.
- * enabledModuleIds: array of Firestore doc IDs from the "curriculum" collection
- */
-export async function saveStudentCurriculumOverride(studentId, enabledModuleIds) {
-  const ref = doc(db, "studentCurriculum", studentId);
-  await setDoc(ref, {
-    studentId,
-    enabledModules: enabledModuleIds,
-    updatedAt: serverTimestamp(),
-  }, { merge: true });
-}
-
-/**
- * Fetch student-specific curriculum override.
- * Returns null if no override exists (meaning all modules are enabled by default).
- */
-export async function fetchStudentCurriculumOverride(studentId) {
-  const ref = doc(db, "studentCurriculum", studentId);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return null;
-  return snap.data();
-}

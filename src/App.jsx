@@ -68,7 +68,7 @@ function MainApp() {
       <ScrollToTop />
       {/* ✅ Pass openDemoModal to NavBar */}
       <NavBar openDemoModal={openDemoModal} />
-      <main>
+      <main> 
         <Routes>
           {/* ✅ Pass openDemoModal to GuestHome */}
           <Route path="/" element={<GuestHome openDemoModal={openDemoModal} />} />
