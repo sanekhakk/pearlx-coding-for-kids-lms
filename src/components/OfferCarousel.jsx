@@ -72,7 +72,7 @@ export default function OfferCarousel({ openDemoModal }) {
 
   return (
     <div
-      className="relative w-full overflow-hidden"
+      className="w-full overflow-hidden fixed top-0 left-0 right-0 z-50 "
       style={{ zIndex: 50 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
