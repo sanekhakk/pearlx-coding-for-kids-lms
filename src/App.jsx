@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { motion } from "framer-motion";
 import { COLORS } from "./utils/theme";
 import DemoBookingModal from "./components/Demobookingmodal";
+import OfferCarousel from "./components/OfferCarousel";
 import NavBar from "./components/NavBar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
@@ -67,6 +68,8 @@ function MainApp() {
   return (
     <div className="grain" style={{ background: COLORS.bgPrimary }}>
       <ScrollToTop />
+      {/* ✅ Offer / announcement carousel pinned above NavBar */}
+      <OfferCarousel openDemoModal={openDemoModal} />
       {/* ✅ Pass openDemoModal to NavBar */}
       <NavBar openDemoModal={openDemoModal} />
       <main> 

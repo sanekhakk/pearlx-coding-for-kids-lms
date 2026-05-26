@@ -26,9 +26,46 @@ const T = {
 
 const TABS = [
   { id: "coding", label: "Kids Coding", icon: Code2, emoji: "🎮", sub: "Ages 1–12+", color: T.purple, lightColor: T.purpleLight },
+  { id: "courses", label: "CS Courses", icon: GraduationCap, emoji: "🚀", sub: "12th Passed+", color: T.sky, lightColor: T.skyLight },
   { id: "academic", label: "Academic Tuition", icon: BookOpen, emoji: "📚", sub: "Classes 1–12", color: T.green, lightColor: T.greenLight },
-  { id: "cs", label: "CS & IP Tuition", icon: GraduationCap, emoji: "🖥️", sub: "Classes 6–12", color: T.sky, lightColor: T.skyLight },
+  { id: "cs", label: "CS & IP Tuition", icon: GraduationCap, emoji: "🖥️", sub: "Classes 6–12", color: "#4CC9F0", lightColor: "#E0F2FE" },
   { id: "web", label: "Web Dev", icon: Globe, emoji: "🌐", sub: "For Brands", color: T.gold, lightColor: T.goldLight },
+];
+
+// ─── CS Courses (Python / Java / Web Dev) ───────────────────────────────────
+const WA_LINK = "https://wa.link/2sqe3g";
+
+const CS_COURSES = [
+  {
+    lang: "Python",
+    emoji: "🐍",
+    color: "#3B82F6",
+    textColor: "#1D4ED8",
+    bgColor: "#EFF6FF",
+    bootcamp: { name: "Python Launchpad Bootcamp", duration: "2 Months", type: "Short Term", price: 4999, offerPrice: 3999, discount: 20 },
+    intense: { name: "Python Pro Intensive Program", duration: "6 Months", type: "Long Term" },
+    features: ["Hands-on projects", "Real-world assignments", "Certificate included", "Doubt clearing sessions"],
+  },
+  {
+    lang: "Java",
+    emoji: "☕",
+    color: "#F97316",
+    textColor: "#C2410C",
+    bgColor: "#FFF7ED",
+    bootcamp: { name: "Java Kickstart Bootcamp", duration: "2 Months", type: "Short Term", price: 4999, offerPrice: 3999, discount: 20 },
+    intense: { name: "Java Mastery Intensive Program", duration: "6 Months", type: "Long Term" },
+    features: ["OOP concepts", "Mini projects & capstone", "Industry certificate", "Mentor support"],
+  },
+  {
+    lang: "Web Development",
+    emoji: "🌐",
+    color: "#8B5CF6",
+    textColor: "#6D28D9",
+    bgColor: "#F5F3FF",
+    bootcamp: { name: "Web Dev Launchpad Bootcamp", duration: "2 Months", type: "Short Term", price: 5999, offerPrice: 4799, discount: 20 },
+    intense: { name: "Full Stack Intensive Program", duration: "6 Months", type: "Long Term" },
+    features: ["HTML · CSS · JS · React", "Backend basics", "Portfolio project", "Career guidance"],
+  },
 ];
 
 const CODING_GRADES = [
@@ -363,6 +400,133 @@ const WebDevSection = ({ openDemoModal }) => (
   </div>
 );
 
+// ─── CS Courses Section ──────────────────────────────────────────────────────
+const CSCoursesSection = ({ openDemoModal }) => (
+  <div className="space-y-10">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <div className="flex items-center gap-3 mb-2">
+        <span className="text-2xl">🎓</span>
+        <div>
+          <h3 className="font-black text-xl" style={{ color: T.ink }}>CS Courses for 12th Passed & Above</h3>
+          <p className="text-sm text-slate-500">Bootcamps with flat prices · Long-term programs on enquiry</p>
+        </div>
+      </div>
+      {/* +2 offer banner */}
+      <div className="mt-4 flex items-center gap-4 px-5 py-3 rounded-2xl border"
+        style={{ background: "linear-gradient(105deg,#ecfdf5,#eff6ff)", borderColor: "rgba(16,185,129,0.25)" }}>
+        <span className="text-2xl">🎉</span>
+        <div className="flex-1">
+          <span className="font-black text-sm" style={{ color: "#047857" }}>2026 +2 Passed Students get 20% OFF on all Bootcamps!</span>
+          <span className="ml-2 text-xs text-slate-500">Offer prices shown below.</span>
+        </div>
+        <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+          className="shrink-0 px-4 py-1.5 rounded-xl text-xs font-black text-white"
+          style={{ background: "linear-gradient(135deg,#10B981,#0EA5E9)" }}>
+          Claim via WhatsApp
+        </a>
+      </div>
+    </motion.div>
+
+    {CS_COURSES.map((course, ci) => (
+      <motion.div key={ci} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ delay: ci * 0.1 }}
+        className="rounded-[2rem] border-2 overflow-hidden"
+        style={{ borderColor: course.color + "35", boxShadow: `0 12px 40px ${course.color}12`, background: course.bgColor }}>
+
+        {/* Course header */}
+        <div className="flex items-center gap-4 px-8 pt-7 pb-5 border-b" style={{ borderColor: course.color + "25" }}>
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl"
+            style={{ background: course.color + "18", border: `1.5px solid ${course.color}30` }}>
+            {course.emoji}
+          </div>
+          <div className="flex-1">
+            <h3 className="font-black text-xl" style={{ color: course.textColor }}>{course.lang}</h3>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {course.features.map((f, fi) => (
+                <span key={fi} className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
+                  style={{ background: course.color + "18", color: course.textColor }}>
+                  ✓ {f}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Two tracks side by side */}
+        <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x" style={{ borderColor: course.color + "20" }}>
+          {/* Bootcamp */}
+          <div className="p-6 flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full text-[11px] font-black"
+                style={{ background: course.color + "18", color: course.textColor }}>
+                ⚡ Bootcamp · {course.bootcamp.type}
+              </span>
+              <span className="text-xs text-slate-400">{course.bootcamp.duration}</span>
+            </div>
+            <div>
+              <p className="font-bold text-base mb-3" style={{ color: course.textColor }}>{course.bootcamp.name}</p>
+              <div className="flex items-end gap-3">
+                <div>
+                  <div className="text-xs text-slate-400 line-through mb-0.5">₹{course.bootcamp.price.toLocaleString()}</div>
+                  <div className="font-black text-3xl" style={{ color: course.textColor }}>
+                    ₹{course.bootcamp.offerPrice.toLocaleString()}
+                  </div>
+                </div>
+                <div className="mb-1 px-3 py-1 rounded-full text-xs font-black text-white"
+                  style={{ background: `linear-gradient(135deg,#10B981,#0EA5E9)` }}>
+                  {course.bootcamp.discount}% OFF
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">For 2026 +2 Passed Students</p>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.04, boxShadow: `0 8px 24px ${course.color}35` }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => openDemoModal && openDemoModal("courses_bootcamp")}
+              className="mt-auto w-full py-3 rounded-2xl text-sm font-black text-white"
+              style={{ background: `linear-gradient(135deg,${course.color},${course.textColor})` }}>
+              🚀 Enroll Now
+            </motion.button>
+          </div>
+
+          {/* Intense Training */}
+          <div className="p-6 flex flex-col gap-4" style={{ background: course.color + "08" }}>
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full text-[11px] font-black"
+                style={{ background: course.color + "25", color: course.textColor }}>
+                🔥 Intense Training · {course.intense.type}
+              </span>
+              <span className="text-xs text-slate-400">{course.intense.duration}</span>
+            </div>
+            <div>
+              <p className="font-bold text-base mb-3" style={{ color: course.textColor }}>{course.intense.name}</p>
+              <div className="flex items-center gap-3 p-4 rounded-2xl border"
+                style={{ background: "#fff", borderColor: course.color + "30" }}>
+                <span className="text-2xl">💬</span>
+                <div>
+                  <div className="font-black text-sm" style={{ color: course.textColor }}>Custom Pricing</div>
+                  <div className="text-xs text-slate-500">Tailored to your goals & schedule</div>
+                </div>
+              </div>
+            </div>
+            <motion.a
+              href={`https://wa.me/91XXXXXXXXXX?text=Hi!%20I'm%20interested%20in%20the%20${encodeURIComponent(course.intense.name)}%20at%20Pearlx.%20Please%20share%20details.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="mt-auto w-full py-3 rounded-2xl text-sm font-black text-center border-2 flex items-center justify-center gap-2"
+              style={{ background: "#fff", color: course.textColor, borderColor: course.color + "50" }}>
+              <MessageCircle className="w-4 h-4" />
+              Enquire on WhatsApp
+            </motion.a>
+          </div>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+);
+
 const FAQ = () => {
   const [openIdx, setOpenIdx] = useState(null);
 
@@ -424,8 +588,7 @@ export default function Pricing({ openDemoModal }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} className="text-center mb-14">
-          <SectionBadge color={T.gold}>💎 Transparent Pricing</SectionBadge>
-          <h1 className="font-black mt-4 mb-3"
+          <h1 className="font-black mt-10 mb-3"
             style={{ color: T.ink, letterSpacing: "-0.04em", fontSize: "clamp(2rem,5vw,3.2rem)", lineHeight: 1.1 }}>
             Simple, honest{" "}
             <span style={{
@@ -455,7 +618,7 @@ export default function Pricing({ openDemoModal }) {
           <div className="text-center text-sm font-black text-slate-500 uppercase tracking-widest mb-4">
             What are you looking for?
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {TABS.map(tab => (
               <motion.button key={tab.id} onClick={() => setActiveTab(tab.id)}
                 whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}
@@ -484,6 +647,7 @@ export default function Pricing({ openDemoModal }) {
             exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3 }}
             className="mb-14">
             {activeTab === "coding" && <CodingSection openDemoModal={openDemoModal} />}
+            {activeTab === "courses" && <CSCoursesSection openDemoModal={openDemoModal} />}
             {activeTab === "academic" && <AcademicSection openDemoModal={openDemoModal} />}
             {activeTab === "cs" && <CSTuitionSection openDemoModal={openDemoModal} />}
             {activeTab === "web" && <WebDevSection openDemoModal={openDemoModal} />}
