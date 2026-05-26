@@ -1,4 +1,4 @@
-// src/pages/Pricing.jsx — ENHANCED PARENT-FRIENDLY VERSION
+// src/pages/Pricing.jsx — WITH ACADEMIC TUITION
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -7,7 +7,6 @@ import {
   ChevronDown, ChevronUp, Zap, Heart, Trophy, BookOpen
 } from "lucide-react";
 
-// ─── Theme (matches PearlX homepage) ───────────────────────────────────────
 const T = {
   bg: "#F0FFFE",
   ink: "#0F172A",
@@ -25,10 +24,10 @@ const T = {
   teal: "#14B8A6",
 };
 
-// ─── Data ──────────────────────────────────────────────────────────────────
 const TABS = [
   { id: "coding", label: "Kids Coding", icon: Code2, emoji: "🎮", sub: "Ages 1–12+", color: T.purple, lightColor: T.purpleLight },
-  { id: "cs", label: "CS & IP Tuition", icon: GraduationCap, emoji: "📚", sub: "Classes 6–12", color: T.sky, lightColor: T.skyLight },
+  { id: "academic", label: "Academic Tuition", icon: BookOpen, emoji: "📚", sub: "Classes 1–12", color: T.green, lightColor: T.greenLight },
+  { id: "cs", label: "CS & IP Tuition", icon: GraduationCap, emoji: "🖥️", sub: "Classes 6–12", color: T.sky, lightColor: T.skyLight },
   { id: "web", label: "Web Dev", icon: Globe, emoji: "🌐", sub: "For Brands", color: T.gold, lightColor: T.goldLight },
 ];
 
@@ -37,14 +36,12 @@ const CODING_GRADES = [
     label: "Ages 1–3", emoji: "🐥", age: "Ages 1–3", color: T.yellow, textColor: "#A8760A", bgColor: T.yellowLight,
     tagline: "First steps into coding — super fun & visual!",
     hourly: 350, monthly: 2800, grpHourly: 210, grpMonthly: 1680,
-    // Solo bundles (based on ₹350/hr)
     packages: [
       { c: 30, p: 8499, s: 2001, d: 19, label: "Starter" },
       { c: 45, p: 12499, s: 3251, d: 21, label: "Explorer" },
       { c: 90, p: 23499, s: 7001, d: 23, label: "Builder" },
       { c: 150, p: 37499, s: 14001, d: 27, label: "Champion", popular: true },
     ],
-    // Group bundles (based on ₹210/hr — full: 30×210=6300, 45×210=9450, 90×210=18900, 150×210=31500)
     grpPackages: [
       { c: 30,  p: 5499,  s: 801,  d: 13, label: "Starter" },
       { c: 45,  p: 8499,  s: 951,  d: 10, label: "Explorer" },
@@ -56,14 +53,12 @@ const CODING_GRADES = [
     label: "Ages 4–6", emoji: "🌱", age: "Ages 4–6", color: T.green, textColor: "#047857", bgColor: T.greenLight,
     tagline: "Deeper logic & first real projects",
     hourly: 400, monthly: 3200, grpHourly: 240, grpMonthly: 1920,
-    // Solo bundles (based on ₹400/hr)
     packages: [
       { c: 30, p: 9499, s: 2501, d: 21, label: "Starter" },
       { c: 45, p: 14499, s: 3501, d: 19, label: "Explorer" },
       { c: 90, p: 27499, s: 8501, d: 24, label: "Builder" },
       { c: 150, p: 43999, s: 16001, d: 27, label: "Champion", popular: true },
     ],
-    // Group bundles (based on ₹240/hr — full: 30×240=7200, 45×240=10800, 90×240=21600, 150×240=36000)
     grpPackages: [
       { c: 30,  p: 6499,  s: 701,  d: 10, label: "Starter" },
       { c: 45,  p: 9999,  s: 801,  d: 7,  label: "Explorer" },
@@ -75,14 +70,12 @@ const CODING_GRADES = [
     label: "Ages 7+", emoji: "🦋", age: "Ages 7+", color: T.purple, textColor: "#6D28D9", bgColor: T.purpleLight,
     tagline: "Advanced coding, apps & real-world projects",
     hourly: 500, monthly: 4000, grpHourly: 300, grpMonthly: 2400,
-    // Solo bundles (based on ₹500/hr)
     packages: [
       { c: 30, p: 11999, s: 3001, d: 20, label: "Starter" },
       { c: 45, p: 17999, s: 4501, d: 20, label: "Explorer" },
       { c: 90, p: 33999, s: 11001, d: 24, label: "Builder" },
       { c: 150, p: 54999, s: 20001, d: 27, label: "Champion", popular: true },
     ],
-    // Group bundles (based on ₹300/hr — full: 30×300=9000, 45×300=13500, 90×300=27000, 150×300=45000)
     grpPackages: [
       { c: 30,  p: 7999,  s: 1001, d: 11, label: "Starter" },
       { c: 45,  p: 12499, s: 1001, d: 7,  label: "Explorer" },
@@ -90,6 +83,12 @@ const CODING_GRADES = [
       { c: 150, p: 41999, s: 3001, d: 7,  label: "Champion", popular: true },
     ],
   },
+];
+
+const ACADEMIC_GRADES = [
+  { label: "Classes 1-7", emoji: "🌱", color: T.green, textColor: "#047857", bgColor: T.greenLight, hourly: 250, monthly: 2000, grpHourly: 150, grpMonthly: 1200, boards: "CBSE · ICSE · State Boards" },
+  { label: "Classes 8-10", emoji: "📚", color: T.sky, textColor: "#0284C7", bgColor: T.skyLight, hourly: 300, monthly: 2400, grpHourly: 180, grpMonthly: 1440, boards: "CBSE · ICSE · IGCSE · State Boards" },
+  { label: "Classes 11-12", emoji: "🎓", color: T.purple, textColor: "#6D28D9", bgColor: T.purpleLight, hourly: 350, monthly: 2800, grpHourly: 210, grpMonthly: 1680, boards: "CBSE · ISC · IGCSE · State Boards" },
 ];
 
 const CS_GRADES = [
@@ -135,6 +134,8 @@ const FAQS = [
   { q: "What happens if my child misses a class?", a: "Every session is recorded. Your child can watch the replay anytime. You can also reschedule for free with 24 hours notice." },
   { q: "Are there any hidden fees or registration charges?", a: "Absolutely none. No registration fee, no material fee, no hidden charges. You pay only for the sessions you book — that's it." },
   { q: "What age group is best for coding classes?", a: "We welcome kids from age 5 (Grade 1). The earlier they start, the better! Our curriculum is designed specifically for each age group — playful for younger kids, project-focused for older ones." },
+  { q: "Which boards do you support for academic tuition?", a: "We support all major Indian boards: CBSE, ICSE, ISC, IGCSE, and all state boards (Maharashtra, Karnataka, Tamil Nadu, Gujarat, Rajasthan, UP, etc.)." },
+  { q: "Can I book academic tuition for multiple subjects?", a: "Yes! You can book different subjects or even different teachers based on your child's needs. Most students benefit from focused subject tutoring." },
   { q: "How is CS Tuition different from school?", a: "Our CS tutors focus entirely on your child's board syllabus — CBSE, ICSE, ISC, or IGCSE — and ensure they not only pass but score top marks. Very different from a classroom of 40 students!" },
   { q: "Can I try before paying?", a: "Yes! Book a completely free 30-minute demo class. No payment, no commitment. You'll see exactly how we teach before deciding." },
 ];
@@ -142,352 +143,254 @@ const FAQS = [
 // ─── Reusable Components ────────────────────────────────────────────────────
 
 const SectionBadge = ({ children, color }) => (
-  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest"
-    style={{ background: color + "20", color }}>
+  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black border"
+    style={{ background: `${color}15`, borderColor: `${color}30`, color }}>
     {children}
-  </span>
+  </motion.div>
 );
 
 const TrustBadge = ({ icon, text }) => (
-  <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border text-xs font-bold text-slate-600"
-    style={{ borderColor: "rgba(15,23,42,0.07)", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-    <span className="text-base">{icon}</span>{text}
+  <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border"
+    style={{ background: "rgba(255,255,255,0.4)", borderColor: "rgba(15,23,42,0.1)", color: T.ink }}>
+    {icon} {text}
   </div>
 );
 
-const PriceCard = ({ emoji, amount, label, sublabel, color }) => (
-  <div className="p-5 rounded-2xl border-2 bg-white relative"
-    style={{ borderColor: color + "30", boxShadow: `0 6px 24px ${color}12` }}>
-    <div className="text-2xl mb-3">{emoji}</div>
-    <div className="font-black text-3xl leading-none mb-1" style={{ color: T.ink }}>{amount}</div>
-    <div className="text-sm font-bold mb-0.5" style={{ color }}>{label}</div>
-    {sublabel && <div className="text-xs text-slate-400">{sublabel}</div>}
-  </div>
-);
-
-// ─── What's Included Strip ──────────────────────────────────────────────────
 const IncludedStrip = () => (
-  <div className="rounded-[1.8rem] border-2 overflow-hidden"
-    style={{ borderColor: T.green + "30", boxShadow: `0 8px 32px ${T.green}10` }}>
-    <div className="px-6 py-4 flex items-center gap-3"
-      style={{ background: `linear-gradient(135deg, ${T.green}, #059669)` }}>
-      <div>
-        <div className="font-black text-white text-lg">Included in EVERY plan — no surprises</div>
-        <div className="text-green-100 text-xs">Everything below comes with your subscription, whatever plan you choose</div>
-      </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 bg-white">
-      {ALWAYS_INCLUDED.map((item, i) => (
-        <div key={i} className="p-4 border-b border-r last:border-r-0"
-          style={{ borderColor: "rgba(16,185,129,0.1)" }}>
-          <div className="text-xs font-black text-slate-800 mb-0.5">{item.title}</div>
-          <div className="text-xs text-slate-400 leading-relaxed">{item.desc}</div>
+  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {ALWAYS_INCLUDED.map((item, i) => (
+      <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+        className="flex items-start gap-3 p-4 rounded-2xl bg-white/60 backdrop-blur-sm border"
+        style={{ borderColor: "rgba(15,23,42,0.08)" }}>
+        <span className="text-2xl flex-shrink-0">{item.icon}</span>
+        <div>
+          <div className="font-black text-xs text-slate-500 uppercase tracking-widest mb-0.5">{item.title}</div>
+          <div className="text-xs text-slate-600">{item.desc}</div>
         </div>
-      ))}
-    </div>
+      </motion.div>
+    ))}
   </div>
 );
 
-// ─── Coding Section ─────────────────────────────────────────────────────────
-const CodingSection = ({ openDemoModal }) => {
-  const [gradeIdx, setGradeIdx] = useState(1);
-  const [mode, setMode] = useState("solo");
-  const g = CODING_GRADES[gradeIdx];
-  const isGrp = mode === "group";
-  const hrPrice = isGrp ? g.grpHourly : g.hourly;
-  const moPrice = isGrp ? g.grpMonthly : g.monthly;
-  const activePkgs = isGrp ? g.grpPackages : g.packages;
-
-  return (
-    <div className="space-y-8">
-      {/* Parent explainer banner */}
-      <div className="rounded-2xl p-5 border-2 flex flex-col sm:flex-row gap-4 items-start"
-        style={{ background: T.purpleLight, borderColor: T.purple + "30" }}>
-        <div>
-          <div className="font-black text-slate-800 mb-1">How it works for parents</div>
-          <div className="text-sm text-slate-600 leading-relaxed">
-            Choose your child's grade → pick <b>1-on-1</b> (dedicated teacher) or <b>Group</b> (2–4 kids, more affordable) →
-            pay monthly <b>or</b> save big with a class bundle. All classes are live, online & 1 hour each.
-          </div>
-        </div>
+const GradeCard = ({ label, emoji, color, textColor, bgColor, hourly, monthly, grpHourly, grpMonthly, boards }) => (
+  <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }} transition={{ staggerChildren: 0.1 }}
+    whileHover={{ y: -4 }}
+    className="p-8 rounded-[2rem] border-2 text-center transition-all"
+    style={{
+      background: bgColor, borderColor: color + "40", boxShadow: `0 12px 40px ${color}20`
+    }}>
+    <div className="text-4xl mb-3">{emoji}</div>
+    <h3 className="font-black text-xl mb-1" style={{ color: textColor }}>{label}</h3>
+    <p className="text-xs mb-6" style={{ color: textColor }}>{boards}</p>
+    <div className="space-y-2 mb-6 pb-6 border-b" style={{ borderColor: color + "25" }}>
+      <div className="flex items-center justify-center gap-2">
+        <span className="font-black text-2xl" style={{ color: textColor }}>₹{hourly}</span>
+        <span className="text-xs" style={{ color: textColor, opacity: 0.7 }}>per session (1 hr)</span>
       </div>
-
-      {/* Step 1: Choose Grade */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black text-white"
-            style={{ background: T.purple }}>1</span>
-          <span className="font-black text-slate-700">Choose your child's grade</span>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {CODING_GRADES.map((gr, i) => (
-            <motion.button key={i} onClick={() => setGradeIdx(i)} whileTap={{ scale: 0.97 }}
-              className="p-4 rounded-2xl border-2 text-left transition-all"
-              style={{
-                background: gradeIdx === i ? gr.color + "15" : "#fff",
-                borderColor: gradeIdx === i ? gr.color : "rgba(15,23,42,0.08)",
-                boxShadow: gradeIdx === i ? `0 4px 20px ${gr.color}25` : "0 2px 8px rgba(0,0,0,0.03)"
-              }}>
-              <div className="text-2xl mb-1">{gr.emoji}</div>
-              <div className="font-black text-sm" style={{ color: gradeIdx === i ? gr.textColor : T.ink }}>{gr.label}</div>
-              <div className="text-xs text-slate-400">{gr.age}</div>
-            </motion.button>
-          ))}
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div key={gradeIdx} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            className="mt-3 px-4 py-2.5 rounded-xl text-sm font-medium"
-            style={{ background: g.bgColor, color: g.textColor }}>
-            💡 {g.tagline}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Step 2: Class type */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black text-white"
-            style={{ background: T.purple }}>2</span>
-          <span className="font-black text-slate-700">Pick class type</span>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { id: "solo", emoji: "🎯", label: "1-on-1 (Private)", desc: "Dedicated teacher, full attention. Best results.", highlight: true },
-            { id: "group", emoji: "👫", label: "Group Class", desc: "2–4 kids per batch. More affordable, still effective." },
-          ].map(m => (
-            <motion.button key={m.id} onClick={() => setMode(m.id)} whileTap={{ scale: 0.97 }}
-              className="p-4 rounded-2xl border-2 text-left transition-all"
-              style={{
-                background: mode === m.id ? (m.highlight ? T.purple + "12" : T.green + "12") : "#fff",
-                borderColor: mode === m.id ? (m.highlight ? T.purple : T.green) : "rgba(15,23,42,0.08)",
-              }}>
-              <div className="text-xl mb-1">{m.emoji}</div>
-              <div className="font-black text-sm text-slate-800">{m.label}</div>
-              <div className="text-xs text-slate-400 mt-0.5">{m.desc}</div>
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      {/* Step 3: See prices */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black text-white"
-            style={{ background: T.purple }}>3</span>
-          <span className="font-black text-slate-700">Your pricing</span>
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div key={gradeIdx + mode} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }} className="grid grid-cols-2 gap-4">
-            <PriceCard emoji="🎯" amount={`₹${hrPrice}`} label="Per Class" sublabel="1 hour session" color={g.color} />
-            <PriceCard emoji="📅" amount={`₹${moPrice.toLocaleString()}`} label="Per Month" sublabel="8 sessions · 2 per week" color={g.color} />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Packages — save more */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <div className="font-black text-slate-800 flex items-center gap-2">
-            💰 Buy a bundle & save more
-          </div>
-          <span className="text-xs text-slate-400">One-time payment</span>
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div key={gradeIdx + mode} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {activePkgs.map((pkg, pi) => (
-              <motion.div key={pi} whileHover={{ y: -6, scale: 1.02 }}
-                className="p-5 rounded-2xl border-2 bg-white relative overflow-hidden"
-                style={{
-                  borderColor: pkg.popular ? g.color : g.color + "30",
-                  boxShadow: pkg.popular ? `0 8px 28px ${g.color}30` : `0 4px 16px ${g.color}10`,
-                }}>
-                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: g.color }} />
-                {pkg.popular && (
-                  <div className="absolute top-3 right-3 text-[9px] font-black text-white px-2 py-0.5 rounded-full"
-                    style={{ background: g.color }}>BEST VALUE</div>
-                )}
-                <div className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: g.textColor }}>
-                  {pkg.label}
-                </div>
-                <div className="text-2xl font-black leading-none mb-1" style={{ color: T.ink }}>
-                  ₹{pkg.p.toLocaleString()}
-                </div>
-                <div className="text-xs text-slate-500 mb-1">{pkg.c} classes total</div>
-                <div className="flex items-center gap-1 text-xs font-black mb-3" style={{ color: g.textColor }}>
-                  <span>💚 Save ₹{pkg.s.toLocaleString()}</span>
-                  <span className="opacity-50">·</span>
-                  <span>{pkg.d}% off</span>
-                </div>
-                <button
-                  onClick={() => openDemoModal(`Coding - ${g.label} - ${pkg.label} (${pkg.c} classes · ₹${pkg.p})`)}
-                  className="flex items-center justify-center gap-1 w-full py-2.5 rounded-xl text-xs font-bold text-white cursor-pointer border-none"
-                  style={{ background: g.color }}>
-                  Get This <ArrowRight className="w-3 h-3" />
-                </button>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+      <div className="flex items-center justify-center gap-2 text-xs" style={{ color: textColor, opacity: 0.6 }}>
+        <span>or ₹{monthly}/month (8 sessions)</span>
       </div>
     </div>
-  );
-};
+    <div className="space-y-2 text-sm">
+      <div className="flex items-center justify-between" style={{ color: textColor }}>
+        <span className="opacity-70">Solo Classes</span>
+        <span className="font-bold">₹{hourly}/hr</span>
+      </div>
+      <div className="flex items-center justify-between" style={{ color: textColor }}>
+        <span className="opacity-70">Group (2-3 students)</span>
+        <span className="font-bold">₹{grpHourly}/hr</span>
+      </div>
+    </div>
+  </motion.div>
+);
 
-// ─── CS Tuition Section ─────────────────────────────────────────────────────
-const CSTuitionSection = ({ openDemoModal }) => {
-  const [idx, setIdx] = useState(0);
-  const g = CS_GRADES[idx];
-  return (
-    <div className="space-y-8">
-      <div className="rounded-2xl p-5 border-2 flex flex-col sm:flex-row gap-4 items-start"
-        style={{ background: T.skyLight, borderColor: T.sky + "30" }}>
-        <span className="text-3xl">🎓</span>
-        <div>
-          <div className="font-black text-slate-800 mb-1">Academic CS & IP Tuition — why it matters</div>
-          <div className="text-sm text-slate-600 leading-relaxed">
-            CS & Informatics Practices is a high-scoring subject for Class 9–12. Our tutors are board specialists
-            who know exactly what examiners want. Small groups or private sessions — both available.
+const PackageCard = ({ c, p, s, d, label, popular, color }) => (
+  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+    whileHover={{ scale: 1.03, y: -4 }}
+    className="p-6 rounded-2xl bg-white border-2 relative overflow-hidden transition-all"
+    style={{
+      borderColor: popular ? color : "rgba(15,23,42,0.08)",
+      boxShadow: popular ? `0 20px 50px ${color}25` : "0 4px 20px rgba(15,23,42,0.04)",
+      background: popular ? color + "05" : "#fff"
+    }}>
+    {popular && (
+      <div className="absolute -top-2 -right-2 px-4 py-1 rounded-full text-xs font-black"
+        style={{ background: color, color: "#fff", transform: "rotate(12deg)" }}>⭐ POPULAR</div>
+    )}
+    <h4 className="font-black mb-2" style={{ color }}>{label}</h4>
+    <div className="mb-4">
+      <span className="font-black text-2xl" style={{ color }}>₹{p}</span>
+      <span className="text-xs text-slate-500 ml-2">for {c} sessions</span>
+    </div>
+    <div className="space-y-1 mb-4 pb-4 border-b" style={{ borderColor: "rgba(15,23,42,0.08)" }}>
+      <div className="text-xs text-slate-600">
+        <span className="line-through text-slate-400">₹{Math.round(c * (p/c))}</span> → <span className="font-bold" style={{ color }}>Save ₹{s}</span>
+      </div>
+      <div className="text-xs font-bold text-slate-500">₹{Math.round(p/c)}/session</div>
+    </div>
+    <div className="text-xs text-slate-500">
+      <span className="font-bold text-slate-600">{d}% savings</span> vs hourly rate
+    </div>
+  </motion.div>
+);
+
+const CodingSection = ({ openDemoModal }) => (
+  <div className="space-y-12">
+    {CODING_GRADES.map((grade, gi) => (
+      <div key={gi}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: gi * 0.1 }}>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-4xl">{grade.emoji}</span>
+            <div>
+              <h3 className="font-black text-xl" style={{ color: T.ink }}>{grade.label}</h3>
+              <p className="text-sm text-slate-500">{grade.tagline}</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          <div>
+            <h4 className="font-bold text-sm mb-4 text-slate-600 uppercase tracking-widest">Solo Classes</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {grade.packages.map((pkg, pi) => (
+                <PackageCard key={pi} {...pkg} color={grade.color} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="font-bold text-sm mb-4 text-slate-600 uppercase tracking-widest">Group Classes (2-3 students)</h4>
+            <div className="grid grid-cols-2 gap-3">
+              {grade.grpPackages.map((pkg, pi) => (
+                <PackageCard key={pi} {...pkg} color={grade.color} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
+    ))}
+  </div>
+);
 
-      <div>
-        <div className="font-black text-slate-700 mb-3">Select your child's class</div>
-        <div className="grid grid-cols-3 gap-3">
-          {CS_GRADES.map((gr, i) => (
-            <motion.button key={i} onClick={() => setIdx(i)} whileTap={{ scale: 0.97 }}
-              className="p-4 rounded-2xl border-2 text-left transition-all"
-              style={{
-                background: idx === i ? gr.color + "15" : "#fff",
-                borderColor: idx === i ? gr.color : "rgba(15,23,42,0.08)",
-              }}>
-              <div className="text-2xl mb-1">{gr.emoji}</div>
-              <div className="font-black text-sm" style={{ color: idx === i ? gr.textColor : T.ink }}>{gr.label}</div>
-              <div className="text-xs text-slate-400">{gr.boards}</div>
-            </motion.button>
-          ))}
+const AcademicSection = ({ openDemoModal }) => (
+  <div className="space-y-12">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <p className="text-slate-600 mb-8">
+        Academic tuition for Classes 1-12 • All subjects • All major boards (CBSE, ICSE, ISC, IGCSE, State Boards)
+      </p>
+    </motion.div>
+
+    {ACADEMIC_GRADES.map((grade, gi) => (
+      <motion.div key={gi} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ delay: gi * 0.1 }}>
+        <GradeCard {...grade} />
+      </motion.div>
+    ))}
+
+    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }} className="mt-12 p-6 rounded-2xl text-center"
+      style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.15)" }}>
+      <p style={{ color: T.green }} className="font-bold mb-2">💡 Smart Bundles Available</p>
+      <p className="text-sm text-slate-600">
+        Book multiple sessions and save up to 20%! Contact us on WhatsApp for personalized bundle pricing based on your needs.
+      </p>
+    </motion.div>
+  </div>
+);
+
+const CSTuitionSection = ({ openDemoModal }) => (
+  <div className="space-y-8">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <p className="text-slate-600 mb-8">
+        Computer Science & Information Practices tuition • Classes 6-12 • All boards • Exam-focused
+      </p>
+    </motion.div>
+
+    {CS_GRADES.map((grade, gi) => (
+      <motion.div key={gi} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ delay: gi * 0.1 }}>
+        <GradeCard {...grade} />
+      </motion.div>
+    ))}
+  </div>
+);
+
+const WebDevSection = ({ openDemoModal }) => (
+  <div className="space-y-8">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <p className="text-slate-600 mb-8">
+        Custom websites designed & built for your brand — by expert developers
+      </p>
+    </motion.div>
+
+    {WEB_PACKAGES.map((pkg, i) => (
+      <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+        className="p-8 rounded-[2rem] border-2 relative overflow-hidden"
+        style={{
+          background: pkg.bgColor, borderColor: pkg.color + "40", boxShadow: `0 12px 40px ${pkg.color}20`
+        }}>
+        {pkg.badge && (
+          <div className="absolute top-4 right-4 px-4 py-1.5 rounded-full text-xs font-black bg-white"
+            style={{ color: pkg.color }}>
+            {pkg.badge}
+          </div>
+        )}
+        <div className="flex items-start gap-6 mb-6">
+          <span className="text-4xl">{pkg.emoji}</span>
+          <div className="flex-1">
+            <h3 className="font-black text-2xl mb-2" style={{ color: pkg.textColor }}>{pkg.name}</h3>
+            <p className="text-sm" style={{ color: pkg.textColor, opacity: 0.7 }}>{pkg.desc}</p>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <div className="font-black text-3xl mb-1" style={{ color: pkg.textColor }}>{pkg.price}</div>
+            <div className="text-xs" style={{ color: pkg.textColor, opacity: 0.6 }}>{pkg.timeline}</div>
+          </div>
         </div>
-      </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }} className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {[
-            { emoji: "🎯", amount: `₹${g.hourly}`, label: "1-on-1 / session", sublabel: "Private class" },
-            { emoji: "👫", amount: `₹${g.grpHourly}`, label: "Group / session", sublabel: "2–4 students" },
-            { emoji: "📅", amount: `₹${g.monthly.toLocaleString()}`, label: "1-on-1 / month", sublabel: "8 sessions" },
-            { emoji: "🗓️", amount: `₹${g.grpMonthly.toLocaleString()}`, label: "Group / month", sublabel: "8 sessions" },
-          ].map((r, ri) => <PriceCard key={ri} {...r} color={g.color} />)}
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="rounded-2xl border-2 overflow-hidden" style={{ borderColor: g.color + "30" }}>
-        <div className="grid grid-cols-2">
-          {[
-            { label: "1-on-1 (Private)", emoji: "🎯", pros: ["Full teacher attention", "Pace set by your child", "Better for struggling students"], color: g.color },
-            { label: "Group Class", emoji: "👫", pros: ["More affordable", "Peer learning energy", "Same board syllabus"], color: g.textColor },
-          ].map((opt, oi) => (
-            <div key={oi} className="p-5" style={{ background: oi === 0 ? g.bgColor : "#fff" }}>
-              <div className="text-xl mb-2">{opt.emoji}</div>
-              <div className="font-black text-sm text-slate-800 mb-3">{opt.label}</div>
-              {opt.pros.map((p, pi) => (
-                <div key={pi} className="flex items-start gap-2 text-xs text-slate-600 mb-1.5">
-                  <Check className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: opt.color }} />{p}
-                </div>
-              ))}
+        <div className="space-y-2">
+          {pkg.features.map((f, fi) => (
+            <div key={fi} className="flex items-center gap-3 text-sm" style={{ color: pkg.textColor }}>
+              <Check className="w-4 h-4" />
+              {f}
             </div>
           ))}
         </div>
-      </div>
-
-      <button
-        onClick={() => openDemoModal(`CS Tuition - ${g.label} (${g.boards})`)}
-        className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-white text-sm cursor-pointer border-none"
-        style={{ background: `linear-gradient(135deg,${g.color},${g.textColor})`, boxShadow: `0 8px 28px ${g.color}30` }}>
-        📚 Book CS Tuition Session <ArrowRight className="w-4 h-4" />
-      </button>
-    </div>
-  );
-};
-
-// ─── Web Dev Section ────────────────────────────────────────────────────────
-const WebDevSection = ({ openDemoModal }) => (
-  <div className="space-y-6">
-    <div className="rounded-2xl p-5 border-2 flex flex-col sm:flex-row gap-4 items-start"
-      style={{ background: T.goldLight, borderColor: T.gold + "40" }}>
-      <span className="text-3xl">🌐</span>
-      <div>
-        <div className="font-black text-slate-800 mb-1">Professional websites for your business</div>
-        <div className="text-sm text-slate-600 leading-relaxed">
-          Need a website for your brand or business? Our team builds beautiful, fast, mobile-friendly sites.
-          Get a free quote in 24 hours — no commitment needed.
-        </div>
-      </div>
-    </div>
-    <div className="grid sm:grid-cols-3 gap-5">
-      {WEB_PACKAGES.map((pkg, i) => (
-        <motion.div key={i} whileHover={{ y: -8 }}
-          className="rounded-[1.8rem] border-2 bg-white relative overflow-hidden flex flex-col"
-          style={{ borderColor: pkg.color + "35", boxShadow: `0 8px 28px ${pkg.color}12` }}>
-          <div className="h-1 w-full" style={{ background: pkg.color }} />
-          <div className="p-6 flex-1 flex flex-col">
-            {pkg.badge && (
-              <div className="self-start mb-3 px-3 py-1 rounded-full text-[10px] font-black text-white"
-                style={{ background: pkg.color }}>{pkg.badge}</div>
-            )}
-            <div className="text-3xl mb-3">{pkg.emoji}</div>
-            <h4 className="font-black text-lg mb-1" style={{ color: T.ink }}>{pkg.name}</h4>
-            <div className="font-black text-2xl mb-1" style={{ color: pkg.color }}>{pkg.price}</div>
-            <div className="text-xs text-slate-400 mb-3">⏱ Delivered in {pkg.timeline}</div>
-            <p className="text-xs text-slate-500 mb-4 leading-relaxed">{pkg.desc}</p>
-            <ul className="space-y-2 mb-5 flex-1">
-              {pkg.features.map((f, fi) => (
-                <li key={fi} className="flex items-center gap-2 text-xs text-slate-600">
-                  <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: pkg.color }} />{f}
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => openDemoModal(`Web Dev - ${pkg.name} (${pkg.price})`)}
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-bold text-white cursor-pointer border-none"
-              style={{ background: pkg.color }}>
-              Get Quote <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </motion.div>
-      ))}
-    </div>
+      </motion.div>
+    ))}
   </div>
 );
 
-// ─── FAQ ────────────────────────────────────────────────────────────────────
 const FAQ = () => {
-  const [open, setOpen] = useState(null);
+  const [openIdx, setOpenIdx] = useState(null);
+
   return (
     <div className="space-y-3">
-      {FAQS.map((faq, i) => (
-        <motion.div key={i} layout className="rounded-2xl border-2 overflow-hidden bg-white"
-          style={{ borderColor: open === i ? T.green + "50" : "rgba(15,23,42,0.07)" }}>
-          <button onClick={() => setOpen(open === i ? null : i)}
-            className="w-full flex items-center justify-between gap-4 p-5 text-left">
-            <span className="font-bold text-sm text-slate-800">{faq.q}</span>
-            <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-              style={{ background: open === i ? T.green : T.greenLight }}>
-              {open === i
-                ? <ChevronUp className="w-3.5 h-3.5 text-white" />
-                : <ChevronDown className="w-3.5 h-3.5" style={{ color: T.green }} />}
-            </span>
+      {FAQS.map((item, i) => (
+        <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+          viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+          className="rounded-2xl border-2 overflow-hidden transition-all"
+          style={{
+            borderColor: openIdx === i ? T.green : "rgba(15,23,42,0.08)",
+            boxShadow: openIdx === i ? `0 12px 40px rgba(16,185,129,0.15)` : "0 2px 8px rgba(0,0,0,0.02)"
+          }}>
+          <button onClick={() => setOpenIdx(openIdx === i ? null : i)}
+            className="w-full flex items-center justify-between p-6 text-left font-bold transition-all"
+            style={{ background: openIdx === i ? "rgba(16,185,129,0.05)" : "#fff", color: T.ink }}>
+            <span>{item.q}</span>
+            <motion.span animate={{ rotate: openIdx === i ? 180 : 0 }} transition={{ duration: 0.2 }}>
+              <ChevronDown className="w-5 h-5" style={{ color: T.green }} />
+            </motion.span>
           </button>
           <AnimatePresence>
-            {open === i && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}>
-                <div className="px-5 pb-5 text-sm text-slate-500 leading-relaxed border-t"
-                  style={{ borderColor: T.green + "20" }}>
-                  <div className="pt-4">{faq.a}</div>
-                </div>
+            {openIdx === i && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
+                className="px-6 pb-6 text-slate-600 text-sm leading-relaxed border-t"
+                style={{ borderColor: "rgba(16,185,129,0.1)" }}>
+                {item.a}
               </motion.div>
             )}
           </AnimatePresence>
@@ -497,45 +400,28 @@ const FAQ = () => {
   );
 };
 
-// ─── Main Pricing Component ─────────────────────────────────────────────────
-const Pricing = ({ openDemoModal }) => {
+// ─── MAIN COMPONENT ─────────────────────────────────────────────────────
+export default function Pricing({ openDemoModal }) {
   const [activeTab, setActiveTab] = useState("coding");
 
   return (
-    <section className="min-h-screen relative overflow-hidden py-40" style={{ background: T.bg }}>
+    <section className="relative overflow-hidden pt-28" style={{ background: T.bg }}>
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 opacity-20"
-          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(16,185,129,0.14) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
-        {[
-          { c: T.gold, x: "auto", y: "-5%", s: "35vw", right: true, dur: 18 },
-          { c: T.green, x: "-5%", y: "20%", s: "30vw", dur: 22 },
-          { c: T.purple, x: "auto", bottom: true, s: "28vw", right: true, dur: 16 },
-        ].map((o, i) => (
-          <motion.div key={i} animate={{ scale: [1, 1.18, 1] }} transition={{ duration: o.dur, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute rounded-full"
-            style={{
-              width: o.s, height: o.s, left: o.right ? "auto" : o.x, right: o.right ? "-5%" : undefined,
-              top: o.bottom ? "auto" : o.y, bottom: o.bottom ? "-5%" : undefined,
-              background: `radial-gradient(circle,${o.c}12 0%,transparent 70%)`, filter: "blur(50px)"
-            }} />
-        ))}
-        {[
-          { t: "🔒 No hidden fees", top: "12%", left: "2%", c: T.green },
-          { t: "🎁 Free demo class", top: "22%", right: "2%", c: T.purple },
-          { t: "⭐ 500+ happy kids", bottom: "20%", left: "1.5%", c: T.gold },
-          { t: "💬 WhatsApp support", bottom: "9%", right: "2%", c: T.sky },
-        ].map((c, i) => (
-          <motion.div key={i} animate={{ y: [0, -14, 0], opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 6 + i, repeat: Infinity, delay: i * 0.9 }}
-            className="absolute text-xs font-black px-3 py-1.5 rounded-xl bg-white/80 backdrop-blur-sm border hidden lg:block"
-            style={{ top: c.top, left: c.left, right: c.right, bottom: c.bottom, borderColor: c.c + "25", color: c.c }}>
-            {c.t}
-          </motion.div>
+          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(14,165,233,0.15) 1px, transparent 0)", backgroundSize: "44px 44px" }} />
+        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.05, 0.12, 0.05] }}
+          transition={{ duration: 12, repeat: Infinity }}
+          className="absolute top-0 left-1/3 w-[55vw] h-[55vw] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%)", filter: "blur(64px)" }} />
+        {[...Array(8)].map((_, i) => (
+          <motion.div key={i} className="absolute rounded-full"
+            style={{ width: 6, height: 6, background: i % 3 === 0 ? T.green : i % 3 === 1 ? T.sky : T.yellow, left: `${10 + i * 11}%`, top: `${20 + (i % 4) * 18}%` }}
+            animate={{ y: [0, -40, 0], opacity: [0, 0.7, 0] }}
+            transition={{ duration: 4 + i * 0.6, repeat: Infinity, delay: i * 0.5 }} />
         ))}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} className="text-center mb-14">
           <SectionBadge color={T.gold}>💎 Transparent Pricing</SectionBadge>
@@ -569,7 +455,7 @@ const Pricing = ({ openDemoModal }) => {
           <div className="text-center text-sm font-black text-slate-500 uppercase tracking-widest mb-4">
             What are you looking for?
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {TABS.map(tab => (
               <motion.button key={tab.id} onClick={() => setActiveTab(tab.id)}
                 whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}
@@ -598,6 +484,7 @@ const Pricing = ({ openDemoModal }) => {
             exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3 }}
             className="mb-14">
             {activeTab === "coding" && <CodingSection openDemoModal={openDemoModal} />}
+            {activeTab === "academic" && <AcademicSection openDemoModal={openDemoModal} />}
             {activeTab === "cs" && <CSTuitionSection openDemoModal={openDemoModal} />}
             {activeTab === "web" && <WebDevSection openDemoModal={openDemoModal} />}
           </motion.div>
@@ -617,7 +504,7 @@ const Pricing = ({ openDemoModal }) => {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-[2.5rem] overflow-hidden border-2 relative"
+          className="rounded-[2.5rem] overflow-hidden border-2 relative mb-20"
           style={{ borderColor: T.gold + "30", boxShadow: `0 16px 60px ${T.gold}15` }}>
           <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#FFFDF5,#F5FFFC)" }} />
           <div className="absolute top-0 left-0 right-0 h-1.5"
@@ -656,10 +543,7 @@ const Pricing = ({ openDemoModal }) => {
             </div>
           </div>
         </motion.div>
-
       </div>
     </section>
   );
-};
-
-export default Pricing;
+}

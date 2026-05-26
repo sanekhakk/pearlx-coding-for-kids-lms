@@ -166,8 +166,7 @@ const HeroSection = ({ openDemoModal }) => {
               animate={{ opacity: 1, x: 0 }}
               className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-bold mb-8 bg-white border border-slate-200 text-slate-700 shadow-sm"
             >
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-              Coding for Kids · Academic CS Tuition
+              Coding for Kids · Academic Tuition
             </motion.div>
 
             {/* Headline */}
@@ -227,7 +226,7 @@ const HeroSection = ({ openDemoModal }) => {
               We start with{" "}
               <strong className="text-emerald-600">visual block coding</strong> so kids build
               logic effortlessly. Plus, dedicated{" "}
-              <strong className="text-slate-900">CS & IP Tuition</strong> for Classes 6–12 to
+              <strong className="text-slate-900">Academic Tuition</strong> for Classes 6–12 to
               ace board exams.
             </motion.p>
 

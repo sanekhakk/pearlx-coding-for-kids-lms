@@ -1,4 +1,4 @@
-// src/App.jsx - COMPLETE FIXED VERSION
+// src/App.jsx - COMPLETE FIXED VERSION WITH ACADEMIC TUITION
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -19,6 +19,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import TutorDashboard from "./pages/TutorDashboard";
 import ComputerScienceClasses from "./pages/ComputerScienceClasses";
+import AcademicTuition from "./pages/AcademicTuition";
 import WebDevelopmentServices from "./pages/WebDevelopmentServices";
 import Pricing from "./pages/Pricing";
 
@@ -30,7 +31,7 @@ function GuestHome({ openDemoModal }) {
       <SubjectSection />
       <ServicesSection />
       <WhyPearlxSection />
-      <ProcessSection />
+      <ProcessSection openDemoModal={openDemoModal} />
       <WebServicesSection />
     </>
   );
@@ -75,6 +76,7 @@ function MainApp() {
           
           {/* ✅ Pass openDemoModal to all page routes */}
           <Route path="/services/education" element={<ComputerScienceClasses openDemoModal={openDemoModal} />} />
+          <Route path="/services/academic-tuition" element={<AcademicTuition openDemoModal={openDemoModal} />} />
           <Route path="/services/web-development" element={<WebDevelopmentServices openDemoModal={openDemoModal} />} />
           <Route path="/pricing" element={<Pricing openDemoModal={openDemoModal} />} />
         </Routes>

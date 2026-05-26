@@ -1,4 +1,4 @@
-// src/components/NavBar.jsx - CORRECTED VERSION
+// src/components/NavBar.jsx - WITH ACADEMIC TUITION
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -8,7 +8,8 @@ import PearlxLogo from "../assets/flat_logo_dark.webp";
 
 const navLinks = [
   { label: "Home", to: "/" },
-  { label: "Classes", to: "/services/education" },
+  { label: "Coding Classes", to: "/services/education" },
+  { label: "Academic Tuition", to: "/services/academic-tuition" },
   { label: "Pricing", to: "/pricing" },
   { label: "Web Dev", to: "/services/web-development" },
 ];
@@ -74,7 +75,7 @@ const NavBar = ({ openDemoModal }) => {
             </Link>
 
             {/* Desktop links */}
-            <div className="hidden md:flex items-center gap-1 z-10">
+            <div className="hidden lg:flex items-center gap-1 z-10">
               {navLinks.map(link => {
                 const isActive = location.pathname === link.to;
                 return (
@@ -146,7 +147,7 @@ const NavBar = ({ openDemoModal }) => {
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
               whileTap={{ scale: 0.9 }}
-              className="md:hidden p-2 rounded-xl z-10"
+              className="lg:hidden p-2 rounded-xl z-10"
               style={{ background: "rgba(255,255,255,0.08)", color: "#fff" }}
             >
               <AnimatePresence mode="wait">

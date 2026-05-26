@@ -1,4 +1,4 @@
-// src/pages/AdminDashboard_Part2.jsx
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlusCircle, Loader2, XCircle, X, CheckCircle, ArrowLeft } from "lucide-react";
@@ -18,7 +18,6 @@ const C = {
   shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
 };
 
-// ── Student Categories ─────────────────────────────────────────
 export const STUDENT_CATEGORIES = [
   { value: "little_pearls",     label: "🐥 Little Pearls  (Ages 5–7 • Grades K–2)" },
   { value: "bright_pearls",     label: "🌱 Bright Pearls  (Ages 8–11 • Grades 3–6)" },
@@ -26,13 +25,11 @@ export const STUDENT_CATEGORIES = [
   { value: "academic_tuition",  label: "📖 Academic Tuition  (CS Subjects – Custom Syllabus)" },
 ];
 
-// ── Tutor Types ────────────────────────────────────────────────
 const TUTOR_TYPE_OPTIONS = [
   { value: "coding",   label: "💻 Coding Classes" },
   { value: "cs_tuition", label: "📚 Computer Science Tuition" },
 ];
 
-// ── Shared form field styles ───────────────────────────────────
 const fieldStyle = {
   width: "100%", padding: "10px 14px", borderRadius: 12, border: `1px solid ${C.border}`,
   background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none",
@@ -71,7 +68,6 @@ const SelectInput = ({ label, name, value, onChange, options, required }) => (
   </LabeledInput>
 );
 
-// ── Tutor Type Checkbox Group ──────────────────────────────────
 const TutorTypeCheckboxes = ({ selectedTypes, onChange }) => (
   <LabeledInput label="Tutor Category" required>
     <div style={{ display: "flex", flexDirection: "column", gap: 8, padding: "12px 14px", borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg }}>
@@ -104,7 +100,6 @@ const TutorTypeCheckboxes = ({ selectedTypes, onChange }) => (
   </LabeledInput>
 );
 
-// ── Student Category Card Selector ────────────────────────────
 const CategorySelector = ({ value, onChange }) => (
   <div style={{ gridColumn: "1 / -1" }}>
     <label style={{ fontSize: 12, fontWeight: 700, color: C.textSecondary, display: "block", marginBottom: 8 }}>
@@ -168,7 +163,6 @@ const StatusBanner = ({ status }) => {
   );
 };
 
-// ── Panel wrapper ─────────────────────────────────────────────
 const Panel = ({ children, title, subtitle, onClose }) => (
   <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
     <div style={{ padding: "20px 24px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -187,7 +181,6 @@ const Panel = ({ children, title, subtitle, onClose }) => (
   </div>
 );
 
-// ── Assignment row ─────────────────────────────────────────────
 const AssignmentRow = ({ assignment, onRemove, index }) => (
   <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
     style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
@@ -202,9 +195,6 @@ const AssignmentRow = ({ assignment, onRemove, index }) => (
   </motion.div>
 );
 
-// ====================================================================
-// REGISTRATION PANEL
-// ====================================================================
 export function RegistrationPanel({ form, regRole, regStatus, regLoading, handleFormChange, setRegRole, setActiveView, setRegStatus, tutors, setForm, initialFormState, adminRegisterUser, setRegLoading }) {
   const [currentSubjectInput, setCurrentSubjectInput] = useState("");
   const [selectedTutor, setSelectedTutor]             = useState({ id: "", name: "" });
