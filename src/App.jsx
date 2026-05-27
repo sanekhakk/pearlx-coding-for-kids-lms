@@ -1,4 +1,4 @@
-// src/App.jsx - COMPLETE FIXED VERSION WITH ACADEMIC TUITION
+// src/App.jsx - WITH COURSES PAGE
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -21,10 +21,10 @@ import StudentDashboard from "./pages/StudentDashboard";
 import TutorDashboard from "./pages/TutorDashboard";
 import ComputerScienceClasses from "./pages/ComputerScienceClasses";
 import AcademicTuition from "./pages/AcademicTuition";
+import Courses from "./pages/Courses";
 import WebDevelopmentServices from "./pages/WebDevelopmentServices";
 import Pricing from "./pages/Pricing";
 
-// ✅ GuestHome receives openDemoModal as prop
 function GuestHome({ openDemoModal }) {
   return (
     <>
@@ -43,7 +43,6 @@ function MainApp() {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
   const [demoSource, setDemoSource] = useState("general");
 
-  // ✅ Define openDemoModal HERE
   const openDemoModal = (source = "general") => {
     setDemoSource(source);
     setDemoModalOpen(true);
@@ -68,27 +67,20 @@ function MainApp() {
   return (
     <div className="grain" style={{ background: COLORS.bgPrimary }}>
       <ScrollToTop />
-      {/* ✅ Offer / announcement carousel pinned above NavBar */}
       <OfferCarousel openDemoModal={openDemoModal} />
-      {/* ✅ Pass openDemoModal to NavBar */}
       <NavBar openDemoModal={openDemoModal} />
-      <main> 
+      <main>
         <Routes>
-          {/* ✅ Pass openDemoModal to GuestHome */}
           <Route path="/" element={<GuestHome openDemoModal={openDemoModal} />} />
-          
-          {/* ✅ Pass openDemoModal to all page routes */}
           <Route path="/services/education" element={<ComputerScienceClasses openDemoModal={openDemoModal} />} />
+          <Route path="/courses" element={<Courses openDemoModal={openDemoModal} />} />
           <Route path="/services/academic-tuition" element={<AcademicTuition openDemoModal={openDemoModal} />} />
           <Route path="/services/web-development" element={<WebDevelopmentServices openDemoModal={openDemoModal} />} />
           <Route path="/pricing" element={<Pricing openDemoModal={openDemoModal} />} />
         </Routes>
       </main>
-      {/* ✅ Pass openDemoModal to Footer */}
       <Footer openDemoModal={openDemoModal} />
       <AuthModal />
-      
-      {/* ✅ Demo Modal component */}
       <DemoBookingModal
         isOpen={demoModalOpen}
         onClose={() => setDemoModalOpen(false)}

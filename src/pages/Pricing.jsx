@@ -569,7 +569,7 @@ export default function Pricing({ openDemoModal }) {
   const [activeTab, setActiveTab] = useState("coding");
 
   return (
-    <section className="relative overflow-hidden pt-28" style={{ background: T.bg }}>
+    <section className="relative overflow-hidden pt-40" style={{ background: T.bg }}>
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 opacity-20"
           style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(14,165,233,0.15) 1px, transparent 0)", backgroundSize: "44px 44px" }} />

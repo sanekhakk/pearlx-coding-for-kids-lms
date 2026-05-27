@@ -1,4 +1,4 @@
-// src/components/NavBar.jsx - WITH ACADEMIC TUITION
+// src/components/NavBar.jsx - WITH COURSES LINK
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
@@ -8,7 +8,8 @@ import PearlxLogo from "../assets/flat_logo_dark.webp";
 
 const navLinks = [
   { label: "Home", to: "/" },
-  { label: "Coding Classes", to: "/services/education" },
+  { label: "Coding for Kids", to: "/services/education" },
+  { label: "Courses", to: "/courses" },
   { label: "Academic Tuition", to: "/services/academic-tuition" },
   { label: "Pricing", to: "/pricing" },
   { label: "Web Dev", to: "/services/web-development" },
@@ -71,19 +72,21 @@ const NavBar = ({ openDemoModal }) => {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 z-10">
-              <img src={PearlxLogo} alt="Pearlx" className="h-20 w-auto object-contain" style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.25))" }} />
+              <img src={PearlxLogo} alt="Pearlx" className="h-12 w-auto object-contain" style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.25))" }} />
             </Link>
 
             {/* Desktop links */}
             <div className="hidden lg:flex items-center gap-1 z-10">
               {navLinks.map(link => {
                 const isActive = location.pathname === link.to;
+                // Highlight "Courses" with a special accent
+                const isCourses = link.to === "/courses";
                 return (
                   <Link
                     key={link.label}
                     to={link.to}
                     className="relative px-4 py-2 rounded-xl text-sm font-semibold transition-colors duration-200 group"
-                    style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.6)" }}
+                    style={{ color: isActive ? "#fff" : isCourses ? "rgba(167,139,250,0.9)" : "rgba(255,255,255,0.6)" }}
                   >
                     {isActive && (
                       <motion.span
@@ -93,11 +96,18 @@ const NavBar = ({ openDemoModal }) => {
                         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                       />
                     )}
-                    {link.label}
+                    {/* "Courses" gets a subtle pill highlight */}
+                    {isCourses && !isActive && (
+                      <span className="absolute inset-0 rounded-xl"
+                        style={{ background: "rgba(167,139,250,0.08)", border: "1px solid rgba(167,139,250,0.2)" }} />
+                    )}
+                    <span className="relative z-10">{link.label}</span>
                     <span
                       className="absolute bottom-1 left-1/2 -translate-x-1/2 h-[2px] rounded-full transition-all duration-300"
                       style={{
-                        background: "linear-gradient(90deg, #10B981, #0EA5E9)",
+                        background: isCourses
+                          ? "linear-gradient(90deg, #A78BFA, #0EA5E9)"
+                          : "linear-gradient(90deg, #10B981, #0EA5E9)",
                         width: isActive ? "60%" : "0%",
                         filter: "blur(0.5px)",
                         boxShadow: isActive ? "0 0 8px rgba(16,185,129,0.7)" : "none",
@@ -121,7 +131,6 @@ const NavBar = ({ openDemoModal }) => {
                   >
                     Log in
                   </button>
-                  {/* ✅ CHANGED: motion.a to motion.button, onClick instead of href */}
                   <motion.button
                     onClick={() => openDemoModal("Demo")}
                     whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(16,185,129,0.5)" }}
@@ -177,26 +186,30 @@ const NavBar = ({ openDemoModal }) => {
               style={{ background: "linear-gradient(90deg, transparent, #10B981, #0EA5E9, transparent)" }} />
 
             <div className="space-y-1 mb-6">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
-                >
-                  <Link
-                    to={link.to}
+              {navLinks.map((link, i) => {
+                const isCourses = link.to === "/courses";
+                return (
+                  <motion.div
+                    key={link.label}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06 }}
                     onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-200"
-                    style={{
-                      color: location.pathname === link.to ? "#fff" : "rgba(255,255,255,0.6)",
-                      background: location.pathname === link.to ? "rgba(255,255,255,0.08)" : "transparent",
-                    }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      to={link.to}
+                      className="block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-200"
+                      style={{
+                        color: location.pathname === link.to ? "#fff" : isCourses ? "rgba(167,139,250,0.9)" : "rgba(255,255,255,0.6)",
+                        background: location.pathname === link.to ? "rgba(255,255,255,0.08)" : isCourses ? "rgba(167,139,250,0.07)" : "transparent",
+                        border: isCourses && location.pathname !== link.to ? "1px solid rgba(167,139,250,0.15)" : "1px solid transparent",
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
 
             <div className="pt-4 border-t flex flex-col gap-3" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
@@ -207,7 +220,6 @@ const NavBar = ({ openDemoModal }) => {
               >
                 Log in
               </button>
-              {/* ✅ CHANGED: a tag to button */}
               <button
                 onClick={() => { openDemoModal("demo"); setIsOpen(false); }}
                 className="w-full py-3 rounded-xl font-bold text-slate-900 border-none cursor-pointer"

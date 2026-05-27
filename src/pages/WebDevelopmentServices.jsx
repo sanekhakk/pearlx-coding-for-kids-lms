@@ -130,7 +130,7 @@ const WebDevelopmentServices = () => (
     <FloatImg src="/images/webdev/float-rocket.png" emoji="🚀"
       style={{width:70,height:70,top:"42%",right:"1%",zIndex:1}} delay={0.8} />
 
-    <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+    <div className="max-w-7xl mx-auto px-6 py-50 relative z-10">
 
       {/* ── HERO ── */}
       <div className="text-center mb-20">

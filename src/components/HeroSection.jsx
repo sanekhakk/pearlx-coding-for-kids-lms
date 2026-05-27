@@ -53,7 +53,7 @@ const HeroSection = ({ openDemoModal }) => {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-20 bg-white"
+      className="relative min-h-screen flex items-center overflow-hidden pt-40 bg-white"
     >
       {/* ── STATIC BACKGROUND LAYER (no JS animations) ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
