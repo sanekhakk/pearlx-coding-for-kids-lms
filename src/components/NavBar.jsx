@@ -53,7 +53,7 @@ const NavBar = ({ openDemoModal }) => {
           </AnimatePresence>
 
           <div
-            className="flex items-center justify-between px-6 py-3 rounded-2xl relative overflow-hidden"
+            className="flex items-center justify-between px-6 py-3 mt-15 rounded-2xl relative overflow-hidden"
             style={{
               background: scrolled ? "rgba(10,14,28,0.88)" : "rgba(10,14,28,0.96)",
               backdropFilter: "blur(24px)",
