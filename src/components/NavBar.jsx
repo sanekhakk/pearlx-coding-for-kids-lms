@@ -53,7 +53,7 @@ const NavBar = ({ openDemoModal }) => {
           </AnimatePresence>
 
           <div
-            className="flex items-center justify-between my-15 px-6 py-3 rounded-2xl relative overflow-hidden"
+            className="flex items-center justify-between px-6 py-3 rounded-2xl relative overflow-hidden"
             style={{
               background: scrolled ? "rgba(10,14,28,0.88)" : "rgba(10,14,28,0.96)",
               backdropFilter: "blur(24px)",
@@ -194,10 +194,10 @@ const NavBar = ({ openDemoModal }) => {
                     initial={{ opacity: 0, x: -16 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06 }}
-                    onClick={() => setIsOpen(false)}
                   >
                     <Link
                       to={link.to}
+                      onClick={() => setIsOpen(false)}
                       className="block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-200"
                       style={{
                         color: location.pathname === link.to ? "#fff" : isCourses ? "rgba(167,139,250,0.9)" : "rgba(255,255,255,0.6)",

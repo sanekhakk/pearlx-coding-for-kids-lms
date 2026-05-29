@@ -15,7 +15,6 @@ const generateRandomId = (prefix) => {
 };
 
 
-// POST /admin/create-user
 router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
   try {
     const { 
