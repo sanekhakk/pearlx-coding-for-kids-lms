@@ -1,7 +1,7 @@
 // src/pages/ComputerScienceClasses.jsx — CODING FOR KIDS ONLY
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronDown, Trophy, Zap, Star, BookOpen, Users, Clock } from "lucide-react";
+import { ArrowRight, ChevronDown, Trophy, Zap, Star, BookOpen, Users, Clock, Sprout, Bird, Medal, Code2, FlaskConical, Gamepad2, Smartphone, Globe, Award, Cpu } from "lucide-react";
 import lp1 from "../assets/kids/LP1.webp";
 import bp1 from "../assets/kids/BP1.webp";
 import rp1 from "../assets/kids/RP1.webp";
@@ -13,60 +13,60 @@ const T = {
 
 const LEVELS = [
   {
-    emoji: "🐥", name: "Little Pearls", age: "Ages 5–7", grade: "Grades K–2", tag: "BEGINNER",
+    LevelIcon: Sprout, name: "Little Pearls", age: "Ages 5–7", grade: "Grades K–2", tag: "BEGINNER",
     tagline: "Where every coder begins!",
     color: "#FFD166", glow: "rgba(255,209,102,0.28)", border: "rgba(255,209,102,0.45)",
     textColor: "#A8760A", bg: "linear-gradient(145deg,#FFFBEB,#FFF3C4)",
     modules: [
-      { icon: "🖥️", label: "Coding Fundamentals" }, { icon: "🔬", label: "Scientific Exploration" },
-      { icon: "🎮", label: "Game Development" }, { icon: "📱", label: "App Development" },
-      { icon: "🐍", label: "Python Basics" }, { icon: "🌐", label: "HTML & CSS" },
-      { icon: "🏆", label: "Capstone Project" },
+      { ModIcon: Cpu, label: "Coding Fundamentals" }, { ModIcon: FlaskConical, label: "Scientific Exploration" },
+      { ModIcon: Gamepad2, label: "Game Development" }, { ModIcon: Smartphone, label: "App Development" },
+      { ModIcon: Code2, label: "Python Basics" }, { ModIcon: Globe, label: "HTML & CSS" },
+      { ModIcon: Trophy, label: "Capstone Project" },
     ],
     moduleCount: 7, lessonCount: 84,
     tools: ["Scratch Jr", "Code.org", "Trinket.io"],
     highlight: "Drag-and-drop blocks — no typing needed!",
     kidImg: lp1,
     desc: "A magic-first approach where children build logic through animated drag-and-drop blocks. No typing, no syntax stress — pure creative joy that builds real computational thinking.",
-    achievement: "🐣 Coder Badge",
+    achievement: "Coder Badge", AchieveIcon: Award,
   },
   {
-    emoji: "🌱", name: "Bright Pearls", age: "Ages 8–11", grade: "Grades 3–6", tag: "INTERMEDIATE",
+    LevelIcon: BookOpen, name: "Bright Pearls", age: "Ages 8–11", grade: "Grades 3–6", tag: "INTERMEDIATE",
     tagline: "Growing into real projects!",
     color: "#06D6A0", glow: "rgba(6,214,160,0.28)", border: "rgba(6,214,160,0.45)",
     textColor: "#047857", bg: "linear-gradient(145deg,#ECFDF5,#D1FAE5)",
     modules: [
-      { icon: "🖥️", label: "Coding Fundamentals" }, { icon: "🔬", label: "Scientific Exploration" },
-      { icon: "🎮", label: "Game Development" }, { icon: "📱", label: "App Development" },
-      { icon: "🐍", label: "Python Basics" }, { icon: "🌐", label: "HTML & CSS" },
-      { icon: "🏆", label: "Capstone Project" },
+      { ModIcon: Cpu, label: "Coding Fundamentals" }, { ModIcon: FlaskConical, label: "Scientific Exploration" },
+      { ModIcon: Gamepad2, label: "Game Development" }, { ModIcon: Smartphone, label: "App Development" },
+      { ModIcon: Code2, label: "Python Basics" }, { ModIcon: Globe, label: "HTML & CSS" },
+      { ModIcon: Trophy, label: "Capstone Project" },
     ],
     moduleCount: 6, lessonCount: 72,
     tools: ["Scratch", "Code.org App Lab", "Thunkable", "Trinket.io"],
     highlight: "Block coding + intro to real text code!",
     kidImg: bp1,
     desc: "Students start building real games and apps. Advanced Scratch projects transition naturally into Python, creating the confidence needed for text-based programming.",
-    achievement: "🌿 Builder Badge",
+    achievement: "Builder Badge", AchieveIcon: Medal,
   },
   {
-    emoji: "🦋", name: "Rising Pearls", age: "Ages 12–15", grade: "Grades 7–10", tag: "ADVANCED",
+    LevelIcon: Bird, name: "Rising Pearls", age: "Ages 12–15", grade: "Grades 7–10", tag: "ADVANCED",
     tagline: "Building portfolio-ready apps!",
     color: "#A78BFA", glow: "rgba(167,139,250,0.28)", border: "rgba(167,139,250,0.45)",
     textColor: "#6D28D9", bg: "linear-gradient(145deg,#F5F3FF,#EDE9FE)",
     modules: [
-      { icon: "🖥️", label: "Coding Fundamentals" }, { icon: "🔬", label: "Scientific Exploration" },
-      { icon: "🎮", label: "Game Development" }, { icon: "📱", label: "App Development" },
-      { icon: "🐍", label: "Python Basics" }, { icon: "🐍⚡", label: "Python Intermediate" },
-      { icon: "🐍🔥", label: "Python Advanced" }, { icon: "🔢", label: "CodiMath" },
-      { icon: "🌐", label: "HTML & CSS" }, { icon: "⚡", label: "JavaScript" },
-      { icon: "🏆", label: "Capstone Project" },
+      { ModIcon: Cpu, label: "Coding Fundamentals" }, { ModIcon: FlaskConical, label: "Scientific Exploration" },
+      { ModIcon: Gamepad2, label: "Game Development" }, { ModIcon: Smartphone, label: "App Development" },
+      { ModIcon: Code2, label: "Python Basics" }, { ModIcon: Code2, label: "Python Intermediate" },
+      { ModIcon: Code2, label: "Python Advanced" }, { ModIcon: BookOpen, label: "CodiMath" },
+      { ModIcon: Globe, label: "HTML & CSS" }, { ModIcon: Zap, label: "JavaScript" },
+      { ModIcon: Trophy, label: "Capstone Project" },
     ],
     moduleCount: 10, lessonCount: 120,
     tools: ["Replit", "GitHub Pages", "Thunkable", "VS Code"],
     highlight: "Python, JS, web dev — real text coding!",
     kidImg: rp1,
     desc: "Pro-grade programming that matters. Python OOP, full-stack web development, mobile apps — students graduate with a real portfolio they can show universities and employers.",
-    achievement: "🦋 Pro Coder Badge",
+    achievement: "Pro Coder Badge", AchieveIcon: Trophy,
   },
 ];
 
@@ -78,13 +78,15 @@ const FAQ = [
   { q: "Is there homework?", a: "Light, fun projects between classes — not heavy homework. Kids are encouraged to explore and build, not grind practice sheets." },
 ];
 
-const FloatImg = ({ src, emoji, style, delay = 0 }) => (
+const FloatImg = ({ src, FallbackIcon, color, style, delay = 0 }) => (
   <motion.div animate={{ y: [0, -12, 0], rotate: [-1, 1, -1] }}
     transition={{ duration: 5 + delay, repeat: Infinity, ease: "easeInOut", delay }}
     className="absolute pointer-events-none select-none" style={style}>
     <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain", filter: "drop-shadow(0 14px 28px rgba(0,0,0,0.13))" }}
       onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-    <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", fontSize: "3.5rem" }}>{emoji}</div>
+    <div style={{ display: "none", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
+      {FallbackIcon && <FallbackIcon style={{ width: "60%", height: "60%", color: color || "#94a3b8" }} />}
+    </div>
   </motion.div>
 );
 
@@ -126,7 +128,9 @@ const LevelCard = ({ level, index }) => {
       <div className="p-8 flex flex-col lg:flex-row gap-8 items-start">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-5xl">{level.emoji}</span>
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: level.color + "20", border: `2px solid ${level.border}` }}>
+              <level.LevelIcon className="w-7 h-7" style={{ color: level.textColor }} />
+            </div>
             <div>
               <div className="px-3 py-1 rounded-full text-[10px] font-black text-white inline-block mb-1"
                 style={{ background: level.color }}>{level.tag}</div>
@@ -136,7 +140,7 @@ const LevelCard = ({ level, index }) => {
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl mb-4 text-sm font-bold"
             style={{ background: `${level.color}18`, color: level.textColor, border: `1px solid ${level.border}` }}>
-            ✨ {level.highlight}
+            <Zap className="w-4 h-4" /> {level.highlight}
           </div>
           <p className="text-slate-600 text-sm leading-relaxed mb-4">{level.desc}</p>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -182,7 +186,9 @@ const LevelCard = ({ level, index }) => {
               {level.modules.map((m, mi) => (
                 <div key={mi} className="p-3 rounded-2xl text-center bg-white/80 border"
                   style={{ borderColor: `${level.color}25` }}>
-                  <div className="text-xl mb-1">{m.icon}</div>
+                  <div className="flex justify-center mb-1">
+                    <m.ModIcon className="w-4 h-4" style={{ color: level.textColor }} />
+                  </div>
                   <div className="text-[10px] font-bold text-slate-600 leading-tight">{m.label}</div>
                 </div>
               ))}
@@ -235,9 +241,9 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
     </div>
 
     {/* Floating kid images */}
-    <FloatImg src="/images/kids/cs-hero-kid-1.png" emoji="👦‍💻"
+    <FloatImg src="/images/kids/cs-hero-kid-1.png" FallbackIcon={Users} color={T.green}
       style={{ width: 120, height: 165, top: "15%", right: "1.5%", zIndex: 1 }} delay={0} />
-    <FloatImg src="/images/kids/cs-hero-kid-2.png" emoji="👩‍💻"
+    <FloatImg src="/images/kids/cs-hero-kid-2.png" FallbackIcon={Users} color={T.sky}
       style={{ width: 100, height: 140, bottom: "20%", left: "0.5%", zIndex: 1 }} delay={1.5} />
 
     <div className="max-w-7xl mx-auto px-6 py-50 relative z-10">
@@ -255,13 +261,13 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
           style={{ fontSize: "clamp(2.5rem,6vw,4.5rem)", color: T.ink, letterSpacing: "-0.04em" }}>
           Master Logic.<br />
           <span style={{ background: `linear-gradient(135deg,${T.sky},${T.green})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-            Create with Code 🚀
+            Create with Code
           </span>
         </motion.h1>
         <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           transition={{ delay: 0.2 }} className="text-slate-500 max-w-2xl mx-auto text-lg font-medium mb-8">
           Our project-based curriculum takes kids from zero to confident coder.
-          Block coding always comes first — then text code when they're truly ready. ✨
+          Block coding always comes first — then text code when they're truly ready.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ delay: 0.3 }} className="flex flex-wrap justify-center gap-4 mb-8">
@@ -285,7 +291,7 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
             onClick={() => openDemoModal("kids-hero")}
             className="flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white border-none cursor-pointer"
             style={{ background: `linear-gradient(135deg,${T.green},${T.sky})`, boxShadow: "0 8px 32px rgba(16,185,129,0.35)" }}>
-            🎯 Book Free Trial Class <ArrowRight className="w-5 h-5" />
+            <Trophy className="w-4 h-4" /> Book Free Trial Class <ArrowRight className="w-5 h-5" />
           </button>
           <a href="#levels"
             className="flex items-center gap-2 px-8 py-4 rounded-2xl font-bold border-2"
@@ -314,7 +320,7 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
       <div className="mb-20">
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="font-black text-3xl mb-8 text-center" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
-          Questions parents ask 🤔
+          Questions parents ask
         </motion.h2>
         <div className="max-w-2xl mx-auto space-y-3">
           {FAQ.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} i={i} />)}
@@ -332,11 +338,13 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
           <div className="lg:w-1/3 flex justify-center">
             <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity }}
               className="relative w-44 h-44">
-              <div style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", fontSize: "5rem", position: "absolute", inset: 0 }}>🏆</div>
+              <div style={{ display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center", position: "absolute", inset: 0 }}>
+                <Trophy className="w-24 h-24" style={{ color: "#FFD166" }} />
+              </div>
               <motion.div animate={{ rotate: [0, 8, 0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -top-4 -right-4 w-12 h-12 rounded-full flex items-center justify-center text-xl"
-                style={{ background: `linear-gradient(135deg,${T.yellow},#A8760A)`, boxShadow: `0 4px 16px rgba(255,209,102,0.5)` }}>
-                🏅
+                className="absolute -top-4 -right-4 w-12 h-12 rounded-full flex items-center justify-center"
+                style={{ background: `linear-gradient(135deg,#FFD166,#A8760A)`, boxShadow: `0 4px 16px rgba(255,209,102,0.5)` }}>
+                <Medal className="w-6 h-6 text-white" />
               </motion.div>
             </motion.div>
           </div>
@@ -345,7 +353,7 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
               Grand Showcase — Every Level
             </h3>
             <p className="text-sm max-w-md mx-auto lg:mx-0 mb-7 text-slate-500 leading-relaxed">
-              Every level ends in a <strong style={{ color: T.ink }}>Capstone Project</strong> — students present their story, game, app, and website to parents and peers. Real certificates. Real pride. 🎓
+              Every level ends in a <strong style={{ color: T.ink }}>Capstone Project</strong> — students present their story, game, app, and website to parents and peers. Real certificates. Real pride.
             </p>
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <motion.a href="https://wa.link/2sqe3g"

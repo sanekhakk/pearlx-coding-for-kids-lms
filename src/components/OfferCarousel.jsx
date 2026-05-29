@@ -8,7 +8,7 @@ const WA_LINK = "https://wa.link/2sqe3g";
 const OFFERS = [
   {
     id: "plus2-offer",
-    badge: "🎓 Limited Offer",
+    badge: "Limited Offer",
     badgeColor: "#10B981",
     headline: "20% OFF for 2026 +2 Passed Students",
     sub: "Python & Java Bootcamps at ₹3,999 · Web Dev Bootcamp at ₹4,799 (was ₹5,999)",
@@ -16,12 +16,12 @@ const OFFERS = [
     ctaHref: WA_LINK,
     accentFrom: "#10B981",
     accentTo: "#0EA5E9",
-    emoji: "🎉",
+    emoji: null,
     tags: ["Python ₹3,999", "Java ₹3,999", "Web Dev ₹4,799"],
   },
   {
     id: "package-deal",
-    badge: "💰 Best Value",
+    badge: "Best Value",
     badgeColor: "#C9A84C",
     headline: "Package vs Monthly — Save ₹1,393+",
     sub: "Python/Java Bootcamp package ₹3,999 · vs ₹799/mo × 8 months = ₹6,392. You save big!",
@@ -29,7 +29,7 @@ const OFFERS = [
     ctaRoute: "pricing",
     accentFrom: "#C9A84C",
     accentTo: "#B87333",
-    emoji: "📦",
+    emoji: null,
     tags: ["Save ₹1,393+", "One-time Pay", "All Inclusive"],
   },
 ];
@@ -115,7 +115,7 @@ export default function OfferCarousel({ openDemoModal }) {
                 border: `1px solid ${offer.accentFrom}40`,
               }}
             >
-              {offer.emoji}
+              
             </div>
 
             <div className="min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">

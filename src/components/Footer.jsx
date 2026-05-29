@@ -57,7 +57,7 @@ const Footer = () => {
                 onMouseEnter={e => (e.currentTarget.style.color = "#10B981")}
                 onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
               >
-                <Mail size={15} /> support@pearlx.in
+                <Mail size={15} /> pearlxsupport@gmail.com
               </a>
             </div>
           </div>

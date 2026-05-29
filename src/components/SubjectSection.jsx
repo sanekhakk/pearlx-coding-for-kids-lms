@@ -1,11 +1,14 @@
 // src/components/SubjectSection.jsx — REDESIGNED FROM SCRATCH
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Star, Zap, Trophy, Heart } from "lucide-react";
+import { ArrowRight, Sparkles, Star, Zap, Trophy, Heart, Users } from "lucide-react";
 import lp1 from "../assets/kids/LP1.webp"
 import bp1 from "../assets/kids/BP1.webp"
 import rp1 from "../assets/kids/RP1.webp"
 import kid1 from "../assets/kids/KID1.webp"
+
+
+const STAT_ICON_MAP = { Users, Zap, Trophy, Heart };
 
 const T = { bg:"#F0FFFE", ink:"#0F172A", green:"#10B981", sky:"#0EA5E9",
   yellow:"#FFD166", pink:"#FF6B9D", purple:"#A78BFA" };
@@ -19,7 +22,7 @@ const LEVELS = [
     color:T.yellow, glow:"rgba(255,209,102,0.28)", border:"rgba(255,209,102,0.4)",
     textColor:"#A8760A", bg:"linear-gradient(145deg,#FFFBEB,#FFF3C4)",
     floatImg:"/images/kids/little-pearls-float.png",
-    achievements:["Logic Builder 🧠","Loop Master 🔄","Story Coder 📖"],
+    achievements:["Logic Builder","Loop Master","Story Coder"],
     modules:9, lessons:44, projects:6,
   },
   {
@@ -30,7 +33,7 @@ const LEVELS = [
     color:T.green, glow:"rgba(16,185,129,0.25)", border:"rgba(16,185,129,0.4)",
     textColor:"#047857", bg:"linear-gradient(145deg,#ECFDF5,#D1FAE5)",
     floatImg:"/images/kids/bright-pearls-float.png",
-    achievements:["Game Creator 🎮","App Builder 📱","Code Writer ✍️"],
+    achievements:["Game Creator","App Builder","Code Writer"],
     modules:9, lessons:44, projects:8,
   },
   {
@@ -41,7 +44,7 @@ const LEVELS = [
     color:T.purple, glow:"rgba(167,139,250,0.25)", border:"rgba(167,139,250,0.4)",
     textColor:"#6D28D9", bg:"linear-gradient(145deg,#F5F3FF,#EDE9FE)",
     floatImg:"/images/kids/rising-pearls-float.png",
-    achievements:["Web Dev Pro 🌐","Python Expert 🐍","Portfolio Ready 🏆"],
+    achievements:["Web Dev Pro","Python Expert","Portfolio Ready"],
     modules:9, lessons:44, projects:10,
   },
   {
@@ -52,7 +55,7 @@ const LEVELS = [
     color:T.sky, glow:"rgba(14,165,233,0.25)", border:"rgba(14,165,233,0.4)",
     textColor:"#0284C7", bg:"linear-gradient(145deg,#F0F9FF,#E0F2FE)",
     floatImg:"/images/kids/cs-tuition-float.png",
-    achievements:["Board Topper 📋","Exam Ready ✅","Top Scorer 🥇"],
+    achievements:["Board Topper","Exam Ready","Top Scorer"],
     modules:6, lessons:36, projects:4,
   },
 ];
@@ -66,7 +69,7 @@ const FloatKid = ({ src, emoji, style, delay=0 }) => (
       filter:"drop-shadow(0 16px 28px rgba(0,0,0,0.15))" }}
       onError={e => { e.target.style.display="none"; e.target.nextSibling.style.display="flex"; }} />
     <div style={{ display:"none",width:"100%",height:"100%",alignItems:"center",
-      justifyContent:"center",fontSize:"3.5rem" }}>{emoji}</div>
+      justifyContent:"center" }}></div>
   </motion.div>
 );
 
@@ -195,19 +198,15 @@ const SubjectSection = () => (
             borderColor:`${c.c}25`,color:c.c,boxShadow:`0 4px 12px ${c.c}15` }}>{c.text}</motion.div>
       ))}
       {/* Sparkles */}
-      {[{top:"12%",left:"20%"},{top:"38%",right:"7%"},{bottom:"22%",left:"15%"},{top:"65%",right:"18%"}].map((p,i)=>(
-        <motion.div key={i} animate={{ scale:[0,1,0],opacity:[0,1,0],rotate:[0,180] }}
-          transition={{ duration:2.5,repeat:Infinity,delay:i*0.6 }}
-          className="absolute text-yellow-400 font-bold" style={{ fontSize:16,...p }}>✦</motion.div>
-      ))}
+
     </div>
 
     {/* Floating kid images (background-removed PNGs) */}
-    <FloatKid src="/images/kids/float-kid-1.png" emoji="👦‍💻"
+    <FloatKid src="/images/kids/float-kid-1.png" emoji=""
       style={{ width:110,height:150,top:"12%",right:"1.5%" }} delay={0} />
-    <FloatKid src="/images/kids/float-kid-2.png" emoji="👩‍💻"
+    <FloatKid src="/images/kids/float-kid-2.png" emoji=""
       style={{ width:90,height:130,bottom:"14%",left:"0.5%" }} delay={1.5} />
-    <FloatKid src="/images/kids/float-star.png" emoji="🌟"
+    <FloatKid src="/images/kids/float-star.png" emoji=""
       style={{ width:65,height:65,top:"35%",left:"0.5%" }} delay={0.8} />
 
     <div className="md :max-w-[80%] sm:max-w-[90%] mx-auto px-6 relative z-10">
@@ -225,26 +224,28 @@ const SubjectSection = () => (
           Every child learns<br/>
           <span style={{ background:`linear-gradient(135deg,${T.sky},${T.green})`,
             WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text" }}>
-            at their own pace 🚀
+            at their own pace
           </span>
         </motion.h2>
         <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ delay:0.2 }}
           className="text-slate-500 max-w-2xl mx-auto text-base font-medium mb-8">
           Block coding always comes before text coding — so every child is genuinely ready when they level up.
-          No rushing. No confusion. Just confidence. ✨
+          No rushing. No confusion. Just confidence.
         </motion.p>
         {/* Stats row */}
         <motion.div initial={{ opacity:0,y:12 }} whileInView={{ opacity:1,y:0 }} viewport={{ once:true }}
           transition={{ delay:0.3 }} className="flex flex-wrap justify-center gap-3">
           {[
-            { icon:"⭐",v:"500+",l:"Students Taught",c:T.green },
-            { icon:"⚡",v:"132",l:"Total Lessons",c:T.sky },
-            { icon:"🏆",v:"4 Levels",l:"Structured Path",c:T.yellow },
-            { icon:"❤️",v:"4.9★",l:"Parent Rating",c:T.pink },
+            { icon:"Users",v:"500+",l:"Students Taught",c:T.green },
+            { icon:"Zap",v:"132",l:"Total Lessons",c:T.sky },
+            { icon:"Trophy",v:"4 Levels",l:"Structured Path",c:T.yellow },
+            { icon:"Heart",v:"4.9",l:"Parent Rating",c:T.pink },
           ].map((s,i)=>(
             <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border"
               style={{ borderColor:`${s.c}30`,boxShadow:`0 4px 12px ${s.c}15` }}>
-              <span>{s.icon}</span>
+              <span className="flex items-center justify-center">
+              {(() => { const I = STAT_ICON_MAP[s.icon]; return I ? <I className="w-4 h-4" style={{ color: s.c }} /> : null; })()}
+            </span>
               <span className="font-black text-sm" style={{ color:T.ink }}>{s.v}</span>
               <span className="text-xs font-medium text-slate-400">{s.l}</span>
             </div>
@@ -269,7 +270,7 @@ const SubjectSection = () => (
             <div className="lg:w-1/2">
               <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color:T.green }}>The Pearlx Promise</p>
               <h3 className="font-black text-2xl mb-4" style={{ color:T.ink,letterSpacing:"-0.03em" }}>
-                Logic-first. Always. 🧠
+                Logic-first. Always.
               </h3>
               <p className="text-slate-500 leading-relaxed mb-6">
                 We never rush kids to text coding before they're ready. Block coding isn't a shortcut — it's the foundation.
@@ -290,15 +291,15 @@ const SubjectSection = () => (
             </div>
             <div className="lg:w-1/2 grid grid-cols-2 gap-4">
               {[
-                { emoji:"🐥→🌱",label:"Block to Scratch",desc:"Ages 5–11 transition" },
-                { emoji:"🌱→🦋",label:"Scratch to Python",desc:"Ages 8–15 transition" },
-                { emoji:"🎓",label:"Board Excellence",desc:"Class 6–12 focused" },
-                { emoji:"🏆",label:"Grand Showcase",desc:"Every level's finale" },
+                { label:"Block to Scratch",desc:"Ages 5–11 transition" },
+                { label:"Scratch to Python",desc:"Ages 8–15 transition" },
+                { label:"Board Excellence",desc:"Class 6–12 focused" },
+                { label:"Grand Showcase",desc:"Every level's finale" },
               ].map((item,i)=>(
                 <motion.div key={i} whileHover={{ scale:1.04 }}
                   className="p-5 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/60 text-center"
                   style={{ boxShadow:"0 4px 16px rgba(0,0,0,0.04)" }}>
-                  <div className="text-2xl mb-2">{item.emoji}</div>
+                  
                   <div className="font-bold text-sm" style={{ color:T.ink }}>{item.label}</div>
                   <div className="text-xs text-slate-400 mt-1">{item.desc}</div>
                 </motion.div>

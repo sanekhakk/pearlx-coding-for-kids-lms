@@ -1,7 +1,7 @@
 // src/pages/Courses.jsx
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Zap, Star, BookOpen, Users, Clock, ChevronDown, Rocket, Award, Code2, Database, Globe, Layers, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Zap, Star, BookOpen, Users, Clock, ChevronDown, Rocket, Award, Code2, Database, Globe, Layers, ChevronLeft, ChevronRight, GraduationCap, MessageSquare, Check } from "lucide-react";
 // Uncomment and set your offer image import:
 // import offerImage from "../assets/offers/offer-20pct.png";
 
@@ -15,8 +15,8 @@ const CAROUSEL_SLIDES = [
     fallback: {
       gradient: "linear-gradient(135deg, #f0fff9 0%, #e0f2fe 40%, #ede9fe 100%)",
       headline: "Congratulations to all +2 Students!",
-      body: "Your hard work, dedication and perseverance have paid off. Keep shining and aim higher. The best is yet to come! 💚",
-      ctaText: "Enrol Now & Avail 20% OFF 🚀",
+      body: "Your hard work, dedication and perseverance have paid off. Keep shining and aim higher. The best is yet to come!",
+      ctaText: "Enrol Now & Avail 20% OFF",
       ctaColor: "linear-gradient(135deg, #10B981 0%, #0EA5E9 100%)",
       courses: ["Python", "Java", "Web Development"],
       courseLogos: [
@@ -31,7 +31,7 @@ const CAROUSEL_SLIDES = [
     id: "webdev",
     type: "promo",
     gradient: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0c1a2e 100%)",
-    badge: "🔥 TRENDING COURSE",
+    badge: "TRENDING COURSE",
     badgeBg: "rgba(255,107,157,0.2)",
     badgeColor: "#FF6B9D",
     headline: "Turn Your Child Into a Developer",
@@ -50,7 +50,7 @@ const CAROUSEL_SLIDES = [
       { src: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png", label: "JS" },
       { src: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", label: "React" },
     ],
-    ctaText: "Enrol Now 🚀",
+    ctaText: "Enrol Now",
     ctaGradient: "linear-gradient(135deg, #FF6B9D 0%, #A78BFA 100%)",
     ctaShadow: "rgba(255,107,157,0.4)",
   },
@@ -167,7 +167,7 @@ const HeroCarousel = ({ openDemoModal }) => {
                     <div className="p-4 rounded-2xl text-center"
                       style={{ background: "white", boxShadow: "0 4px 20px rgba(14,165,233,0.15)", border: "2px solid #BAE6FD" }}>
                       <div className="text-xs font-bold text-slate-500 mb-1">For 2026</div>
-                      <div className="font-black text-sm text-slate-800">12th Passed Students 📅</div>
+                      <div className="font-black text-sm text-slate-800">12th Passed Students</div>
                     </div>
                     <div className="text-[10px] text-slate-400 text-center max-w-[160px]">
                       {slide.fallback.bottomLine}
@@ -440,17 +440,17 @@ const COURSES = [
 ];
 
 const BOARDS = [
-  { name: "CBSE", sub: "CS & IT · Class 6–12", color: "#FFD166", bg: "rgba(255,209,102,0.12)", emoji: "📗" },
-  { name: "ICSE", sub: "Computer Applications", color: "#FF6B9D", bg: "rgba(255,107,157,0.12)", emoji: "📘" },
-  { name: "ISC",  sub: "Computer Science", color: "#A78BFA", bg: "rgba(167,139,250,0.12)", emoji: "📙" },
-  { name: "IGCSE",sub: "Cambridge CS & ICT", color: "#4CC9F0", bg: "rgba(76,201,240,0.12)", emoji: "📕" },
+  { name: "CBSE", sub: "CS & IT · Class 6–12", color: "#FFD166", bg: "rgba(255,209,102,0.12)", BIcon: BookOpen },
+  { name: "ICSE", sub: "Computer Applications", color: "#FF6B9D", bg: "rgba(255,107,157,0.12)", BIcon: BookOpen },
+  { name: "ISC",  sub: "Computer Science", color: "#A78BFA", bg: "rgba(167,139,250,0.12)", BIcon: BookOpen },
+  { name: "IGCSE",sub: "Cambridge CS & ICT", color: "#4CC9F0", bg: "rgba(76,201,240,0.12)", BIcon: Globe },
 ];
 
 const WHY = [
-  { icon: "🎓", title: "Expert Mentors", desc: "Industry professionals & experienced teachers for every course" },
-  { icon: "🛠️", title: "Hands-on Projects", desc: "Every course includes real projects you can add to your portfolio" },
-  { icon: "📜", title: "Industry Certificate", desc: "Recognised certificates on course completion" },
-  { icon: "🚀", title: "Career Guidance", desc: "Placement support and interview prep for college students" },
+  { Icon: GraduationCap, title: "Expert Mentors", desc: "Industry professionals & experienced teachers for every course" },
+  { Icon: Code2, title: "Hands-on Projects", desc: "Every course includes real projects you can add to your portfolio" },
+  { Icon: Award, title: "Industry Certificate", desc: "Recognised certificates on course completion" },
+  { Icon: Rocket, title: "Career Guidance", desc: "Placement support and interview prep for college students" },
 ];
 
 const CourseCard = ({ course, i, openDemoModal }) => {
@@ -538,9 +538,9 @@ const CourseCard = ({ course, i, openDemoModal }) => {
               exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}
               className="flex flex-wrap gap-2 mb-4 overflow-hidden">
               {course.skills.map((s, si) => (
-                <span key={si} className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/70 border"
+                <span key={si} className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/70 border flex items-center gap-1"
                   style={{ borderColor: course.border, color: course.textColor }}>
-                  ✓ {s}
+                  <Check className="w-3 h-3" /> {s}
                 </span>
               ))}
             </motion.div>
@@ -620,7 +620,7 @@ const Courses = ({ openDemoModal }) => (
         <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           transition={{ delay: 0.2 }}
           className="text-slate-500 max-w-2xl mx-auto text-lg font-medium mb-8">
-          From Python to Full Stack Web — expert-led courses with real projects, board exam prep, and industry certificates. Your future in tech starts here. 🚀
+          From Python to Full Stack Web — expert-led courses with real projects, board exam prep, and industry certificates. Your future in tech starts here.
         </motion.p>
 
         {/* Stats */}
@@ -648,7 +648,7 @@ const Courses = ({ openDemoModal }) => (
             onClick={() => openDemoModal("courses-hero")}
             className="flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white border-none cursor-pointer"
             style={{ background: `linear-gradient(135deg,${T.sky},${T.purple})`, boxShadow: "0 8px 32px rgba(14,165,233,0.35)" }}>
-            🎯 Book Free Demo Class <ArrowRight className="w-5 h-5" />
+            <Rocket className="w-4 h-4" /> Book Free Demo Class <ArrowRight className="w-5 h-5" />
           </button>
           <a href="https://wa.link/2sqe3g"
             className="flex items-center gap-2 px-8 py-4 rounded-2xl font-bold border-2"
@@ -681,7 +681,7 @@ const Courses = ({ openDemoModal }) => (
       <div className="mb-20">
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="font-black text-3xl mb-10 text-center" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
-          Why Learn with Pearlx? 💎
+          Why Learn with Pearlx?
         </motion.h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {WHY.map((w, i) => (
@@ -690,7 +690,9 @@ const Courses = ({ openDemoModal }) => (
               whileHover={{ y: -8 }}
               className="p-7 rounded-3xl border-2 text-center bg-white"
               style={{ borderColor: "rgba(15,23,42,0.06)", boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
-              <div className="text-4xl mb-4">{w.icon}</div>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 mx-auto" style={{ background: `${T.sky}15` }}>
+                <w.Icon className="w-7 h-7" style={{ color: T.sky }} />
+              </div>
               <div className="font-black text-base mb-2" style={{ color: T.ink }}>{w.title}</div>
               <div className="text-xs text-slate-500 leading-relaxed">{w.desc}</div>
             </motion.div>
@@ -702,7 +704,7 @@ const Courses = ({ openDemoModal }) => (
       <div className="mb-20">
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="font-black text-3xl mb-8 text-center" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
-          Boards We Cover 📋
+          Boards We Cover
         </motion.h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {BOARDS.map((b, i) => (
@@ -711,7 +713,9 @@ const Courses = ({ openDemoModal }) => (
               whileHover={{ y: -8, scale: 1.04 }}
               className="p-7 rounded-3xl border-2 text-center"
               style={{ background: b.bg, borderColor: `${b.color}35`, boxShadow: `0 4px 20px ${b.color}12` }}>
-              <div className="text-4xl mb-3">{b.emoji}</div>
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3 mx-auto" style={{ background: `${b.color}18` }}>
+                <b.BIcon className="w-6 h-6" style={{ color: b.color }} />
+              </div>
               <div className="font-black text-2xl mb-1" style={{ color: b.color }}>{b.name}</div>
               <div className="text-xs font-semibold text-slate-500">{b.sub}</div>
             </motion.div>
@@ -727,7 +731,7 @@ const Courses = ({ openDemoModal }) => (
         <div className="absolute top-0 left-0 right-0 h-1.5"
           style={{ background: `linear-gradient(90deg,${T.sky},${T.purple},${T.green})` }} />
         <div className="relative z-10 text-center p-12 lg:p-16">
-          <div className="text-5xl mb-4">🚀</div>
+          <div className="flex justify-center mb-4"><Rocket className="w-12 h-12" style={{ color: T.purple }} /></div>
           <h3 className="font-black text-3xl mb-3" style={{ color: T.ink, letterSpacing: "-0.02em" }}>
             Your Future in Tech Starts Here
           </h3>
@@ -744,7 +748,7 @@ const Courses = ({ openDemoModal }) => (
             <a href="https://wa.link/2sqe3g"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-sm font-bold border-2"
               style={{ color: T.sky, borderColor: "rgba(14,165,233,0.35)", background: "rgba(14,165,233,0.06)" }}>
-              💬 Chat on WhatsApp
+              <MessageSquare className="w-4 h-4 inline mr-1" /> Chat on WhatsApp
             </a>
           </div>
         </div>

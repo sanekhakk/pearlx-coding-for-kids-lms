@@ -1,24 +1,24 @@
 // src/components/HeroSection.jsx — PERFORMANCE OPTIMIZED
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { MonitorPlay, Sparkles } from "lucide-react";
+import { MonitorPlay, Sparkles, Rocket, Trophy, Layers } from "lucide-react";
 import kid2 from "../assets/kids/KID2.webp";
 
 const BLOCK_SNIPPETS = [
-  { emoji: "🔁", label: "repeat 10 times", color: "#10B981", x: "8%", y: "22%" },
-  { emoji: "❓", label: "if touching edge?", color: "#0EA5E9", x: "72%", y: "15%" },
-  { emoji: "📢", label: 'say "Hello!"', color: "#6366F1", x: "80%", y: "60%" },
-  { emoji: "🖱️", label: "when flag clicked", color: "#10B981", x: "5%", y: "68%" },
-  { emoji: "➡️", label: "move 10 steps", color: "#0EA5E9", x: "60%", y: "80%" },
-  { emoji: "⚡", label: "if / else block", color: "#6366F1", x: "35%", y: "88%" },
+  { icon: "RefreshCw", label: "repeat 10 times", color: "#10B981", x: "8%", y: "22%" },
+  { icon: "HelpCircle", label: "if touching edge?", color: "#0EA5E9", x: "72%", y: "15%" },
+  { icon: "MessageSquare", label: 'say "Hello!"', color: "#6366F1", x: "80%", y: "60%" },
+  { icon: "MousePointer2", label: "when flag clicked", color: "#10B981", x: "5%", y: "68%" },
+  { icon: "ArrowRight", label: "move 10 steps", color: "#0EA5E9", x: "60%", y: "80%" },
+  { icon: "Zap", label: "if / else block", color: "#6366F1", x: "35%", y: "88%" },
 ];
 
 const CYCLING_PHRASES = [
-  "Start with block coding 🧱",
-  "Build real logic 🧠",
-  "Create Scratch games 🎮",
-  "Excel in school CS 📚",
-  "Transition to Python 🐍",
+  "Start with block coding",
+  "Build real logic",
+  "Create Scratch games",
+  "Excel in school CS",
+  "Transition to Python",
 ];
 
 const STATS = [
@@ -121,7 +121,7 @@ const HeroSection = ({ openDemoModal }) => {
               willChange: "transform",
             }}
           >
-            <span className="text-lg">{b.emoji}</span>
+            <span className="w-2 h-2 rounded-full inline-block" style={{ background: b.color }} />
             <span style={{ color: "#0F172A", opacity: 0.75 }}>{b.label}</span>
           </div>
         ))}
@@ -247,7 +247,7 @@ const HeroSection = ({ openDemoModal }) => {
                   boxShadow: "0 8px 28px rgba(16,185,129,0.3)",
                 }}
               >
-                🚀 Book Free Trial
+                <Rocket className="w-5 h-5" /> Book Free Trial
               </motion.button >
               <motion.a
                 href="#curriculum"
@@ -342,7 +342,7 @@ const HeroSection = ({ openDemoModal }) => {
               className="absolute top-[8%] right-[0%] z-30 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-white flex items-center gap-3"
               style={{ animation: "floatBlock 5s ease-in-out infinite", willChange: "transform" }}
             >
-              <div className="bg-emerald-100 text-emerald-600 p-3 rounded-xl text-2xl">🏆</div>
+              <div className="bg-emerald-100 text-emerald-600 p-3 rounded-xl flex items-center justify-center"><Trophy className="w-6 h-6" /></div>
               <div>
                 <div className="text-sm font-extrabold text-slate-900">Board Excellence</div>
                 <div className="text-xs text-slate-500 font-medium">Classes 6–12</div>
@@ -356,7 +356,7 @@ const HeroSection = ({ openDemoModal }) => {
                 willChange: "transform",
               }}
             >
-              <div className="bg-cyan-100 text-cyan-600 p-3 rounded-xl text-2xl">🧱</div>
+              <div className="bg-cyan-100 text-cyan-600 p-3 rounded-xl flex items-center justify-center"><Layers className="w-6 h-6" /></div>
               <div>
                 <div className="text-sm font-extrabold text-slate-900">Block to Text</div>
                 <div className="text-xs text-slate-500 font-medium">Smooth Progression</div>

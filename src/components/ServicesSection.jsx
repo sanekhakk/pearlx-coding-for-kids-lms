@@ -14,7 +14,7 @@ const FloatImg = ({ src, emoji, style, delay=0 }) => (
       filter:"drop-shadow(0 14px 28px rgba(0,0,0,0.13))" }}
       onError={e=>{ e.target.style.display="none"; e.target.nextSibling.style.display="flex"; }} />
     <div style={{ display:"none",width:"100%",height:"100%",alignItems:"center",
-      justifyContent:"center",fontSize:"3rem" }}>{emoji}</div>
+      justifyContent:"center" }}></div>
   </motion.div>
 );
 
@@ -23,46 +23,46 @@ const OVERVIEW_CARDS = [
     icon:<TerminalSquare size={32} />,
     title:"Kids Coding Classes",
     subtitle:"Ages 5–15 · Block coding → Python",
-    badge:"⭐ Core Program",
+    badge:"Core Program",
     badgeColor:"#059669",badgeBg:"rgba(16,185,129,0.12)",
     desc:"Project-based coding curriculum across 3 levels. We start with visual block coding to build logic naturally, then transition to text code when kids are truly ready.",
     cta:"Explore Kids Coding",page:"/services/education",
     color:T.green,glow:"rgba(16,185,129,0.2)",
     kidImg:"/images/kids/service-coding-kid.png",
     stats:[{v:"3",l:"Levels"},{v:"132",l:"Lessons"},{v:"500+",l:"Students"}],
-    emoji:"🎮",
+    emoji:null,
   },
   {
     icon:<BookOpenCheck size={32} />,
     title:"Academic CS Tuition",
     subtitle:"Classes 6–12 · CBSE / ICSE",
-    badge:"📚 School Subject",
+    badge:"School Subject",
     badgeColor:"#0284C7",badgeBg:"rgba(14,165,233,0.12)",
     desc:"Dedicated tuition for CS, Information Practices, Java, Python, and SQL — ensuring top board marks with board-specific strategies and past paper practice.",
     cta:"Explore CS Tuition",page:"/services/education",
     color:T.sky,glow:"rgba(14,165,233,0.2)",
     kidImg:"/images/kids/service-tuition-kid.png",
     stats:[{v:"4",l:"Boards"},{v:"6",l:"Subjects"},{v:"100%",l:"Exam Focus"}],
-    emoji:"📘",
+    emoji:null,
   },
   {
     icon:<Laptop size={32} />,
     title:"Web Dev Services",
     subtitle:"For Brands & Startups",
-    badge:"🌐 Extra Service",
+    badge:"Extra Service",
     badgeColor:"#A07830",badgeBg:"rgba(201,168,76,0.12)",
     desc:"Custom websites designed, developed, and deployed by expert developers — from UI/UX design and React development to ongoing maintenance.",
     cta:"Get Free Quote",page:"/services/web-development",
     color:"#C9A84C",glow:"rgba(201,168,76,0.2)",
     kidImg:"/images/kids/service-webdev-kid.png",
     stats:[{v:"20+",l:"Sites Built"},{v:"100%",l:"Responsive"},{v:"1mo",l:"Support"}],
-    emoji:"🚀",
+    emoji:null,
   },
 ];
 
 const PLANS = [
   {
-    emoji:"🐥",name:"Little Pearls",tagline:"Ages 5–7 · Block coding basics",
+    emoji:null,name:"Little Pearls",tagline:"Ages 5–7 · Block coding basics",
     color:"#FFD166",colorDeep:"#CC9B2A",border:"rgba(255,209,102,0.35)",
     bg:"rgba(255,209,102,0.07)",
     features:["Visual block coding — no typing needed","Scratch Jr games & animations","Build strong logic naturally","CodiMath — coding meets maths"],
@@ -70,8 +70,8 @@ const PLANS = [
     kidImg:"/images/kids/plan-little-kid.png",
   },
   {
-    emoji:"🌱",name:"Bright Pearls",tagline:"Ages 8–11 · Blocks → Text code",
-    badge:"⭐ Most Popular",
+    emoji:null,name:"Bright Pearls",tagline:"Ages 8–11 · Blocks → Text code",
+    badge:"Most Popular",
     color:"#A78BFA",colorDeep:"#6D28D9",border:"rgba(167,139,250,0.5)",
     bg:"linear-gradient(160deg,#1A1A2E,#1E1528)",
     features:["Advanced Scratch to Python transition","Code.org — build real mobile apps","HTML & CSS — your first website","Collaborative peer learning"],
@@ -79,7 +79,7 @@ const PLANS = [
     kidImg:"/images/kids/plan-bright-kid.png",
   },
   {
-    emoji:"🦋",name:"Rising Pearls",tagline:"Ages 12–15 · Real text coding",
+    emoji:null,name:"Rising Pearls",tagline:"Ages 12–15 · Real text coding",
     color:"#06D6A0",colorDeep:"#047857",border:"rgba(6,214,160,0.35)",
     bg:"rgba(6,214,160,0.07)",
     features:["Python — basics to OOP & projects","Web Dev — HTML, CSS, JavaScript","Publish live websites online","Portfolio-worthy capstone projects"],
@@ -87,8 +87,8 @@ const PLANS = [
     kidImg:"/images/kids/plan-rising-kid.png",
   },
   {
-    emoji:"🎓",name:"CS Tuition",tagline:"Classes 6–12 · Academics",
-    badge:"📚 School Subject",
+    emoji:null,name:"CS Tuition",tagline:"Classes 6–12 · Academics",
+    badge:"School Subject",
     color:"#4CC9F0",colorDeep:"#0284C7",border:"rgba(76,201,240,0.35)",
     bg:"rgba(76,201,240,0.07)",
     features:["CBSE, ICSE & State Boards","Computer Science & Info Practices","Java, Python, SQL & DBMS","Exam-focused prep & doubt clearing"],
@@ -98,9 +98,9 @@ const PLANS = [
 ];
 
 const TESTIMONIALS = [
-  { name:"Priya Mehta",role:"Parent of Aarav, 9",text:"Aarav was scared of computers. After just 3 months at Pearlx, he built his first game and couldn't stop showing everyone!",emoji:"⭐⭐⭐⭐⭐",avatar:"/images/testimonials/priya.png" },
-  { name:"Rohan Sharma",role:"Parent of Diya, 12",text:"Diya's ICSE CS score jumped from 72 to 96 in one term. The teachers here really know how to prepare kids for board exams.",emoji:"⭐⭐⭐⭐⭐",avatar:"/images/testimonials/rohan.png" },
-  { name:"Anjali Kapoor",role:"Parent of Kabir, 7",text:"My 7-year-old is already making animations on Scratch! The block coding approach is pure genius — no frustration at all.",emoji:"⭐⭐⭐⭐⭐",avatar:"/images/testimonials/anjali.png" },
+  { name:"Priya Mehta",role:"Parent of Aarav, 9",text:"Aarav was scared of computers. After just 3 months at Pearlx, he built his first game and couldn't stop showing everyone!",rating:5,avatar:"/images/testimonials/priya.png" },
+  { name:"Rohan Sharma",role:"Parent of Diya, 12",text:"Diya's ICSE CS score jumped from 72 to 96 in one term. The teachers here really know how to prepare kids for board exams.",rating:5,avatar:"/images/testimonials/rohan.png" },
+  { name:"Anjali Kapoor",role:"Parent of Kabir, 7",text:"My 7-year-old is already making animations on Scratch! The block coding approach is pure genius — no frustration at all.",rating:5,avatar:"/images/testimonials/anjali.png" },
 ];
 
 export const ServicesOverview = () => {
@@ -133,9 +133,9 @@ export const ServicesOverview = () => {
       </div>
 
       {/* Floating kid images */}
-      <FloatImg src="/images/kids/overview-kid-1.png" emoji="👦‍💻"
+      <FloatImg src="/images/kids/overview-kid-1.png" emoji=""
         style={{ width:100,height:140,top:"5%",right:"2%",zIndex:1 }} delay={0} />
-      <FloatImg src="/images/kids/overview-kid-2.png" emoji="👩‍🏫"
+      <FloatImg src="/images/kids/overview-kid-2.png" emoji=""
         style={{ width:90,height:125,bottom:"5%",left:"0.5%",zIndex:1 }} delay={1.2} />
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -179,7 +179,7 @@ export const ServicesOverview = () => {
                 <img src={c.kidImg} alt={c.title}
                   className="absolute bottom-0 h-40 object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
                   onError={e=>{e.target.style.display="none";}} />
-                <span className="text-6xl relative z-10 opacity-20">{c.emoji}</span>
+                
                 {/* Badge */}
                 <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-black"
                   style={{ background:c.badgeBg,color:c.badgeColor }}>{c.badge}</div>
@@ -253,7 +253,7 @@ export const ProgramPlans = () => {
             <span style={{ background:"linear-gradient(135deg,#A78BFA,#10B981)",
               WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text" }}>
               learning path
-            </span> 🗺️
+            </span>
           </h2>
           <p className="text-white/40 max-w-lg mx-auto font-medium">
             Every path is structured, every step is purposeful. Start anywhere — grow everywhere.
@@ -279,7 +279,7 @@ export const ProgramPlans = () => {
                 <img src={p.kidImg} alt={p.name}
                   className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full object-contain mix-blend-multiply"
                   onError={e=>{e.target.style.display="none";}} />
-                <div className="absolute top-2 left-2 text-2xl">{p.emoji}</div>
+                
               </div>
 
               <div className="relative z-10 flex flex-col flex-grow">
@@ -304,7 +304,7 @@ export const ProgramPlans = () => {
 
         {/* Testimonials */}
         <div className="mt-20">
-          <h3 className="text-white font-black text-2xl text-center mb-10">What parents say 💬</h3>
+          <h3 className="text-white font-black text-2xl text-center mb-10">What parents say</h3>
           <div className="grid md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t,i)=>(
               <motion.div key={i}
@@ -312,7 +312,9 @@ export const ProgramPlans = () => {
                 transition={{ delay:i*0.1 }}
                 className="p-6 rounded-[1.5rem] border relative overflow-hidden"
                 style={{ background:"rgba(255,255,255,0.04)",borderColor:"rgba(255,255,255,0.08)" }}>
-                <div className="text-sm mb-1 opacity-70">{t.emoji}</div>
+                <div className="flex gap-0.5 mb-2">
+                  {Array.from({length: t.rating}).map((_,ri) => <Star key={ri} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />)}
+                </div>
                 <p className="text-white/65 text-sm leading-relaxed mb-4 italic">"{t.text}"</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full overflow-hidden border"

@@ -76,7 +76,7 @@ const NavBar = ({ openDemoModal }) => {
             </Link>
 
             {/* Desktop links */}
-            <div className="hidden lg:flex items-center gap-1 z-10">
+            <div className="hidden  lg:flex items-center gap-1 z-10">
               {navLinks.map(link => {
                 const isActive = location.pathname === link.to;
                 // Highlight "Courses" with a special accent
@@ -178,14 +178,14 @@ const NavBar = ({ openDemoModal }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -16, scale: 0.96 }}
             transition={{ type: "spring", damping: 28, stiffness: 350 }}
-            className="fixed top-24 left-4 right-4 z-40 rounded-2xl p-6 shadow-2xl"
+            className="fixed top-24 left-4 right-4 z-40 rounded-2xl p-6 shadow-2xl mt-13 "
             style={{ background: "rgba(10,14,28,0.97)", backdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.08)" }}
           >
             {/* Top accent */}
-            <div className="absolute top-0 left-0 right-0 h-px rounded-t-2xl"
+            <div className="absolute top-0 left-0 right-0 h-px rounded-t-2xl "
               style={{ background: "linear-gradient(90deg, transparent, #10B981, #0EA5E9, transparent)" }} />
 
-            <div className="space-y-1 mb-6">
+            <div className="space-y-1 mb-6 ">
               {navLinks.map((link, i) => {
                 const isCourses = link.to === "/courses";
                 return (

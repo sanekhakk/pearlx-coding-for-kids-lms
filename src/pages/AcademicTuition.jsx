@@ -4,7 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen, Award, Users, TrendingUp, Clock, Target,
   CheckCircle2, Star, Zap, Heart, GraduationCap, ArrowRight,
-  ChevronDown, ChevronUp
+  ChevronDown, ChevronUp, Globe, FlaskConical, Calculator,
+  Landmark, MessageSquare, Monitor, BarChart2, Atom, Microscope,
+  DollarSign, ScrollText, Map, Building2, Cpu, Briefcase,
+  Sprout, Wallet, Sparkles, HelpCircle, Trophy, Flame
 } from "lucide-react";
 import { COLORS, GRADIENTS, SHADOWS, DARK } from "../utils/theme";
 
@@ -21,9 +24,9 @@ const T = {
 };
 
 const CLASSES_DATA = [
-  { range: "Classes 1-7", fee: "₹250/session", emoji: "🌱", color: T.green, icon: "👧", desc: "Foundation building with fun learning" },
-  { range: "Classes 8-10", fee: "₹300/session", emoji: "📚", color: T.sky, icon: "👦", desc: "Board exams preparation & concepts" },
-  { range: "Classes 11-12", fee: "₹350/session", emoji: "🎓", color: T.purple, icon: "👨‍🎓", desc: "Advanced concepts & competitive exams" },
+  { range: "Classes 1-7", fee: "₹250/session", Icon: Sprout, SecondIcon: Users, color: T.green, desc: "Foundation building with fun learning" },
+  { range: "Classes 8-10", fee: "₹300/session", Icon: BookOpen, SecondIcon: Target, color: T.sky, desc: "Board exams preparation & concepts" },
+  { range: "Classes 11-12", fee: "₹350/session", Icon: GraduationCap, SecondIcon: Award, color: T.purple, desc: "Advanced concepts & competitive exams" },
 ];
 
 const AVAILABLE_SYLLABUSES = [
@@ -36,35 +39,35 @@ const AVAILABLE_SYLLABUSES = [
 
 const SUBJECTS_BY_CLASS = {
   "Classes 1-7": [
-    { name: "English", emoji: "📖" },
-    { name: "Mathematics", emoji: "🔢" },
-    { name: "Science", emoji: "🔬" },
-    { name: "Social Studies", emoji: "🌍" },
-    { name: "Hindi", emoji: "🇮🇳" },
-    { name: "Computer Basics", emoji: "💻" },
+    { name: "English", SubIcon: BookOpen },
+    { name: "Mathematics", SubIcon: Calculator },
+    { name: "Science", SubIcon: FlaskConical },
+    { name: "Social Studies", SubIcon: Globe },
+    { name: "Hindi", SubIcon: MessageSquare },
+    { name: "Computer Basics", SubIcon: Monitor },
   ],
   "Classes 8-10": [
-    { name: "English", emoji: "📖" },
-    { name: "Mathematics", emoji: "🔢" },
-    { name: "Science (Physics, Chemistry, Biology)", emoji: "🔬" },
-    { name: "Social Science (History, Geography, Civics)", emoji: "🌍" },
-    { name: "Hindi/Regional Language", emoji: "🗣️" },
-    { name: "Computer Science", emoji: "💻" },
-    { name: "Accountancy (Optional)", emoji: "📊" },
+    { name: "English", SubIcon: BookOpen },
+    { name: "Mathematics", SubIcon: Calculator },
+    { name: "Science (Physics, Chemistry, Biology)", SubIcon: FlaskConical },
+    { name: "Social Science (History, Geography, Civics)", SubIcon: Globe },
+    { name: "Hindi/Regional Language", SubIcon: MessageSquare },
+    { name: "Computer Science", SubIcon: Monitor },
+    { name: "Accountancy (Optional)", SubIcon: BarChart2 },
   ],
   "Classes 11-12": [
-    { name: "Physics", emoji: "⚛️" },
-    { name: "Chemistry", emoji: "🧪" },
-    { name: "Mathematics", emoji: "📐" },
-    { name: "Biology", emoji: "🧬" },
-    { name: "English", emoji: "📖" },
-    { name: "Economics", emoji: "💰" },
-    { name: "History", emoji: "📜" },
-    { name: "Geography", emoji: "🗺️" },
-    { name: "Civics/Political Science", emoji: "🏛️" },
-    { name: "Computer Science", emoji: "🖥️" },
-    { name: "Accountancy", emoji: "📊" },
-    { name: "Business Studies", emoji: "💼" },
+    { name: "Physics", SubIcon: Atom },
+    { name: "Chemistry", SubIcon: FlaskConical },
+    { name: "Mathematics", SubIcon: Calculator },
+    { name: "Biology", SubIcon: Microscope },
+    { name: "English", SubIcon: BookOpen },
+    { name: "Economics", SubIcon: DollarSign },
+    { name: "History", SubIcon: ScrollText },
+    { name: "Geography", SubIcon: Map },
+    { name: "Civics/Political Science", SubIcon: Building2 },
+    { name: "Computer Science", SubIcon: Monitor },
+    { name: "Accountancy", SubIcon: BarChart2 },
+    { name: "Business Studies", SubIcon: Briefcase },
   ],
 };
 
@@ -87,10 +90,10 @@ const FAQS = [
 ];
 
 const TESTIMONIALS = [
-  { name: "Priya (Class 10, CBSE)", subject: "Maths", mark: "78 → 92", t: "Pearlx made complex topics so simple! My conceptual gaps vanished in 2 months.", emoji: "🌟" },
-  { name: "Aditya (Class 12, CBSE)", subject: "Physics", mark: "65 → 88", t: "The board exam focus really helped. I went from being scared of Physics to scoring 88!", emoji: "⚡" },
-  { name: "Ananya (Class 9, ICSE)", subject: "English", mark: "70 → 85", t: "My teacher explained literature in ways I finally understood. Highly recommend!", emoji: "📚" },
-  { name: "Rohan (Class 11, ISC)", subject: "Chemistry", mark: "72 → 94", t: "Organic chemistry became my favourite subject after Pearlx tuition. Amazing teaching!", emoji: "🧪" },
+  { name: "Priya (Class 10, CBSE)", subject: "Maths", mark: "78 → 92", t: "Pearlx made complex topics so simple! My conceptual gaps vanished in 2 months.", TIcon: Star },
+  { name: "Aditya (Class 12, CBSE)", subject: "Physics", mark: "65 → 88", t: "The board exam focus really helped. I went from being scared of Physics to scoring 88!", TIcon: Zap },
+  { name: "Ananya (Class 9, ICSE)", subject: "English", mark: "70 → 85", t: "My teacher explained literature in ways I finally understood. Highly recommend!", TIcon: BookOpen },
+  { name: "Rohan (Class 11, ISC)", subject: "Chemistry", mark: "72 → 94", t: "Organic chemistry became my favourite subject after Pearlx tuition. Amazing teaching!", TIcon: FlaskConical },
 ];
 
 // ─── Components ──────────────────────────────────────────────────────
@@ -117,7 +120,7 @@ const FeatureCard = ({ icon: Icon, t, d, delay = 0 }) => (
   </motion.div>
 );
 
-const ClassCard = ({ range, fee, emoji, color, icon, desc }) => (
+const ClassCard = ({ range, fee, Icon, SecondIcon, color, desc }) => (
   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     whileHover={{ scale: 1.03, y: -6 }}
@@ -126,8 +129,12 @@ const ClassCard = ({ range, fee, emoji, color, icon, desc }) => (
     <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-all"
       style={{ background: `linear-gradient(90deg, ${color}, transparent)` }} />
     <div className="flex items-start justify-between mb-4">
-      <div style={{ fontSize: "2.5rem" }}>{emoji}</div>
-      <div style={{ fontSize: "2rem" }}>{icon}</div>
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${color}15` }}>
+        <Icon className="w-6 h-6" style={{ color }} />
+      </div>
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${color}10` }}>
+        <SecondIcon className="w-5 h-5" style={{ color }} />
+      </div>
     </div>
     <h3 className="font-black text-xl mb-1" style={{ color }}>{range}</h3>
     <p className="text-slate-500 text-sm mb-4">{desc}</p>
@@ -148,7 +155,9 @@ const SubjectList = ({ classRange }) => {
             transition={{ delay: i * 0.05 }}
             className="flex items-center gap-3 p-4 rounded-xl"
             style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.15)" }}>
-            <span className="text-xl">{subject.emoji}</span>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "rgba(16,185,129,0.15)" }}>
+              <subject.SubIcon className="w-4 h-4" style={{ color: T.green }} />
+            </div>
             <span className="font-semibold text-sm" style={{ color: T.ink }}>{subject.name}</span>
           </motion.div>
         ))}
@@ -193,7 +202,7 @@ const FAQ = () => {
   );
 };
 
-const TestimonialCard = ({ name, subject, mark, t, emoji }) => (
+const TestimonialCard = ({ name, subject, mark, t, TIcon }) => (
   <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
     className="p-6 rounded-2xl bg-white border-2 flex flex-col"
@@ -207,7 +216,7 @@ const TestimonialCard = ({ name, subject, mark, t, emoji }) => (
       <div className="text-xs text-slate-500 mb-2">{subject}</div>
       <div className="inline-flex items-center gap-2 px-2 py-1 rounded-lg text-xs font-bold"
         style={{ background: "rgba(16,185,129,0.1)", color: T.green }}>
-        {emoji} {mark}
+        <TIcon className="w-3.5 h-3.5" /> {mark}
       </div>
     </div>
   </motion.div>
@@ -232,7 +241,7 @@ const AcademicTuition = ({ openDemoModal }) => {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-            <SectionBadge color={T.green}>📚 Academic Tuition</SectionBadge>
+            <SectionBadge color={T.green}><BookOpen className="w-3.5 h-3.5" /> Academic Tuition</SectionBadge>
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             className="font-black mt-6 mb-4 leading-tight"
@@ -259,7 +268,7 @@ const AcademicTuition = ({ openDemoModal }) => {
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <SectionBadge color={T.green}>💰 Simple Pricing</SectionBadge>
+            <SectionBadge color={T.green}><Wallet className="w-3.5 h-3.5" /> Simple Pricing</SectionBadge>
             <h2 className="font-black text-3xl mt-4 mb-3" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
               Affordable for every family
             </h2>
@@ -276,7 +285,7 @@ const AcademicTuition = ({ openDemoModal }) => {
             viewport={{ once: true }}
             className="p-6 rounded-2xl text-center text-sm"
             style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.15)" }}>
-            <span style={{ color: T.green }} className="font-bold">✨ Save up to 20%</span> with bundle packages! Ask for details on WhatsApp.
+            <span style={{ color: T.green }} className="font-bold flex items-center gap-1"><Sparkles className="w-3.5 h-3.5 inline" /> Save up to 20%</span> with bundle packages! Ask for details on WhatsApp.
           </motion.div>
         </div>
       </section>
@@ -285,7 +294,7 @@ const AcademicTuition = ({ openDemoModal }) => {
       <section className="py-24 px-4" style={{ background: T.bg }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <SectionBadge color={T.sky}>🌍 All Indian Boards</SectionBadge>
+            <SectionBadge color={T.sky}><Globe className="w-3.5 h-3.5" /> All Indian Boards</SectionBadge>
             <h2 className="font-black text-3xl mt-4 mb-3" style={{ color: T.ink }}>
               We teach every Indian curriculum
             </h2>
@@ -297,7 +306,9 @@ const AcademicTuition = ({ openDemoModal }) => {
                 whileHover={{ scale: 1.05 }}
                 className="p-6 rounded-2xl bg-white border-2 text-center"
                 style={{ borderColor: "rgba(14,165,233,0.15)" }}>
-                <div className="text-2xl mb-3 text-center">🎓</div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 mx-auto" style={{ background: "rgba(14,165,233,0.1)" }}>
+                  <GraduationCap className="w-5 h-5" style={{ color: T.sky }} />
+                </div>
                 <h3 className="font-bold" style={{ color: T.ink }}>{board.name}</h3>
                 <p className="text-xs text-slate-500 mt-1">{board.boards}</p>
               </motion.div>
@@ -310,7 +321,7 @@ const AcademicTuition = ({ openDemoModal }) => {
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <SectionBadge color={T.green}>📖 Subject Coverage</SectionBadge>
+            <SectionBadge color={T.green}><BookOpen className="w-3.5 h-3.5" /> Subject Coverage</SectionBadge>
             <h2 className="font-black text-3xl mt-4 mb-3" style={{ color: T.ink }}>
               All subjects for all classes
             </h2>
@@ -347,7 +358,7 @@ const AcademicTuition = ({ openDemoModal }) => {
       <section className="py-24 px-4" style={{ background: T.bg }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <SectionBadge color={T.green}>⭐ Why Choose Pearlx</SectionBadge>
+            <SectionBadge color={T.green}><Star className="w-3.5 h-3.5" /> Why Choose Pearlx</SectionBadge>
             <h2 className="font-black text-3xl mt-4 mb-3" style={{ color: T.ink }}>
               Tuition designed for board success
             </h2>
@@ -364,7 +375,7 @@ const AcademicTuition = ({ openDemoModal }) => {
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <SectionBadge color={T.green}>❤️ Student Success Stories</SectionBadge>
+            <SectionBadge color={T.green}><Heart className="w-3.5 h-3.5" /> Student Success Stories</SectionBadge>
             <h2 className="font-black text-3xl mt-4 mb-3" style={{ color: T.ink }}>
               See real mark improvements
             </h2>
@@ -381,7 +392,7 @@ const AcademicTuition = ({ openDemoModal }) => {
       <section className="py-24 px-4" style={{ background: T.bg }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <SectionBadge color={T.sky}>❓ FAQs</SectionBadge>
+            <SectionBadge color={T.sky}><HelpCircle className="w-3.5 h-3.5" /> FAQs</SectionBadge>
             <h2 className="font-black text-3xl mt-4 mb-2" style={{ color: T.ink }}>
               Answers to common questions
             </h2>
@@ -401,7 +412,7 @@ const AcademicTuition = ({ openDemoModal }) => {
             boxShadow: `0 16px 60px rgba(16,185,129,0.1)`
           }}>
           <h2 className="font-black text-3xl mb-4" style={{ color: T.ink }}>
-            Ready to improve your marks? 🚀
+            Ready to improve your marks?
           </h2>
           <p className="text-slate-600 mb-8">
             Book a free 30-minute demo class today. No payment, no pressure. Just quality tuition.
@@ -410,7 +421,7 @@ const AcademicTuition = ({ openDemoModal }) => {
             whileHover={{ scale: 1.05, boxShadow: `0 12px 40px rgba(16,185,129,0.3)` }}
             className="px-8 py-4 rounded-2xl text-white font-bold border-none cursor-pointer"
             style={{ background: `linear-gradient(135deg, ${T.green}, ${T.sky})`, boxShadow: "0 8px 28px rgba(16,185,129,0.3)" }}>
-            Get Free Demo Class Now ✨
+            Get Free Demo Class Now <Sparkles className="w-4 h-4 inline ml-1" />
           </motion.button>
         </motion.div>
       </section>
