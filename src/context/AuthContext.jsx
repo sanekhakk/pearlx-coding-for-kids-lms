@@ -38,6 +38,13 @@ export const AuthProvider = ({ children }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [modalRole, setModalRole] = useState(null);
 
+  const getFreshToken = async () => {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Admin must be signed in");
+    // Passing 'true' forces a refresh of the token from Firebase servers
+    return await user.getIdToken(true);
+  };
+
   // fetch role from Firestore profile document (/users/{uid})
   const fetchUserRole = async (uid) => {
     try {
@@ -125,7 +132,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: "Admin must be signed in" };
       }
 
-      const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
+      const idToken = await getFreshToken();
 
       // Call backend
       const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/create-user`, {
@@ -181,7 +188,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: "Admin must be signed in" };
       }
 
-      const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
+      const idToken = await getFreshToken();
 
       // Call backend DELETE endpoint
       const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/delete-user/${uid}`, {
@@ -237,7 +244,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: "Admin must be signed in" };
       }
 
-      const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
+      const idToken = await getFreshToken();
 
       // Call backend DELETE endpoint
       const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/class/${classId}`, {
@@ -268,7 +275,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: "Admin must be signed in" };
       }
 
-      const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
+      const idToken = await getFreshToken();
 
       const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/update-user/${uid}`, {
         method: "PUT", // Use PUT method for updates

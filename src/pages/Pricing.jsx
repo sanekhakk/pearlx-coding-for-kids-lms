@@ -1,4 +1,3 @@
-// src/pages/Pricing.jsx — WITH ACADEMIC TUITION
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
