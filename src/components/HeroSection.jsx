@@ -23,7 +23,7 @@ const CYCLING_PHRASES = [
 const STATS = [
   { value: "50+", label: "Students Taught" },
   { value: "3", label: "Structured Categories" },
-  { value: "132", label: "Lessons" },
+  { value: "100+", label: "Lessons" },
 ];
 
 // Reduced to 6 particles from 28, using CSS animations instead of JS
