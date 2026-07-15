@@ -45,7 +45,7 @@ const LEVELS = [
     modules:9, lessons:44, projects:10,
   },
   {
-    id:"academic", customIcon: kid1, name:"Academic Tuition", age:"Classes 6–12", tag:"ACADEMIC",
+    id:"academic", customIcon: kid1, name:"Academic Tuition", age:"Classes 1–12", tag:"ACADEMIC",
     tagline:"Board exams? We make them stress-free!",
     desc:"Coaching for Classes 1–12 to excel in their academics. Expert guidance in Mathematics, Science, English, Social Science, Computer Science, and more. Regular tests, doubt clearing, notes, assignments, and exam strategies to help students achieve top scores.",
     tools:["ICSE/CBSE","IGCSE","State Boards"],
