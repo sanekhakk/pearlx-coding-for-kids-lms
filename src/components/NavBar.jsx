@@ -1,4 +1,3 @@
-// src/components/NavBar.jsx - WITH COURSES LINK
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";

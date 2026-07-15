@@ -1,4 +1,3 @@
-// src/components/WebServicesSection.jsx
 import React from "react";
 import { motion } from "framer-motion";
 import { Layout, Code2, Rocket, Shield, ExternalLink, Sparkles } from "lucide-react";

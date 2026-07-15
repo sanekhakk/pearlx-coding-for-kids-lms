@@ -1,4 +1,3 @@
-// src/components/SubjectSection.jsx — REDESIGNED FROM SCRATCH
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Star, Zap, Trophy, Heart, Users } from "lucide-react";
@@ -33,7 +32,6 @@ const LEVELS = [
     color:T.green, glow:"rgba(16,185,129,0.25)", border:"rgba(16,185,129,0.4)",
     textColor:"#047857", bg:"linear-gradient(145deg,#ECFDF5,#D1FAE5)",
     floatImg:"/images/kids/bright-pearls-float.png",
-    achievements:["Game Creator","App Builder","Code Writer"],
     modules:9, lessons:44, projects:8,
   },
   {
@@ -44,19 +42,16 @@ const LEVELS = [
     color:T.purple, glow:"rgba(167,139,250,0.25)", border:"rgba(167,139,250,0.4)",
     textColor:"#6D28D9", bg:"linear-gradient(145deg,#F5F3FF,#EDE9FE)",
     floatImg:"/images/kids/rising-pearls-float.png",
-    achievements:["Web Dev Pro","Python Expert","Portfolio Ready"],
     modules:9, lessons:44, projects:10,
   },
   {
-    id:"academic", customIcon: kid1, name:"CS Tuition", age:"Classes 6–12", tag:"ACADEMIC",
+    id:"academic", customIcon: kid1, name:"Academic Tuition", age:"Classes 6–12", tag:"ACADEMIC",
     tagline:"Board exams? We make them stress-free!",
-    desc:"CBSE, ICSE, ISC — structured coaching for Java, Python, SQL, and CS theory. Exam strategies, past papers, doubt clearing — everything to score high.",
-    tools:["CBSE/ICSE","Java & SQL","Board Prep"],
+    desc:"Coaching for Classes 1–12 to excel in their academics. Expert guidance in Mathematics, Science, English, Social Science, Computer Science, and more. Regular tests, doubt clearing, notes, assignments, and exam strategies to help students achieve top scores.",
+    tools:["ICSE/CBSE","IGCSE","State Boards"],
     color:T.sky, glow:"rgba(14,165,233,0.25)", border:"rgba(14,165,233,0.4)",
     textColor:"#0284C7", bg:"linear-gradient(145deg,#F0F9FF,#E0F2FE)",
     floatImg:"/images/kids/cs-tuition-float.png",
-    achievements:["Board Topper","Exam Ready","Top Scorer"],
-    modules:6, lessons:36, projects:4,
   },
 ];
 
@@ -140,13 +135,7 @@ const LevelCard = ({ l, i }) => (
         </div>
         <p className="text-xs font-bold mb-2" style={{ color:l.textColor }}>{l.tagline}</p>
         <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-grow">{l.desc}</p>
-        
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {l.achievements.map((a,ai)=>(
-            <span key={ai} className="text-[10px] font-bold px-2.5 py-1 rounded-xl"
-              style={{ background:`${l.color}10`, color:l.textColor, border:`1px solid ${l.border}` }}>{a}</span>
-          ))}
-        </div>
+       
 
         <div className="flex flex-wrap gap-2 mb-5">
           {l.tools.map((t,ti)=>(
@@ -167,7 +156,7 @@ const LevelCard = ({ l, i }) => (
 );
 
 const SubjectSection = () => (
-  <section id="curriculum" className="py-32 relative overflow-hidden" style={{ background:T.bg }}>
+  <section id="curriculum" className="py-5 relative overflow-hidden" style={{ background:T.bg }}>
     {/* Live background */}
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       <div className="absolute inset-0 opacity-25"
@@ -212,12 +201,6 @@ const SubjectSection = () => (
     <div className="md :max-w-[80%] sm:max-w-[90%] mx-auto px-6 relative z-10">
       {/* Header */}
       <div className="text-center mb-20">
-        <motion.div initial={{ opacity:0,y:-10 }} whileInView={{ opacity:1,y:0 }} viewport={{ once:true }}
-          className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-6 border"
-          style={{ background:"rgba(16,185,129,0.08)",borderColor:"rgba(16,185,129,0.25)",color:T.green }}>
-          <Sparkles className="w-4 h-4" />
-          <span className="text-xs font-black tracking-widest uppercase">Learning Path</span>
-        </motion.div>
         <motion.h2 initial={{ opacity:0,y:24 }} whileInView={{ opacity:1,y:0 }} viewport={{ once:true }}
           transition={{ delay:0.1 }} className="font-black mb-5 tracking-tight leading-none"
           style={{ fontSize:"clamp(2.4rem,5vw,3.8rem)",color:T.ink,letterSpacing:"-0.04em" }}>
@@ -229,11 +212,10 @@ const SubjectSection = () => (
         </motion.h2>
         <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }} transition={{ delay:0.2 }}
           className="text-slate-500 max-w-2xl mx-auto text-base font-medium mb-8">
-          Block coding always comes before text coding — so every child is genuinely ready when they level up.
-          No rushing. No confusion. Just confidence.
-        </motion.p>
+            From school academics to coding and career-focused courses, Pearlx helps learners build knowledge, confidence, and future-ready skills through expert guidance and personalized support.
+          </motion.p>
         {/* Stats row */}
-        <motion.div initial={{ opacity:0,y:12 }} whileInView={{ opacity:1,y:0 }} viewport={{ once:true }}
+        {/* <motion.div initial={{ opacity:0,y:12 }} whileInView={{ opacity:1,y:0 }} viewport={{ once:true }}
           transition={{ delay:0.3 }} className="flex flex-wrap justify-center gap-3">
           {[
             { icon:"Users",v:"500+",l:"Students Taught",c:T.green },
@@ -250,7 +232,7 @@ const SubjectSection = () => (
               <span className="text-xs font-medium text-slate-400">{s.l}</span>
             </div>
           ))}
-        </motion.div>
+        </motion.div> */}
       </div>
 
       {/* Level Cards */}

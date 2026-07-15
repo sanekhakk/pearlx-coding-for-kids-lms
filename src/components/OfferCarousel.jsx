@@ -1,4 +1,3 @@
-// src/components/OfferCarousel.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle } from "lucide-react";

@@ -1,4 +1,3 @@
-// src/components/WhyPearlxSection.jsx — PERFORMANCE OPTIMIZED
 import React from "react";
 import { motion } from "framer-motion";
 import { Zap, Target, Users, ShieldCheck, Trophy, Clock } from "lucide-react";

@@ -1,535 +1,451 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Code2, GraduationCap, Globe, Check, ArrowRight,
-  Star, Users, Shield, Clock, MessageCircle, Gift,
-  ChevronDown, ChevronUp, Zap, Heart, Trophy, BookOpen,
-  Video, BarChart3, RefreshCw, PlayCircle, FileText, Award,
-  HelpCircle, Rocket, Lock, Phone, Flame, Cpu, Layers
+  Code2, GraduationCap, Globe, Check, MessageCircle, Gift,
+  ChevronDown, ChevronUp, Zap, BookOpen, Video, BarChart3, RefreshCw,
+  PlayCircle, Award, HelpCircle, Rocket, Lock, Phone, Flame, Cpu,
+  Terminal, Users,
 } from "lucide-react";
 
+// NOTE: adjust this relative path if Pricing.jsx doesn't live one folder
+// below theme.js's location (theme.js is at src/utils/theme.js).
+import { COLORS } from "../utils/theme";
+
+// ─── Theme (pulled from the official PearlX palette) ────────────────────────
 const T = {
-  bg: "#F0FFFE",
-  ink: "#0F172A",
-  green: "#10B981",
-  greenLight: "#D1FAE5",
-  sky: "#0EA5E9",
-  skyLight: "#E0F2FE",
-  yellow: "#FFD166",
-  yellowLight: "#FEF9C3",
-  pink: "#FF6B9D",
-  purple: "#A78BFA",
-  purpleLight: "#EDE9FE",
-  gold: "#C9A84C",
-  goldLight: "#FEF3C7",
-  teal: "#14B8A6",
+  bg:            COLORS.bgSecondary,
+  ink:           COLORS.ink,
+  textMuted:     COLORS.textMuted,
+  textSecondary: COLORS.textSecondary,
+  border:        COLORS.border,
+  green:         COLORS.emerald,
+  greenLight:    COLORS.emeraldLight,
+  sky:           COLORS.cyan,
+  skyLight:      COLORS.cyanLight,
+  indigo:        COLORS.indigo,
+  indigoLight:   COLORS.indigoLight,
+  gold:          COLORS.gold,
+  goldDeep:      COLORS.goldDeep,
+  goldLight:     COLORS.goldLight,
+  silver:        COLORS.silver,
+  silverLight:   COLORS.silverLight,
+  bronze:        COLORS.bronze,
+  bronzeLight:   COLORS.bronzeLight,
 };
 
+const WA_LINK = "https://wa.link/2sqe3g";
+
+// ─── Data ─────────────────────────────────────────────────────────────────
 const TABS = [
-  { id: "coding", label: "Kids Coding", icon: Code2, sub: "Ages 1–12+", color: T.purple, lightColor: T.purpleLight },
-  { id: "courses", label: "CS Courses", icon: GraduationCap, sub: "12th Passed+", color: T.sky, lightColor: T.skyLight },
-  { id: "academic", label: "Academic Tuition", icon: BookOpen, sub: "Classes 1–12", color: T.green, lightColor: T.greenLight },
-  { id: "cs", label: "CS & IP Tuition", icon: GraduationCap, sub: "Classes 6–12", color: "#4CC9F0", lightColor: "#E0F2FE" },
-  { id: "web", label: "Web Dev", icon: Globe, sub: "For Brands", color: T.gold, lightColor: T.goldLight },
+  { id: "coding",   label: "Kids Coding",      icon: Code2,         sub: "Ages 1–15",                    color: T.indigo, light: T.indigoLight },
+  { id: "courses",  label: "Courses",     icon: GraduationCap, sub: "12th Passed & Above",          color: T.sky,    light: T.skyLight },
+  { id: "academic", label: "Academic Tuition", icon: BookOpen,      sub: "Classes 1–12 · All Subjects",  color: T.green,  light: T.greenLight },
+  { id: "web",      label: "Web Dev",          icon: Globe,         sub: "For Brands",                   color: T.gold,   light: T.goldLight },
 ];
 
-// ─── CS Courses (Python / Java / Web Dev) ───────────────────────────────────
-const WA_LINK = "https://wa.link/2sqe3g";
+const CODING_TIERS = [
+  {
+    label: "Ages 1–3", tagline: "First steps into coding — playful & visual",
+    hourly: 350, monthly: 2800, grpHourly: 210, grpMonthly: 1680,
+    packages:    [{ c: 30, p: 8499,  d: 19, label: "Starter"  },
+                  { c: 45, p: 12499, d: 21, label: "Explorer" },
+                  { c: 90, p: 23499, d: 23, label: "Builder"  },
+                  { c: 150, p: 37499, d: 27, label: "Champion", popular: true }],
+    grpPackages: [{ c: 30, p: 5499,  d: 13, label: "Starter"  },
+                  { c: 45, p: 8499,  d: 10, label: "Explorer" },
+                  { c: 90, p: 17499, d: 7,  label: "Builder"  },
+                  { c: 150, p: 28999, d: 8,  label: "Champion", popular: true }],
+  },
+  {
+    label: "Ages 4–6", tagline: "Deeper logic & first real projects",
+    hourly: 400, monthly: 3200, grpHourly: 240, grpMonthly: 1920,
+    packages:    [{ c: 30, p: 9499,  d: 21, label: "Starter"  },
+                  { c: 45, p: 14499, d: 19, label: "Explorer" },
+                  { c: 90, p: 27499, d: 24, label: "Builder"  },
+                  { c: 150, p: 43999, d: 27, label: "Champion", popular: true }],
+    grpPackages: [{ c: 30, p: 6499,  d: 10, label: "Starter"  },
+                  { c: 45, p: 9999,  d: 7,  label: "Explorer" },
+                  { c: 90, p: 19999, d: 7,  label: "Builder"  },
+                  { c: 150, p: 33499, d: 7,  label: "Champion", popular: true }],
+  },
+  {
+    label: "Ages 7+", tagline: "Advanced coding, apps & real-world projects",
+    hourly: 500, monthly: 4000, grpHourly: 300, grpMonthly: 2400,
+    packages:    [{ c: 30, p: 11999, d: 20, label: "Starter"  },
+                  { c: 45, p: 17999, d: 20, label: "Explorer" },
+                  { c: 90, p: 33999, d: 24, label: "Builder"  },
+                  { c: 150, p: 54999, d: 27, label: "Champion", popular: true }],
+    grpPackages: [{ c: 30, p: 7999,  d: 11, label: "Starter"  },
+                  { c: 45, p: 12499, d: 7,  label: "Explorer" },
+                  { c: 90, p: 24999, d: 7,  label: "Builder"  },
+                  { c: 150, p: 41999, d: 7,  label: "Champion", popular: true }],
+  },
+];
+
+const ACADEMIC_TIERS = [
+  { label: "Classes 1–7",   boards: "CBSE · ICSE · State Boards",         hourly: 250, monthly: 2000, grpHourly: 150, grpMonthly: 1200 },
+  { label: "Classes 8–10",  boards: "CBSE · ICSE · IGCSE · State Boards", hourly: 300, monthly: 2400, grpHourly: 180, grpMonthly: 1440 },
+  { label: "Classes 11–12", boards: "CBSE · ISC · IGCSE · State Boards",  hourly: 350, monthly: 2800, grpHourly: 210, grpMonthly: 1680 },
+];
+
+const ACADEMIC_SUBJECTS = [
+  "Mathematics", "Science", "English", "Social Science", "Computer Science",
+  "Informatics Practices", "Accountancy", "Economics", "Business Studies", "Second Language",
+];
 
 const CS_COURSES = [
   {
-    lang: "Python",
-    LangIcon: Code2,
-    color: "#3B82F6",
-    textColor: "#1D4ED8",
-    bgColor: "#EFF6FF",
-    bootcamp: { name: "Python Launchpad Bootcamp", duration: "2 Months", type: "Short Term", price: 4999, offerPrice: 3999, discount: 20 },
-    intense: { name: "Python Pro Intensive Program", duration: "6 Months", type: "Long Term" },
-    features: ["Hands-on projects", "Real-world assignments", "Certificate included", "Doubt clearing sessions"],
+    lang: "Python", Icon: Code2, color: T.sky,
+    bootcamp: { name: "Python Launchpad Bootcamp", duration: "2 Months", price: 4999, offerPrice: 3999, discount: 20 },
+    intense: { name: "Python Pro Intensive Program", duration: "6 Months" },
   },
   {
-    lang: "Java",
-    LangIcon: Layers,
-    color: "#F97316",
-    textColor: "#C2410C",
-    bgColor: "#FFF7ED",
-    bootcamp: { name: "Java Kickstart Bootcamp", duration: "2 Months", type: "Short Term", price: 4999, offerPrice: 3999, discount: 20 },
-    intense: { name: "Java Mastery Intensive Program", duration: "6 Months", type: "Long Term" },
-    features: ["OOP concepts", "Mini projects & capstone", "Industry certificate", "Mentor support"],
+    lang: "Java", Icon: Terminal, color: T.indigo,
+    bootcamp: { name: "Java Kickstart Bootcamp", duration: "2 Months", price: 4999, offerPrice: 3999, discount: 20 },
+    intense: { name: "Java Mastery Intensive Program", duration: "6 Months" },
   },
   {
-    lang: "Web Development",
-    LangIcon: Globe,
-    color: "#8B5CF6",
-    textColor: "#6D28D9",
-    bgColor: "#F5F3FF",
-    bootcamp: { name: "Web Dev Launchpad Bootcamp", duration: "2 Months", type: "Short Term", price: 5999, offerPrice: 4799, discount: 20 },
-    intense: { name: "Full Stack Intensive Program", duration: "6 Months", type: "Long Term" },
-    features: ["HTML · CSS · JS · React", "Backend basics", "Portfolio project", "Career guidance"],
+    lang: "Web Development", Icon: Globe, color: T.green,
+    bootcamp: { name: "Web Dev Launchpad Bootcamp", duration: "2 Months", price: 5999, offerPrice: 4799, discount: 20 },
+    intense: { name: "Full Stack Intensive Program", duration: "6 Months" },
   },
-];
-
-const CODING_GRADES = [
-  {
-    label: "Ages 1–3", age: "Ages 1–3", color: T.yellow, textColor: "#A8760A", bgColor: T.yellowLight,
-    tagline: "First steps into coding — super fun & visual!",
-    hourly: 350, monthly: 2800, grpHourly: 210, grpMonthly: 1680,
-    packages: [
-      { c: 30, p: 8499, s: 2001, d: 19, label: "Starter" },
-      { c: 45, p: 12499, s: 3251, d: 21, label: "Explorer" },
-      { c: 90, p: 23499, s: 7001, d: 23, label: "Builder" },
-      { c: 150, p: 37499, s: 14001, d: 27, label: "Champion", popular: true },
-    ],
-    grpPackages: [
-      { c: 30,  p: 5499,  s: 801,  d: 13, label: "Starter" },
-      { c: 45,  p: 8499,  s: 951,  d: 10, label: "Explorer" },
-      { c: 90,  p: 17499, s: 1401, d: 7,  label: "Builder" },
-      { c: 150, p: 28999, s: 2501, d: 8,  label: "Champion", popular: true },
-    ],
-  },
-  {
-    label: "Ages 4–6", age: "Ages 4–6", color: T.green, textColor: "#047857", bgColor: T.greenLight,
-    tagline: "Deeper logic & first real projects",
-    hourly: 400, monthly: 3200, grpHourly: 240, grpMonthly: 1920,
-    packages: [
-      { c: 30, p: 9499, s: 2501, d: 21, label: "Starter" },
-      { c: 45, p: 14499, s: 3501, d: 19, label: "Explorer" },
-      { c: 90, p: 27499, s: 8501, d: 24, label: "Builder" },
-      { c: 150, p: 43999, s: 16001, d: 27, label: "Champion", popular: true },
-    ],
-    grpPackages: [
-      { c: 30,  p: 6499,  s: 701,  d: 10, label: "Starter" },
-      { c: 45,  p: 9999,  s: 801,  d: 7,  label: "Explorer" },
-      { c: 90,  p: 19999, s: 1601, d: 7,  label: "Builder" },
-      { c: 150, p: 33499, s: 2501, d: 7,  label: "Champion", popular: true },
-    ],
-  },
-  {
-    label: "Ages 7+", age: "Ages 7+", color: T.purple, textColor: "#6D28D9", bgColor: T.purpleLight,
-    tagline: "Advanced coding, apps & real-world projects",
-    hourly: 500, monthly: 4000, grpHourly: 300, grpMonthly: 2400,
-    packages: [
-      { c: 30, p: 11999, s: 3001, d: 20, label: "Starter" },
-      { c: 45, p: 17999, s: 4501, d: 20, label: "Explorer" },
-      { c: 90, p: 33999, s: 11001, d: 24, label: "Builder" },
-      { c: 150, p: 54999, s: 20001, d: 27, label: "Champion", popular: true },
-    ],
-    grpPackages: [
-      { c: 30,  p: 7999,  s: 1001, d: 11, label: "Starter" },
-      { c: 45,  p: 12499, s: 1001, d: 7,  label: "Explorer" },
-      { c: 90,  p: 24999, s: 2001, d: 7,  label: "Builder" },
-      { c: 150, p: 41999, s: 3001, d: 7,  label: "Champion", popular: true },
-    ],
-  },
-];
-
-const ACADEMIC_GRADES = [
-  { label: "Classes 1-7", color: T.green, textColor: "#047857", bgColor: T.greenLight, hourly: 250, monthly: 2000, grpHourly: 150, grpMonthly: 1200, boards: "CBSE · ICSE · State Boards" },
-  { label: "Classes 8-10", color: T.sky, textColor: "#0284C7", bgColor: T.skyLight, hourly: 300, monthly: 2400, grpHourly: 180, grpMonthly: 1440, boards: "CBSE · ICSE · IGCSE · State Boards" },
-  { label: "Classes 11-12", color: T.purple, textColor: "#6D28D9", bgColor: T.purpleLight, hourly: 350, monthly: 2800, grpHourly: 210, grpMonthly: 1680, boards: "CBSE · ISC · IGCSE · State Boards" },
-];
-
-const CS_GRADES = [
-  { label: "Grades 5–8", color: "#4CC9F0", textColor: "#0284C7", bgColor: "#E0F2FE", hourly: 200, monthly: 1600, grpHourly: 120, grpMonthly: 960, boards: "CBSE · ICSE" },
-  { label: "Grades 9–10", color: T.green, textColor: "#047857", bgColor: T.greenLight, hourly: 250, monthly: 2000, grpHourly: 150, grpMonthly: 1200, boards: "CBSE · ICSE · IGCSE" },
-  { label: "Grades 11–12", color: T.purple, textColor: "#6D28D9", bgColor: T.purpleLight, hourly: 300, monthly: 2400, grpHourly: 180, grpMonthly: 1440, boards: "CBSE · ISC · IGCSE" },
 ];
 
 const WEB_PACKAGES = [
   {
-    name: "Starter Site", price: "₹14,999", desc: "Perfect for personal brands, portfolios, and small businesses.",
-    color: T.gold, textColor: "#92400E", bgColor: T.goldLight,
+    name: "Starter Site", tier: "Silver", price: 14999, timeline: "2–3 weeks",
+    desc: "Personal brands, portfolios & small businesses.",
+    color: T.silver, textColor: "#57606F", bgColor: T.silverLight,
     features: ["Up to 5 pages", "Mobile responsive", "Contact form", "Basic SEO", "1-month support"],
-    timeline: "2–3 weeks",
   },
   {
-    name: "Business Pro", price: "₹29,999", desc: "Full-featured website for growing businesses.",
-    badge: "Most Popular", color: T.green, textColor: "#065F46", bgColor: T.greenLight,
-    features: ["Up to 12 pages", "Custom UI/UX design", "CMS (admin panel)", "Google SEO setup", "Blog/News section", "3-month support"],
-    timeline: "3–5 weeks",
+    name: "Business Pro", tier: "Gold", price: 29999, timeline: "3–5 weeks", popular: true,
+    desc: "Full-featured site for growing businesses.",
+    color: T.gold, textColor: T.goldDeep, bgColor: T.goldLight,
+    features: ["Up to 12 pages", "Custom UI/UX design", "CMS (admin panel)", "Google SEO setup", "Blog / News section", "3-month support"],
   },
   {
-    name: "E-commerce", price: "₹49,999", desc: "Complete shopping experience with payments.",
-    color: T.sky, textColor: "#0369A1", bgColor: T.skyLight,
+    name: "E-commerce", tier: "Bronze", price: 49999, timeline: "5–7 weeks",
+    desc: "Complete shopping experience with payments.",
+    color: T.bronze, textColor: "#8A4B22", bgColor: T.bronzeLight,
     features: ["Unlimited products", "Payment gateway", "Order management", "Product catalog", "Inventory tracking", "6-month support"],
-    timeline: "5–7 weeks",
   },
 ];
 
 const ALWAYS_INCLUDED = [
-  { icon: "Video", title: "Live Online Classes", desc: "Real teacher, real time — never pre-recorded" },
-  { icon: "BarChart3", title: "Monthly Progress Report", desc: "Parents get detailed updates every month" },
-  { icon: "RefreshCw", title: "Free Rescheduling", desc: "Cancel/reschedule 24 hrs before class, no charge" },
-  { icon: "PlayCircle", title: "Session Recordings", desc: "Watch missed classes anytime, forever" },
-  { icon: "FileText", title: "Learning Materials", desc: "Worksheets, notes & projects included" },
-  { icon: "Award", title: "Completion Certificate", desc: "Awarded upon finishing each level" },
-  { icon: "MessageCircle", title: "WhatsApp Parent Group", desc: "Stay connected with updates & tips" },
-  { icon: "HelpCircle", title: "Doubt Clearing", desc: "Personalised help every session" },
+  { icon: Video,         label: "Live Classes" },
+  { icon: BarChart3,     label: "Monthly Reports" },
+  { icon: RefreshCw,     label: "Free Rescheduling" },
+  { icon: PlayCircle,    label: "Session Recordings" },
+  { icon: Award,         label: "Certificate" },
+  { icon: MessageCircle, label: "WhatsApp Group" },
 ];
 
 const FAQS = [
-  { q: "Will my child get the same teacher every class?", a: "Yes! We assign a dedicated teacher to your child so they can build a comfortable learning relationship. If you'd like to switch, just let us know." },
-  { q: "What happens if my child misses a class?", a: "Every session is recorded. Your child can watch the replay anytime. You can also reschedule for free with 24 hours notice." },
-  { q: "Are there any hidden fees or registration charges?", a: "Absolutely none. No registration fee, no material fee, no hidden charges. You pay only for the sessions you book — that's it." },
-  { q: "What age group is best for coding classes?", a: "We welcome kids from age 5 (Grade 1). The earlier they start, the better! Our curriculum is designed specifically for each age group — playful for younger kids, project-focused for older ones." },
-  { q: "Which boards do you support for academic tuition?", a: "We support all major Indian boards: CBSE, ICSE, ISC, IGCSE, and all state boards (Maharashtra, Karnataka, Tamil Nadu, Gujarat, Rajasthan, UP, etc.)." },
-  { q: "Can I book academic tuition for multiple subjects?", a: "Yes! You can book different subjects or even different teachers based on your child's needs. Most students benefit from focused subject tutoring." },
-  { q: "How is CS Tuition different from school?", a: "Our CS tutors focus entirely on your child's board syllabus — CBSE, ICSE, ISC, or IGCSE — and ensure they not only pass but score top marks. Very different from a classroom of 40 students!" },
-  { q: "Can I try before paying?", a: "Yes! Book a completely free 30-minute demo class. No payment, no commitment. You'll see exactly how we teach before deciding." },
+  { q: "Will my child get the same teacher every class?", a: "Yes! We assign a dedicated teacher so they can build a comfortable learning relationship. Want to switch? Just let us know." },
+  { q: "What happens if my child misses a class?", a: "Every session is recorded, so they can watch the replay anytime. You can also reschedule for free with 24 hours' notice." },
+  { q: "Are there any hidden fees or registration charges?", a: "None at all — no registration fee, no material fee. You only pay for the sessions you book." },
+  { q: "Is Computer Science / IP tuition available?", a: "Yes — Computer Science and Informatics Practices are covered under Academic Tuition at the same pricing as every other subject for that class. No separate booking needed." },
+  { q: "Which boards do you support?", a: "All major Indian boards: CBSE, ICSE, ISC, IGCSE, and state boards (Maharashtra, Karnataka, Tamil Nadu, Gujarat, Rajasthan, UP, and more)." },
+  { q: "Can I try before paying?", a: "Yes! Book a free 30-minute demo class — no payment, no commitment." },
 ];
 
-// ─── Reusable Components ────────────────────────────────────────────────────
-
-
-const INCLUDED_ICON_MAP = { Video, BarChart3, RefreshCw, PlayCircle, FileText, Award, MessageCircle, HelpCircle };
-
+// ─── Small building blocks ───────────────────────────────────────────────
 const SectionBadge = ({ children, color }) => (
-  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black border"
+  <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black border"
     style={{ background: `${color}15`, borderColor: `${color}30`, color }}>
     {children}
-  </motion.div>
+  </span>
 );
 
 const TrustBadge = ({ icon, text }) => (
-  <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border"
-    style={{ background: "rgba(255,255,255,0.4)", borderColor: "rgba(15,23,42,0.1)", color: T.ink }}>
+  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold border bg-white/70"
+    style={{ borderColor: T.border, color: T.ink }}>
     {icon} {text}
   </div>
 );
 
-const IncludedStrip = () => (
-  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+const IncludedChips = () => (
+  <div className="flex flex-wrap justify-center gap-2">
     {ALWAYS_INCLUDED.map((item, i) => (
-      <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ delay: i * 0.05 }}
-        className="flex items-start gap-3 p-4 rounded-2xl bg-white/60 backdrop-blur-sm border"
-        style={{ borderColor: "rgba(15,23,42,0.08)" }}>
-        <span className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-xl" style={{ background: "rgba(16,185,129,0.1)" }}>
-          {(() => { const I = INCLUDED_ICON_MAP[item.icon]; return I ? <I className="w-4 h-4 text-emerald-600" /> : null; })()}
+      <div key={i} className="flex items-center gap-1.5 pl-2 pr-3 py-1.5 rounded-full text-xs font-bold bg-white border"
+        style={{ borderColor: T.border, color: T.textSecondary }}>
+        <span className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: T.greenLight }}>
+          <item.icon className="w-3.5 h-3.5" style={{ color: T.green }} />
         </span>
-        <div>
-          <div className="font-black text-xs text-slate-500 uppercase tracking-widest mb-0.5">{item.title}</div>
-          <div className="text-xs text-slate-600">{item.desc}</div>
-        </div>
-      </motion.div>
-    ))}
-  </div>
-);
-
-const GradeCard = ({ label, color, textColor, bgColor, hourly, monthly, grpHourly, grpMonthly, boards }) => (
-  <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }} transition={{ staggerChildren: 0.1 }}
-    whileHover={{ y: -4 }}
-    className="p-8 rounded-[2rem] border-2 text-center transition-all"
-    style={{
-      background: bgColor, borderColor: color + "40", boxShadow: `0 12px 40px ${color}20`
-    }}>
-    <div className="w-10 h-10 rounded-full mb-3 mx-auto" style={{ background: color + "30" }} />
-    <h3 className="font-black text-xl mb-1" style={{ color: textColor }}>{label}</h3>
-    <p className="text-xs mb-6" style={{ color: textColor }}>{boards}</p>
-    <div className="space-y-2 mb-6 pb-6 border-b" style={{ borderColor: color + "25" }}>
-      <div className="flex items-center justify-center gap-2">
-        <span className="font-black text-2xl" style={{ color: textColor }}>₹{hourly}</span>
-        <span className="text-xs" style={{ color: textColor, opacity: 0.7 }}>per session (1 hr)</span>
-      </div>
-      <div className="flex items-center justify-center gap-2 text-xs" style={{ color: textColor, opacity: 0.6 }}>
-        <span>or ₹{monthly}/month (8 sessions)</span>
-      </div>
-    </div>
-    <div className="space-y-2 text-sm">
-      <div className="flex items-center justify-between" style={{ color: textColor }}>
-        <span className="opacity-70">Solo Classes</span>
-        <span className="font-bold">₹{hourly}/hr</span>
-      </div>
-      <div className="flex items-center justify-between" style={{ color: textColor }}>
-        <span className="opacity-70">Group (2-3 students)</span>
-        <span className="font-bold">₹{grpHourly}/hr</span>
-      </div>
-    </div>
-  </motion.div>
-);
-
-const PackageCard = ({ c, p, s, d, label, popular, color }) => (
-  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-    whileHover={{ scale: 1.03, y: -4 }}
-    className="p-6 rounded-2xl bg-white border-2 relative overflow-hidden transition-all"
-    style={{
-      borderColor: popular ? color : "rgba(15,23,42,0.08)",
-      boxShadow: popular ? `0 20px 50px ${color}25` : "0 4px 20px rgba(15,23,42,0.04)",
-      background: popular ? color + "05" : "#fff"
-    }}>
-    {popular && (
-      <div className="absolute -top-2 -right-2 px-4 py-1 rounded-full text-xs font-black"
-        style={{ background: color, color: "#fff", transform: "rotate(12deg)" }}>POPULAR</div>
-    )}
-    <h4 className="font-black mb-2" style={{ color }}>{label}</h4>
-    <div className="mb-4">
-      <span className="font-black text-2xl" style={{ color }}>₹{p}</span>
-      <span className="text-xs text-slate-500 ml-2">for {c} sessions</span>
-    </div>
-    <div className="space-y-1 mb-4 pb-4 border-b" style={{ borderColor: "rgba(15,23,42,0.08)" }}>
-      <div className="text-xs text-slate-600">
-        <span className="line-through text-slate-400">₹{Math.round(c * (p/c))}</span> → <span className="font-bold" style={{ color }}>Save ₹{s}</span>
-      </div>
-      <div className="text-xs font-bold text-slate-500">₹{Math.round(p/c)}/session</div>
-    </div>
-    <div className="text-xs text-slate-500">
-      <span className="font-bold text-slate-600">{d}% savings</span> vs hourly rate
-    </div>
-  </motion.div>
-);
-
-const CodingSection = ({ openDemoModal }) => (
-  <div className="space-y-12">
-    {CODING_GRADES.map((grade, gi) => (
-      <div key={gi}>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: gi * 0.1 }}>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full flex-shrink-0" style={{ background: grade.color + "25" }} />
-            <div>
-              <h3 className="font-black text-xl" style={{ color: T.ink }}>{grade.label}</h3>
-              <p className="text-sm text-slate-500">{grade.tagline}</p>
-            </div>
-          </div>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-6 mb-8">
-          <div>
-            <h4 className="font-bold text-sm mb-4 text-slate-600 uppercase tracking-widest">Solo Classes</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {grade.packages.map((pkg, pi) => (
-                <PackageCard key={pi} {...pkg} color={grade.color} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold text-sm mb-4 text-slate-600 uppercase tracking-widest">Group Classes (2-3 students)</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {grade.grpPackages.map((pkg, pi) => (
-                <PackageCard key={pi} {...pkg} color={grade.color} />
-              ))}
-            </div>
-          </div>
-        </div>
+        {item.label}
       </div>
     ))}
   </div>
 );
 
-const AcademicSection = ({ openDemoModal }) => (
-  <div className="space-y-12">
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <p className="text-slate-600 mb-8">
-        Academic tuition for Classes 1-12 • All subjects • All major boards (CBSE, ICSE, ISC, IGCSE, State Boards)
-      </p>
-    </motion.div>
+// ─── Compact price row (collapsed by default, expands to show bundles) ──────
+const PriceRow = ({ tier, color, mode, expanded, onToggle }) => {
+  const hourly = mode === "solo" ? tier.hourly : tier.grpHourly;
+  const monthly = mode === "solo" ? tier.monthly : tier.grpMonthly;
+  const packages = mode === "solo" ? tier.packages : tier.grpPackages;
 
-    {ACADEMIC_GRADES.map((grade, gi) => (
-      <motion.div key={gi} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ delay: gi * 0.1 }}>
-        <GradeCard {...grade} />
-      </motion.div>
-    ))}
-
-    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }} className="mt-12 p-6 rounded-2xl text-center"
-      style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.15)" }}>
-      <p style={{ color: T.green }} className="font-bold mb-2 flex items-center gap-2"><Zap className="w-4 h-4" /> Smart Bundles Available</p>
-      <p className="text-sm text-slate-600">
-        Book multiple sessions and save up to 20%! Contact us on WhatsApp for personalized bundle pricing based on your needs.
-      </p>
-    </motion.div>
-  </div>
-);
-
-const CSTuitionSection = ({ openDemoModal }) => (
-  <div className="space-y-8">
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <p className="text-slate-600 mb-8">
-        Computer Science & Information Practices tuition • Classes 6-12 • All boards • Exam-focused
-      </p>
-    </motion.div>
-
-    {CS_GRADES.map((grade, gi) => (
-      <motion.div key={gi} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ delay: gi * 0.1 }}>
-        <GradeCard {...grade} />
-      </motion.div>
-    ))}
-  </div>
-);
-
-const WebDevSection = ({ openDemoModal }) => (
-  <div className="space-y-8">
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <p className="text-slate-600 mb-8">
-        Custom websites designed & built for your brand — by expert developers
-      </p>
-    </motion.div>
-
-    {WEB_PACKAGES.map((pkg, i) => (
-      <motion.div key={i} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-        className="p-8 rounded-[2rem] border-2 relative overflow-hidden"
-        style={{
-          background: pkg.bgColor, borderColor: pkg.color + "40", boxShadow: `0 12px 40px ${pkg.color}20`
-        }}>
-        {pkg.badge && (
-          <div className="absolute top-4 right-4 px-4 py-1.5 rounded-full text-xs font-black bg-white"
-            style={{ color: pkg.color }}>
-            {pkg.badge}
-          </div>
-        )}
-        <div className="flex items-start gap-6 mb-6">
-          
-          <div className="flex-1">
-            <h3 className="font-black text-2xl mb-2" style={{ color: pkg.textColor }}>{pkg.name}</h3>
-            <p className="text-sm" style={{ color: pkg.textColor, opacity: 0.7 }}>{pkg.desc}</p>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <div className="font-black text-3xl mb-1" style={{ color: pkg.textColor }}>{pkg.price}</div>
-            <div className="text-xs" style={{ color: pkg.textColor, opacity: 0.6 }}>{pkg.timeline}</div>
+  return (
+    <div className="rounded-2xl border-2 bg-white overflow-hidden transition-colors"
+      style={{ borderColor: expanded ? color : T.border }}>
+      <button
+        onClick={() => packages && onToggle()}
+        className={`w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left ${packages ? "cursor-pointer" : "cursor-default"}`}>
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="w-2 h-8 rounded-full flex-shrink-0" style={{ background: color }} />
+          <div className="min-w-0">
+            <div className="font-black text-sm truncate" style={{ color: T.ink }}>{tier.label}</div>
+            <div className="text-xs text-slate-400 truncate">{tier.tagline || tier.boards}</div>
           </div>
         </div>
-        <div className="space-y-2">
-          {pkg.features.map((f, fi) => (
-            <div key={fi} className="flex items-center gap-3 text-sm" style={{ color: pkg.textColor }}>
-              <Check className="w-4 h-4" />
-              {f}
+        <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
+          <div className="text-right">
+            <div className="font-black text-base sm:text-lg leading-tight" style={{ color }}>
+              ₹{hourly}<span className="text-[11px] font-semibold text-slate-400">/session</span>
             </div>
-          ))}
-        </div>
-      </motion.div>
-    ))}
-  </div>
-);
-
-// ─── CS Courses Section ──────────────────────────────────────────────────────
-const CSCoursesSection = ({ openDemoModal }) => (
-  <div className="space-y-10">
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="flex items-center gap-3 mb-2">
-        <GraduationCap className="w-6 h-6" style={{ color: T.sky }} />
-        <div>
-          <h3 className="font-black text-xl" style={{ color: T.ink }}>CS Courses for 12th Passed & Above</h3>
-          <p className="text-sm text-slate-500">Bootcamps with flat prices · Long-term programs on enquiry</p>
-        </div>
-      </div>
-      {/* +2 offer banner */}
-      <div className="mt-4 flex items-center gap-4 px-5 py-3 rounded-2xl border"
-        style={{ background: "linear-gradient(105deg,#ecfdf5,#eff6ff)", borderColor: "rgba(16,185,129,0.25)" }}>
-        <Gift className="w-5 h-5 text-emerald-600" />
-        <div className="flex-1">
-          <span className="font-black text-sm" style={{ color: "#047857" }}>2026 +2 Passed Students get 20% OFF on all Bootcamps!</span>
-          <span className="ml-2 text-xs text-slate-500">Offer prices shown below.</span>
-        </div>
-        <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
-          className="shrink-0 px-4 py-1.5 rounded-xl text-xs font-black text-white"
-          style={{ background: "linear-gradient(135deg,#10B981,#0EA5E9)" }}>
-          Claim via WhatsApp
-        </a>
-      </div>
-    </motion.div>
-
-    {CS_COURSES.map((course, ci) => (
-      <motion.div key={ci} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ delay: ci * 0.1 }}
-        className="rounded-[2rem] border-2 overflow-hidden"
-        style={{ borderColor: course.color + "35", boxShadow: `0 12px 40px ${course.color}12`, background: course.bgColor }}>
-
-        {/* Course header */}
-        <div className="flex items-center gap-4 px-8 pt-7 pb-5 border-b" style={{ borderColor: course.color + "25" }}>
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{ background: course.color + "18", border: `1.5px solid ${course.color}30` }}>
-            <course.LangIcon className="w-7 h-7" style={{ color: course.textColor }} />
+            <div className="text-[11px] text-slate-400">₹{monthly}/mo · 8 sessions</div>
           </div>
-          <div className="flex-1">
-            <h3 className="font-black text-xl" style={{ color: course.textColor }}>{course.lang}</h3>
-            <div className="flex flex-wrap gap-2 mt-1">
-              {course.features.map((f, fi) => (
-                <span key={fi} className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
-                  style={{ background: course.color + "18", color: course.textColor }}>
-                  {f}
-                </span>
-              ))}
-            </div>
-          </div>
+          {packages && (expanded
+            ? <ChevronUp className="w-4 h-4 text-slate-400" />
+            : <ChevronDown className="w-4 h-4 text-slate-400" />)}
         </div>
+      </button>
 
-        {/* Two tracks side by side */}
-        <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x" style={{ borderColor: course.color + "20" }}>
-          {/* Bootcamp */}
-          <div className="p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-[11px] font-black"
-                style={{ background: course.color + "18", color: course.textColor }}>
-                <Zap className="w-3 h-3 inline mr-1" /> Bootcamp · {course.bootcamp.type}
-              </span>
-              <span className="text-xs text-slate-400">{course.bootcamp.duration}</span>
-            </div>
-            <div>
-              <p className="font-bold text-base mb-3" style={{ color: course.textColor }}>{course.bootcamp.name}</p>
-              <div className="flex items-end gap-3">
-                <div>
-                  <div className="text-xs text-slate-400 line-through mb-0.5">₹{course.bootcamp.price.toLocaleString()}</div>
-                  <div className="font-black text-3xl" style={{ color: course.textColor }}>
-                    ₹{course.bootcamp.offerPrice.toLocaleString()}
+      <AnimatePresence>
+        {expanded && packages && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
+            <div className="px-4 sm:px-5 pb-5 pt-1 border-t" style={{ borderColor: color + "20" }}>
+              <div className="text-[11px] font-black uppercase tracking-widest text-slate-400 mt-3 mb-2">
+                Bundle & Save
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {packages.map((pkg, i) => (
+                  <div key={i} className="p-3 rounded-xl text-center"
+                    style={{
+                      background: pkg.popular ? color + "12" : "#F8FAFC",
+                      border: `1.5px solid ${pkg.popular ? color + "50" : T.border}`,
+                    }}>
+                    {pkg.popular && <div className="text-[9px] font-black mb-0.5" style={{ color }}>BEST VALUE</div>}
+                    <div className="font-black text-sm" style={{ color: T.ink }}>₹{pkg.p.toLocaleString()}</div>
+                    <div className="text-[10px] text-slate-400">{pkg.c} sessions</div>
+                    <div className="text-[10px] font-bold mt-0.5" style={{ color }}>Save {pkg.d}%</div>
                   </div>
-                </div>
-                <div className="mb-1 px-3 py-1 rounded-full text-xs font-black text-white"
-                  style={{ background: `linear-gradient(135deg,#10B981,#0EA5E9)` }}>
-                  {course.bootcamp.discount}% OFF
-                </div>
+                ))}
               </div>
-              <p className="text-xs text-slate-500 mt-1">For 2026 +2 Passed Students</p>
             </div>
-            <motion.button
-              whileHover={{ scale: 1.04, boxShadow: `0 8px 24px ${course.color}35` }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => openDemoModal && openDemoModal("courses_bootcamp")}
-              className="mt-auto w-full py-3 rounded-2xl text-sm font-black text-white"
-              style={{ background: `linear-gradient(135deg,${course.color},${course.textColor})` }}>
-              <Rocket className="w-4 h-4 inline mr-1" /> Enroll Now
-            </motion.button>
-          </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
-          {/* Intense Training */}
-          <div className="p-6 flex flex-col gap-4" style={{ background: course.color + "08" }}>
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-[11px] font-black"
-                style={{ background: course.color + "25", color: course.textColor }}>
-                <Flame className="w-3 h-3 inline mr-1" /> Intense Training · {course.intense.type}
-              </span>
-              <span className="text-xs text-slate-400">{course.intense.duration}</span>
-            </div>
-            <div>
-              <p className="font-bold text-base mb-3" style={{ color: course.textColor }}>{course.intense.name}</p>
-              <div className="flex items-center gap-3 p-4 rounded-2xl border"
-                style={{ background: "#fff", borderColor: course.color + "30" }}>
-                <MessageCircle className="w-5 h-5" style={{ color: course.textColor }} />
-                <div>
-                  <div className="font-black text-sm" style={{ color: course.textColor }}>Custom Pricing</div>
-                  <div className="text-xs text-slate-500">Tailored to your goals & schedule</div>
-                </div>
-              </div>
-            </div>
-            <motion.a
-              href={`https://wa.me/91XXXXXXXXXX?text=Hi!%20I'm%20interested%20in%20the%20${encodeURIComponent(course.intense.name)}%20at%20Pearlx.%20Please%20share%20details.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-auto w-full py-3 rounded-2xl text-sm font-black text-center border-2 flex items-center justify-center gap-2"
-              style={{ background: "#fff", color: course.textColor, borderColor: course.color + "50" }}>
-              <MessageCircle className="w-4 h-4" />
-              Enquire on WhatsApp
-            </motion.a>
+const TierPriceList = ({ tiers, color, showToggle = true }) => {
+  const [mode, setMode] = useState("solo");
+  const [openIdx, setOpenIdx] = useState(0);
+
+  return (
+    <div>
+      {showToggle && (
+        <div className="flex justify-end mb-4">
+          <div className="inline-flex p-1 rounded-full bg-white border" style={{ borderColor: T.border }}>
+            {["solo", "group"].map(m => (
+              <button key={m} onClick={() => setMode(m)}
+                className="px-4 py-1.5 rounded-full text-xs font-black transition-all flex items-center gap-1.5"
+                style={{ background: mode === m ? color : "transparent", color: mode === m ? "#fff" : T.textMuted }}>
+                <Users className="w-3 h-3" /> {m === "solo" ? "1:1 Solo" : "Group (2–3)"}
+              </button>
+            ))}
           </div>
         </div>
-      </motion.div>
-    ))}
+      )}
+      <div className="space-y-3">
+        {tiers.map((tier, i) => (
+          <PriceRow key={i} tier={tier} color={color} mode={mode}
+            expanded={openIdx === i} onToggle={() => setOpenIdx(openIdx === i ? null : i)} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ─── Sections ─────────────────────────────────────────────────────────────
+const CodingSection = () => (
+  <div>
+    <div className="flex items-center gap-3 mb-6">
+      <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: T.indigoLight }}>
+        <Code2 className="w-5 h-5" style={{ color: T.indigo }} />
+      </div>
+      <div>
+        <h3 className="font-black text-lg" style={{ color: T.ink }}>Kids Coding — Ages 1 to 15+</h3>
+        <p className="text-sm text-slate-500">Tap a tier for bundle pricing · toggle solo or group</p>
+      </div>
+    </div>
+    <TierPriceList tiers={CODING_TIERS} color={T.indigo} />
+  </div>
+);
+
+const AcademicSection = () => (
+  <div>
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: T.greenLight }}>
+        <BookOpen className="w-5 h-5" style={{ color: T.green }} />
+      </div>
+      <div>
+        <h3 className="font-black text-lg" style={{ color: T.ink }}>Academic Tuition — Classes 1 to 12</h3>
+        <p className="text-sm text-slate-500">One price covers every subject — including Computer Science &amp; IP</p>
+      </div>
+    </div>
+
+    <div className="flex flex-wrap gap-2 mb-6">
+      {ACADEMIC_SUBJECTS.map((s, i) => (
+        <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
+          style={{ background: T.greenLight, color: "#047857" }}>
+          {s === "Computer Science" && <Cpu className="w-3 h-3" />}
+          {s}
+        </span>
+      ))}
+    </div>
+
+    <TierPriceList tiers={ACADEMIC_TIERS} color={T.green} />
+
+    <div className="mt-6 flex items-center gap-3 p-4 rounded-2xl" style={{ background: T.greenLight, border: `1px solid ${T.green}30` }}>
+      <Zap className="w-4 h-4 flex-shrink-0" style={{ color: T.green }} />
+      <p className="text-sm" style={{ color: "#047857" }}>
+        <span className="font-black">Bundle 2+ subjects and save up to 20%.</span> Message us on WhatsApp for a custom quote.
+      </p>
+    </div>
+  </div>
+);
+
+const CSCoursesSection = ({ openDemoModal }) => (
+  <div>
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: T.skyLight }}>
+        <GraduationCap className="w-5 h-5" style={{ color: T.sky }} />
+      </div>
+      <div>
+        <h3 className="font-black text-lg" style={{ color: T.ink }}>Computer Science Courses — 12th Passed &amp; Above</h3>
+        <p className="text-sm text-slate-500">Flat bootcamp pricing · long-term programs on enquiry</p>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl border mb-5"
+      style={{ background: `linear-gradient(105deg,${T.greenLight},${T.skyLight})`, borderColor: T.green + "30" }}>
+      <Gift className="w-4 h-4 flex-shrink-0" style={{ color: T.green }} />
+      <span className="text-xs sm:text-sm font-black flex-1" style={{ color: "#047857" }}>
+        2026 +2 Passed Students get 20% OFF all bootcamps
+      </span>
+      <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+        className="flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-black text-white"
+        style={{ background: `linear-gradient(135deg,${T.green},${T.sky})` }}>
+        Claim
+      </a>
+    </div>
+
+    <div className="space-y-3">
+      {CS_COURSES.map((course, i) => (
+        <div key={i} className="rounded-2xl border-2 bg-white overflow-hidden" style={{ borderColor: course.color + "30" }}>
+          <div className="flex items-center gap-3 px-5 pt-4 pb-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: course.color + "15" }}>
+              <course.Icon className="w-4 h-4" style={{ color: course.color }} />
+            </div>
+            <span className="font-black text-sm" style={{ color: T.ink }}>{course.lang}</span>
+          </div>
+          <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x" style={{ borderColor: course.color + "15" }}>
+            <div className="p-5 flex items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-1.5 text-[11px] font-black mb-1" style={{ color: course.color }}>
+                  <Zap className="w-3 h-3" /> BOOTCAMP · {course.bootcamp.duration}
+                </div>
+                <div className="flex items-baseline gap-2 flex-wrap">
+                  <span className="text-xs text-slate-400 line-through">₹{course.bootcamp.price.toLocaleString()}</span>
+                  <span className="font-black text-xl" style={{ color: T.ink }}>₹{course.bootcamp.offerPrice.toLocaleString()}</span>
+                  <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full text-white" style={{ background: course.color }}>
+                    {course.bootcamp.discount}% OFF
+                  </span>
+                </div>
+              </div>
+              <button onClick={() => openDemoModal && openDemoModal("courses_bootcamp")}
+                className="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-black text-white"
+                style={{ background: course.color }}>
+                Enroll
+              </button>
+            </div>
+            <div className="p-5 flex items-center justify-between gap-3" style={{ background: course.color + "06" }}>
+              <div>
+                <div className="flex items-center gap-1.5 text-[11px] font-black mb-1 text-slate-500">
+                  <Flame className="w-3 h-3" /> INTENSIVE · {course.intense.duration}
+                </div>
+                <div className="font-black text-sm" style={{ color: T.ink }}>Custom Pricing</div>
+              </div>
+              <a
+                href={`https://wa.me/91XXXXXXXXXX?text=Hi!%20I'm%20interested%20in%20${encodeURIComponent(course.intense.name)}%20at%20Pearlx.%20Please%20share%20details.`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-black border-2 flex items-center gap-1.5"
+                style={{ borderColor: course.color + "50", color: course.color }}>
+                <MessageCircle className="w-3.5 h-3.5" /> Enquire
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const WebDevSection = () => (
+  <div>
+    <div className="flex items-center gap-3 mb-6">
+      <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: T.goldLight }}>
+        <Globe className="w-5 h-5" style={{ color: T.gold }} />
+      </div>
+      <div>
+        <h3 className="font-black text-lg" style={{ color: T.ink }}>Web Development — For Brands</h3>
+        <p className="text-sm text-slate-500">Custom websites, designed &amp; built by our developers</p>
+      </div>
+    </div>
+
+    <div className="grid sm:grid-cols-3 gap-4">
+      {WEB_PACKAGES.map((pkg, i) => (
+        <div key={i} className="rounded-[1.75rem] border-2 p-6 relative flex flex-col"
+          style={{
+            borderColor: pkg.popular ? pkg.color : T.border,
+            background: pkg.popular ? pkg.bgColor : "#fff",
+            boxShadow: pkg.popular ? `0 16px 40px ${pkg.color}25` : "0 4px 16px rgba(15,23,42,0.04)",
+          }}>
+          {pkg.popular && (
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black text-white"
+              style={{ background: pkg.color }}>MOST POPULAR</div>
+          )}
+          <div className="text-[10px] font-black uppercase tracking-widest mb-1" style={{ color: pkg.color }}>{pkg.tier}</div>
+          <h4 className="font-black text-lg mb-1" style={{ color: T.ink }}>{pkg.name}</h4>
+          <p className="text-xs text-slate-500 mb-4 leading-relaxed">{pkg.desc}</p>
+          <div className="mb-5">
+            <span className="font-black text-2xl" style={{ color: T.ink }}>₹{pkg.price.toLocaleString()}</span>
+            <span className="text-xs text-slate-400 ml-1.5">· {pkg.timeline}</span>
+          </div>
+          <div className="space-y-2 mb-5 flex-1">
+            {pkg.features.map((f, fi) => (
+              <div key={fi} className="flex items-start gap-2 text-xs" style={{ color: T.textSecondary }}>
+                <Check className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: pkg.color }} />
+                {f}
+              </div>
+            ))}
+          </div>
+          <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+            className="w-full py-2.5 rounded-xl text-xs font-black text-center"
+            style={{
+              background: pkg.popular ? pkg.color : "#fff",
+              color: pkg.popular ? "#fff" : pkg.color,
+              border: `2px solid ${pkg.color}`,
+            }}>
+            Get Started
+          </a>
+        </div>
+      ))}
+    </div>
   </div>
 );
 
@@ -539,180 +455,128 @@ const FAQ = () => {
   return (
     <div className="space-y-3">
       {FAQS.map((item, i) => (
-        <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-          viewport={{ once: true }} transition={{ delay: i * 0.05 }}
-          className="rounded-2xl border-2 overflow-hidden transition-all"
-          style={{
-            borderColor: openIdx === i ? T.green : "rgba(15,23,42,0.08)",
-            boxShadow: openIdx === i ? `0 12px 40px rgba(16,185,129,0.15)` : "0 2px 8px rgba(0,0,0,0.02)"
-          }}>
+        <div key={i} className="rounded-2xl border-2 overflow-hidden transition-colors"
+          style={{ borderColor: openIdx === i ? T.green : T.border }}>
           <button onClick={() => setOpenIdx(openIdx === i ? null : i)}
-            className="w-full flex items-center justify-between p-6 text-left font-bold transition-all"
-            style={{ background: openIdx === i ? "rgba(16,185,129,0.05)" : "#fff", color: T.ink }}>
+            className="w-full flex items-center justify-between gap-4 p-5 text-left font-bold text-sm"
+            style={{ background: openIdx === i ? T.greenLight : "#fff", color: T.ink }}>
             <span>{item.q}</span>
-            <motion.span animate={{ rotate: openIdx === i ? 180 : 0 }} transition={{ duration: 0.2 }}>
-              <ChevronDown className="w-5 h-5" style={{ color: T.green }} />
-            </motion.span>
+            <ChevronDown className="w-4 h-4 flex-shrink-0 transition-transform"
+              style={{ color: T.green, transform: openIdx === i ? "rotate(180deg)" : "none" }} />
           </button>
           <AnimatePresence>
             {openIdx === i && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
-                className="px-6 pb-6 text-slate-600 text-sm leading-relaxed border-t"
-                style={{ borderColor: "rgba(16,185,129,0.1)" }}>
-                {item.a}
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <div className="px-5 pb-5 text-slate-600 text-sm leading-relaxed border-t" style={{ borderColor: T.green + "15" }}>
+                  <p className="pt-4">{item.a}</p>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </div>
       ))}
     </div>
   );
 };
 
-// ─── MAIN COMPONENT ─────────────────────────────────────────────────────
+// ─── Main ───────────────────────────────────────────────────────────────
 export default function Pricing({ openDemoModal }) {
   const [activeTab, setActiveTab] = useState("coding");
 
   return (
-    <section className="relative overflow-hidden pt-40" style={{ background: T.bg }}>
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 opacity-20"
-          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(14,165,233,0.15) 1px, transparent 0)", backgroundSize: "44px 44px" }} />
-        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.05, 0.12, 0.05] }}
-          transition={{ duration: 12, repeat: Infinity }}
-          className="absolute top-0 left-1/3 w-[55vw] h-[55vw] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%)", filter: "blur(64px)" }} />
-        {[...Array(8)].map((_, i) => (
-          <motion.div key={i} className="absolute rounded-full"
-            style={{ width: 6, height: 6, background: i % 3 === 0 ? T.green : i % 3 === 1 ? T.sky : T.yellow, left: `${10 + i * 11}%`, top: `${20 + (i % 4) * 18}%` }}
-            animate={{ y: [0, -40, 0], opacity: [0, 0.7, 0] }}
-            transition={{ duration: 4 + i * 0.6, repeat: Infinity, delay: i * 0.5 }} />
-        ))}
-      </div>
-
+    <section className="relative pt-45 pb-20" style={{ background: T.bg }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} className="text-center mb-14">
-          <h1 className="font-black mt-10 mb-3"
-            style={{ color: T.ink, letterSpacing: "-0.04em", fontSize: "clamp(2rem,5vw,3.2rem)", lineHeight: 1.1 }}>
+
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} className="text-center mb-10">
+          <h1 className="font-black mb-3" style={{ color: T.ink, letterSpacing: "-0.03em", fontSize: "clamp(1.9rem,4.5vw,2.75rem)", lineHeight: 1.15 }}>
             Simple, honest{" "}
-            <span style={{
-              background: `linear-gradient(135deg,${T.gold},${T.green})`,
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
-            }}>fee details</span>
+            <span style={{ background: `linear-gradient(135deg,${T.sky},${T.green})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              fee details
+            </span>
           </h1>
-          <p className="text-slate-500 max-w-xl mx-auto text-sm leading-relaxed mb-6">
-            No registration fees. No hidden charges. No tricks. Pick the right plan for your child — and save big with bundles.
+          <p className="text-slate-500 max-w-lg mx-auto text-sm mb-5">
+            No registration fees. No hidden charges. Pick the right plan for your child — and save with bundles.
           </p>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-2 justify-center mb-6">
             <TrustBadge icon={<Lock className="w-3.5 h-3.5" />} text="No hidden fees" />
             <TrustBadge icon={<Gift className="w-3.5 h-3.5" />} text="Free demo class" />
             <TrustBadge icon={<Phone className="w-3.5 h-3.5" />} text="WhatsApp support" />
-            <TrustBadge icon={<RefreshCw className="w-3.5 h-3.5" />} text="Flexible rescheduling" />
-            <TrustBadge icon={<BarChart3 className="w-3.5 h-3.5" />} text="Monthly reports" />
           </div>
+          <IncludedChips />
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} className="mb-10">
-          <IncludedStrip />
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} className="mb-8">
-          <div className="text-center text-sm font-black text-slate-500 uppercase tracking-widest mb-4">
-            What are you looking for?
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {TABS.map(tab => (
-              <motion.button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}
-                className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-4 rounded-2xl border-2 text-center sm:text-left transition-all"
-                style={{
-                  background: activeTab === tab.id ? tab.color + "15" : "#fff",
-                  borderColor: activeTab === tab.id ? tab.color : "rgba(15,23,42,0.08)",
-                  boxShadow: activeTab === tab.id ? `0 8px 32px ${tab.color}20` : "0 2px 8px rgba(0,0,0,0.03)"
-                }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: activeTab === tab.id ? tab.color + "20" : tab.lightColor }}>
-                  <tab.icon className="w-5 h-5" style={{ color: tab.color }} />
-                </div>
-                <div>
-                  <div className="font-black text-sm" style={{ color: activeTab === tab.id ? T.ink : "#64748B" }}>{tab.label}</div>
-                  <div className="text-xs text-slate-400">{tab.sub}</div>
-                </div>
-              </motion.button>
-            ))}
-          </div>
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-8">
+          {TABS.map(tab => (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+              className="flex items-center gap-2.5 p-3.5 rounded-2xl border-2 text-left transition-all"
+              style={{
+                background: activeTab === tab.id ? tab.light : "#fff",
+                borderColor: activeTab === tab.id ? tab.color : T.border,
+              }}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: activeTab === tab.id ? tab.color + "20" : tab.light }}>
+                <tab.icon className="w-4 h-4" style={{ color: tab.color }} />
+              </div>
+              <div className="min-w-0">
+                <div className="font-black text-xs truncate" style={{ color: activeTab === tab.id ? T.ink : T.textMuted }}>{tab.label}</div>
+                <div className="text-[10px] text-slate-400 truncate">{tab.sub}</div>
+              </div>
+            </button>
+          ))}
         </motion.div>
 
         <AnimatePresence mode="wait">
-          <motion.div key={activeTab}
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3 }}
-            className="mb-14">
-            {activeTab === "coding" && <CodingSection openDemoModal={openDemoModal} />}
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="mb-14">
+            {activeTab === "coding" && <CodingSection />}
             {activeTab === "courses" && <CSCoursesSection openDemoModal={openDemoModal} />}
-            {activeTab === "academic" && <AcademicSection openDemoModal={openDemoModal} />}
-            {activeTab === "cs" && <CSTuitionSection openDemoModal={openDemoModal} />}
-            {activeTab === "web" && <WebDevSection openDemoModal={openDemoModal} />}
+            {activeTab === "academic" && <AcademicSection />}
+            {activeTab === "web" && <WebDevSection />}
           </motion.div>
         </AnimatePresence>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} className="mb-14">
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <SectionBadge color={T.sky}><HelpCircle className="w-3.5 h-3.5" /> Parent FAQs</SectionBadge>
-            <h2 className="font-black text-2xl mt-3 mb-2" style={{ color: T.ink }}>
-              Questions parents always ask us
-            </h2>
-            <p className="text-slate-400 text-sm">We've answered them all — nothing hidden here</p>
+            <h2 className="font-black text-xl mt-3" style={{ color: T.ink }}>Questions parents always ask</h2>
           </div>
           <FAQ />
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="rounded-[2.5rem] overflow-hidden border-2 relative mb-20"
-          style={{ borderColor: T.gold + "30", boxShadow: `0 16px 60px ${T.gold}15` }}>
-          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#FFFDF5,#F5FFFC)" }} />
-          <div className="absolute top-0 left-0 right-0 h-1.5"
-            style={{ background: `linear-gradient(90deg,${T.purple},${T.green},${T.gold},${T.pink})` }} />
-          <div className="relative z-10 p-8 sm:p-12 text-center">
-            <div className="flex justify-center mb-4"><Rocket className="w-10 h-10 text-emerald-500" /></div>
-            <SectionBadge color={T.gold}>Not sure which plan?</SectionBadge>
-            <h3 className="font-black mt-4 mb-3"
-              style={{ fontSize: "clamp(1.5rem,3.5vw,2rem)", color: T.ink, letterSpacing: "-0.03em" }}>
-              Try a{" "}
-              <span style={{
-                background: `linear-gradient(135deg,${T.gold},${T.green})`,
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
-              }}>free demo class first</span>
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} className="rounded-[2rem] overflow-hidden border-2 relative"
+          style={{ borderColor: T.gold + "30" }}>
+          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg,${T.skyLight},${T.greenLight})` }} />
+          <div className="relative z-10 p-8 sm:p-10 text-center">
+            <Rocket className="w-8 h-8 mx-auto mb-3" style={{ color: T.green }} />
+            <h3 className="font-black text-xl sm:text-2xl mb-2" style={{ color: T.ink }}>
+              Not sure which plan? Try a free demo class first
             </h3>
-            <p className="text-sm text-slate-500 mb-2 max-w-md mx-auto leading-relaxed">
+            <p className="text-sm text-slate-500 mb-6 max-w-md mx-auto">
               30-minute trial session — completely free, no payment, no commitment.
-            </p>
-            <p className="text-xs text-slate-400 mb-8 max-w-sm mx-auto">
-              We'll understand your child's grade, board, and learning goals before recommending the perfect plan.
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
               <motion.button
-                onClick={() => openDemoModal("pricing_cta_bottom")}
-                whileHover={{ scale: 1.03, boxShadow: `0 8px 30px ${T.gold}40` }}
-                className="px-7 py-3.5 rounded-2xl text-sm font-black text-slate-900 border-none cursor-pointer"
-                style={{ background: `linear-gradient(135deg,${T.gold},#A07830)`, boxShadow: `0 4px 20px ${T.gold}30` }}>
-                <Gift className="w-4 h-4 inline mr-1" /> Book Free Demo Class
-              </motion.button>
-              <motion.a href="https://wa.link/2sqe3g"
+                onClick={() => openDemoModal && openDemoModal("pricing_cta_bottom")}
                 whileHover={{ scale: 1.03 }}
-                className="px-7 py-3.5 rounded-2xl text-sm font-bold border-2 transition-all bg-white"
-                style={{ color: T.ink, borderColor: "rgba(15,23,42,0.15)" }}>
-                <MessageCircle className="w-4 h-4 inline mr-1" /> Chat on WhatsApp
+                className="px-6 py-3 rounded-2xl text-sm font-black text-white border-none cursor-pointer"
+                style={{ background: `linear-gradient(135deg,${T.gold},${T.goldDeep})`, boxShadow: `0 6px 20px ${T.gold}35` }}>
+                <Gift className="w-4 h-4 inline mr-1.5" /> Book Free Demo Class
+              </motion.button>
+              <motion.a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+                whileHover={{ scale: 1.03 }}
+                className="px-6 py-3 rounded-2xl text-sm font-bold border-2 bg-white"
+                style={{ color: T.ink, borderColor: T.border }}>
+                <MessageCircle className="w-4 h-4 inline mr-1.5" /> Chat on WhatsApp
               </motion.a>
             </div>
           </div>
         </motion.div>
+
       </div>
     </section>
   );

@@ -1,4 +1,3 @@
-// src/components/HeroSection.jsx — PERFORMANCE OPTIMIZED
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { MonitorPlay, Sparkles, Rocket, Trophy, Layers } from "lucide-react";
@@ -14,11 +13,11 @@ const BLOCK_SNIPPETS = [
 ];
 
 const CYCLING_PHRASES = [
-  "Start with block coding",
-  "Build real logic",
-  "Create Scratch games",
-  "Excel in school CS",
-  "Transition to Python",
+  "Coding for Kids",
+  "Academic Tuition",
+  "Exam Preparation",
+  "Professional & Skill-Based Courses",
+  "Endless Learning",
 ];
 
 const STATS = [
@@ -53,10 +52,10 @@ const HeroSection = ({ openDemoModal }) => {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-40 bg-white"
+      className="relative min-h-screen flex items-center overflow-hidden pt-20 bg-white"
     >
       {/* ── STATIC BACKGROUND LAYER (no JS animations) ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden mt-10">
         {/* Static ambient orbs — CSS only, no framer-motion */}
         <div
           className="absolute -top-[15%] -right-[8%] w-[55vw] h-[55vw] rounded-full"
@@ -154,30 +153,30 @@ const HeroSection = ({ openDemoModal }) => {
       {/* ── MAIN CONTENT ── */}
       <motion.div
         style={{ y: contentY }}
-        className="max-w-7xl mx-auto px-6 w-full py-20 relative z-20"
+        className="max-w-7xl mx-auto px-6 pt-10 w-full relative z-20"
       >
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* LEFT: Content */}
           <div className="relative">
             {/* Live badge */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-bold mb-8 bg-white border border-slate-200 text-slate-700 shadow-sm"
+              className="inline-flex items-center gap-4 px-5 rounded-full text-md font-bold mb-8 bg-white border border-slate-200 text-slate-700 shadow-sm"
             >
-              Coding for Kids · Academic Tuition
-            </motion.div>
+              Coding  •  Academic Tuition  •   Professional Courses
+            </motion.div> */}
 
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.7 }}
-              className="font-extrabold leading-[1.05] mb-6 tracking-tight"
-              style={{ fontSize: "clamp(2.8rem, 5.5vw, 4.5rem)", color: "#0F172A" }}
+              className="font-extrabold leading-[1.05] py-2 tracking-tight"
+              style={{ fontSize: "clamp(2.8rem, 4.0vw, 4.5rem)", color: "#0F172A" }}
             >
-              Master logic.{" "}
+              Building Future Coders{" "}
               <br />
               <span
                 style={{
@@ -187,7 +186,7 @@ const HeroSection = ({ openDemoModal }) => {
                   backgroundClip: "text",
                 }}
               >
-                Create with code.
+                and Top Scorers.
               </span>
             </motion.h1>
 
@@ -223,11 +222,9 @@ const HeroSection = ({ openDemoModal }) => {
               className="text-lg leading-relaxed mb-10 max-w-lg font-medium"
               style={{ color: "#475569" }}
             >
-              We start with{" "}
-              <strong className="text-emerald-600">visual block coding</strong> so kids build
-              logic effortlessly. Plus, dedicated{" "}
-              <strong className="text-slate-900">Academic Tuition</strong> for Classes 6–12 to
-              ace board exams.
+              Pearlx helps students excel through{" "}
+              <strong className="text-emerald-600">Coding Programs, Academic Tuition, Exam Preparation</strong>, and Personalized Learning Paths.{" "}
+              <strong className="text-slate-900">Whether your child wants to build apps or improve school grades,</strong> we've got them covered.
             </motion.p>
 
             {/* CTA buttons */}
@@ -235,7 +232,7 @@ const HeroSection = ({ openDemoModal }) => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="flex flex-wrap gap-4 mb-12"
+              className="flex flex-wrap gap-4 mb-5"
             >
               <motion.button
                 onClick={() => openDemoModal("Demo")}
@@ -269,7 +266,7 @@ const HeroSection = ({ openDemoModal }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="flex gap-8 pt-8 border-t border-slate-100"
+              className="flex gap-8 border-t mt-10 border-slate-100"
             >
               {STATS.map((s, i) => (
                 <div key={i}>
@@ -345,7 +342,7 @@ const HeroSection = ({ openDemoModal }) => {
               <div className="bg-emerald-100 text-emerald-600 p-3 rounded-xl flex items-center justify-center"><Trophy className="w-6 h-6" /></div>
               <div>
                 <div className="text-sm font-extrabold text-slate-900">Board Excellence</div>
-                <div className="text-xs text-slate-500 font-medium">Classes 6–12</div>
+                <div className="text-xs text-slate-500 font-medium">Classes 1–12</div>
               </div>
             </div>
 
@@ -368,7 +365,7 @@ const HeroSection = ({ openDemoModal }) => {
               style={{ animation: "floatBlock 7s ease-in-out 2s infinite", willChange: "transform" }}
             >
               <Sparkles className="w-4 h-4 text-indigo-500" />
-              <span className="text-sm font-extrabold text-slate-900">6+ modules · 132 Lessons</span>
+              <span className="text-sm font-extrabold text-slate-900">6+ modules · 100+ Lessons</span>
             </div>
           </motion.div>
         </div>

@@ -1,4 +1,3 @@
-// src/components/ProcessSection.jsx — REDESIGNED FROM SCRATCH
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Target, Puzzle, Gamepad2, GraduationCap, BarChart3, RefreshCw, Globe, Trophy, Rocket, Hammer } from "lucide-react";

@@ -1,4 +1,3 @@
-// src/components/AuthModal.jsx — MAXIMUM PERFORMANCE
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";

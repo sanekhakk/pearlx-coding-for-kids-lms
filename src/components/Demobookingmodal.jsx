@@ -1,4 +1,3 @@
-// src/components/DemoBookingModal.jsx — GOOGLE SHEETS INTEGRATED
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, CheckCircle2, AlertCircle, Calendar, Clock } from "lucide-react";

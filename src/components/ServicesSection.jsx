@@ -1,4 +1,3 @@
-// src/components/ServicesSection.jsx — REDESIGNED FROM SCRATCH
 import React, { useRef, useMemo, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, TerminalSquare, BookOpenCheck, Laptop, Star, Zap, Users } from "lucide-react";
@@ -28,21 +27,19 @@ const OVERVIEW_CARDS = [
     desc:"Project-based coding curriculum across 3 levels. We start with visual block coding to build logic naturally, then transition to text code when kids are truly ready.",
     cta:"Explore Kids Coding",page:"/services/education",
     color:T.green,glow:"rgba(16,185,129,0.2)",
-    kidImg:"/images/kids/service-coding-kid.png",
     stats:[{v:"3",l:"Levels"},{v:"132",l:"Lessons"},{v:"500+",l:"Students"}],
     emoji:null,
   },
   {
     icon:<BookOpenCheck size={32} />,
-    title:"Academic CS Tuition",
-    subtitle:"Classes 6–12 · CBSE / ICSE",
+    title:"Academic Tuition",
+    subtitle:"Classes 1–12 · CBSE, ICSE, IGCSE, State Boards",
     badge:"School Subject",
     badgeColor:"#0284C7",badgeBg:"rgba(14,165,233,0.12)",
-    desc:"Dedicated tuition for CS, Information Practices, Java, Python, and SQL — ensuring top board marks with board-specific strategies and past paper practice.",
+    desc:"One-on-one and small-group tuition designed to help students learn confidently and score higher.",
     cta:"Explore CS Tuition",page:"/services/education",
     color:T.sky,glow:"rgba(14,165,233,0.2)",
-    kidImg:"/images/kids/service-tuition-kid.png",
-    stats:[{v:"4",l:"Boards"},{v:"6",l:"Subjects"},{v:"100%",l:"Exam Focus"}],
+    stats:[{v:"4",l:"Boards"},{v:"6+",l:"Subjects"},{v:"100%",l:"Exam Focus"}],
     emoji:null,
   },
   {
@@ -54,7 +51,6 @@ const OVERVIEW_CARDS = [
     desc:"Custom websites designed, developed, and deployed by expert developers — from UI/UX design and React development to ongoing maintenance.",
     cta:"Get Free Quote",page:"/services/web-development",
     color:"#C9A84C",glow:"rgba(201,168,76,0.2)",
-    kidImg:"/images/kids/service-webdev-kid.png",
     stats:[{v:"20+",l:"Sites Built"},{v:"100%",l:"Responsive"},{v:"1mo",l:"Support"}],
     emoji:null,
   },
@@ -114,7 +110,7 @@ export const ServicesOverview = () => {
     })),[]);
 
   return (
-    <section className="py-24 px-6 relative overflow-hidden" style={{ background:"#fff" }}>
+    <section className="py-5 px-6 relative overflow-hidden" style={{ background:"#fff" }}>
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
         <div className="absolute inset-0 opacity-[0.035]"
@@ -169,21 +165,7 @@ export const ServicesOverview = () => {
               onMouseEnter={e=>{e.currentTarget.style.borderColor=`${c.color}35`;e.currentTarget.style.boxShadow=`0 20px 48px ${c.glow}`;}}
               onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(15,23,42,0.06)";e.currentTarget.style.boxShadow="0 4px 24px rgba(0,0,0,0.04)";}}>
               {/* Image header */}
-              <div className="h-48 relative overflow-hidden flex items-center justify-center"
-                style={{ background:`linear-gradient(145deg,${c.color}08,${c.color}18)` }}>
-                {/* Animated rings */}
-                <motion.div animate={{ rotate:360 }} transition={{ duration:25,repeat:Infinity,ease:"linear" }}
-                  className="absolute w-36 h-36 rounded-full border-2 border-dashed"
-                  style={{ borderColor:`${c.color}20` }} />
-                {/* BG-removed kid image */}
-                <img src={c.kidImg} alt={c.title}
-                  className="absolute bottom-0 h-40 object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-                  onError={e=>{e.target.style.display="none";}} />
-                
-                {/* Badge */}
-                <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-black"
-                  style={{ background:c.badgeBg,color:c.badgeColor }}>{c.badge}</div>
-              </div>
+              
               {/* Content */}
               <div className="p-7 flex flex-col flex-grow">
                 <div className="flex items-center gap-3 mb-3">
