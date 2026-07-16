@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Layout, Code2, Rocket, Shield, ExternalLink, Sparkles } from "lucide-react";
 import { COLORS, GRADIENTS, SHADOWS, DARK } from "../utils/theme";
+import { getWhatsAppLink } from "../utils/whatsapp";
 
 const services = [
   { icon: Layout, title: "UI / UX Design", desc: "Beautiful, conversion-focused designs built around your brand identity and users.", accent: COLORS.cyan },
@@ -85,7 +86,8 @@ const WebServicesSection = () => (
             </div>
 
             <motion.a
-              href="https://wa.link/2sqe3g"
+              href={getWhatsAppLink("Hi! I'd like a free quote for a website for my brand/business.")}
+              target="_blank" rel="noopener noreferrer"
               whileHover={{ scale: 1.04, boxShadow: SHADOWS.glowCyan }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-sm font-bold transition-all"

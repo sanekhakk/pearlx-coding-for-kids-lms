@@ -5,6 +5,7 @@ import { X, Loader2, CheckCircle2, AlertCircle, Calendar, Clock } from "lucide-r
 const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
   const [formData, setFormData] = useState({
     source: source,
+    programInterest: "",
     studentName: "",
     studentGrade: "",
     country: "",
@@ -33,6 +34,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
       // Reset form on close
       setFormData({
         source: source,
+        programInterest: "",
         studentName: "",
         studentGrade: "",
         country: "",
@@ -73,7 +75,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
   };
 
   const validateForm = () => {
-    const requiredFields = ["studentName", "studentGrade", "country", "state", "languages", "parentName", "email", "contactNumber"];
+    const requiredFields = ["programInterest", "studentName", "studentGrade", "country", "state", "languages", "parentName", "email", "contactNumber"];
     
     for (let field of requiredFields) {
       if (!formData[field]?.trim()) {
@@ -281,6 +283,40 @@ setSuccess(true);
                             Interest: <span className="font-bold capitalize">{source.replace("_", " ")}</span>
                           </div>
                         )}
+
+                        {/* What are they booking a demo for? */}
+                        <div>
+                          <label className="block text-sm font-bold mb-3 text-slate-700">
+                            What would you like a demo for? *
+                          </label>
+                          <div className="grid gap-3 sm:grid-cols-3">
+                            {[
+                              { value: "coding", label: "Coding Classes" },
+                              { value: "academic_tuition", label: "Academic Tuition (Class 1–12)" },
+                              { value: "courses", label: "Courses" },
+                            ].map(option => (
+                              <label
+                                key={option.value}
+                                className="flex items-center gap-2 cursor-pointer px-4 py-3 rounded-xl border text-sm font-semibold transition-colors"
+                                style={{
+                                  background: formData.programInterest === option.value ? "#e0f9f4" : "#f8fafc",
+                                  borderColor: formData.programInterest === option.value ? "#10B981" : "#e2e8f0",
+                                  color: formData.programInterest === option.value ? "#047857" : "#334155",
+                                }}
+                              >
+                                <input
+                                  type="radio"
+                                  name="programInterest"
+                                  value={option.value}
+                                  checked={formData.programInterest === option.value}
+                                  onChange={handleInputChange}
+                                  className="w-4 h-4"
+                                />
+                                {option.label}
+                              </label>
+                            ))}
+                          </div>
+                        </div>
 
                         {/* Row 1: Student Name & Grade */}
                         <div className="grid md:grid-cols-2 gap-4">

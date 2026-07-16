@@ -10,6 +10,7 @@ import {
 // NOTE: adjust this relative path if Pricing.jsx doesn't live one folder
 // below theme.js's location (theme.js is at src/utils/theme.js).
 import { COLORS } from "../utils/theme";
+import { getWhatsAppLink } from "../utils/whatsapp";
 
 // ─── Theme (pulled from the official PearlX palette) ────────────────────────
 const T = {
@@ -32,8 +33,6 @@ const T = {
   bronze:        COLORS.bronze,
   bronzeLight:   COLORS.bronzeLight,
 };
-
-const WA_LINK = "https://wa.link/2sqe3g";
 
 // ─── Data ─────────────────────────────────────────────────────────────────
 const TABS = [
@@ -337,7 +336,8 @@ const CSCoursesSection = ({ openDemoModal }) => (
       <span className="text-xs sm:text-sm font-black flex-1" style={{ color: "#047857" }}>
         2026 +2 Passed Students get 20% OFF all bootcamps
       </span>
-      <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+      <a href={getWhatsAppLink("Hi! I'd like to claim the 20% OFF bootcamp offer for +2 passed students at Pearlx.")}
+        target="_blank" rel="noopener noreferrer"
         className="flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-black text-white"
         style={{ background: `linear-gradient(135deg,${T.green},${T.sky})` }}>
         Claim
@@ -381,7 +381,7 @@ const CSCoursesSection = ({ openDemoModal }) => (
                 <div className="font-black text-sm" style={{ color: T.ink }}>Custom Pricing</div>
               </div>
               <a
-                href={`https://wa.me/91XXXXXXXXXX?text=Hi!%20I'm%20interested%20in%20${encodeURIComponent(course.intense.name)}%20at%20Pearlx.%20Please%20share%20details.`}
+                href={getWhatsAppLink(`Hi! I'm interested in ${course.intense.name} at Pearlx. Please share details.`)}
                 target="_blank" rel="noopener noreferrer"
                 className="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-black border-2 flex items-center gap-1.5"
                 style={{ borderColor: course.color + "50", color: course.color }}>
@@ -434,7 +434,8 @@ const WebDevSection = () => (
               </div>
             ))}
           </div>
-          <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+          <a href={getWhatsAppLink(`Hi! I'm interested in the ${pkg.name} (${pkg.tier}) website package at Pearlx. Please share more details.`)}
+            target="_blank" rel="noopener noreferrer"
             className="w-full py-2.5 rounded-xl text-xs font-black text-center"
             style={{
               background: pkg.popular ? pkg.color : "#fff",
@@ -567,7 +568,8 @@ export default function Pricing({ openDemoModal }) {
                 style={{ background: `linear-gradient(135deg,${T.gold},${T.goldDeep})`, boxShadow: `0 6px 20px ${T.gold}35` }}>
                 <Gift className="w-4 h-4 inline mr-1.5" /> Book Free Demo Class
               </motion.button>
-              <motion.a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+              <motion.a href={getWhatsAppLink("Hi! I'd like to know more about Pearlx's programs and book a free demo class.")}
+                target="_blank" rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
                 className="px-6 py-3 rounded-2xl text-sm font-bold border-2 bg-white"
                 style={{ color: T.ink, borderColor: T.border }}>

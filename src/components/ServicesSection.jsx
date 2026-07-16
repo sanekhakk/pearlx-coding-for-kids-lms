@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, TerminalSquare, BookOpenCheck, Laptop, Star, Zap, Users } from "lucide-react";
+import { getWhatsAppLink } from "../utils/whatsapp";
 
 const T = { bg:"#F8FAFC", ink:"#0F172A", green:"#10B981", sky:"#0EA5E9",
   yellow:"#FFD166", pink:"#FF6B9D", purple:"#A78BFA" };
@@ -274,7 +275,8 @@ export const ProgramPlans = () => {
                     </li>
                   ))}
                 </ul>
-                <a href="https://wa.link/2sqe3g"
+                <a href={getWhatsAppLink(`Hi! I'd like to enrol in ${p.name} (${p.tagline}) at Pearlx.`)}
+                  target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold transition-all"
                   style={{ background:p.highlight?p.color:`${p.color}18`,color:p.highlight?"#000":p.color }}>
                   Enrol Now <ArrowRight className="w-4 h-4" />

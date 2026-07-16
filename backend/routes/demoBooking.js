@@ -51,11 +51,19 @@ async function initializeAuth() {
 // Initialize on startup
 initializeAuth().catch((err) => console.error(err));
 
+// Human-readable labels for the programInterest value sent from the modal
+const PROGRAM_INTEREST_LABELS = {
+  coding: "Coding Classes",
+  academic_tuition: "Academic Tuition (Class 1-12)",
+  courses: "Courses",
+};
+
 // POST /api/submit-demo-booking
 router.post("/submit-demo-booking", async (req, res) => {
   try {
     const {
       source,
+      programInterest,
       studentName,
       studentGrade,
       country,
@@ -71,6 +79,7 @@ router.post("/submit-demo-booking", async (req, res) => {
 
     // Validate required fields
     if (
+      !programInterest ||
       !studentName ||
       !studentGrade ||
       !parentName ||
@@ -102,6 +111,7 @@ router.post("/submit-demo-booking", async (req, res) => {
     const rowData = [
       timestamp,
       source || "General",
+      PROGRAM_INTEREST_LABELS[programInterest] || programInterest,
       studentName,
       studentGrade,
       country,
@@ -119,7 +129,7 @@ router.post("/submit-demo-booking", async (req, res) => {
     await sheets.spreadsheets.values.append({
       auth: authClient,
       spreadsheetId,
-      range: "Sheet1!A:M",
+      range: "Sheet1!A:N",
       valueInputOption: "USER_ENTERED",
       resource: {
         values: [rowData],

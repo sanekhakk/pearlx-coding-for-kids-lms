@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Star, Zap, Trophy, Heart, Users } from "lucide-react";
+import { getWhatsAppLink } from "../utils/whatsapp";
 import lp1 from "../assets/kids/LP1.webp"
 import bp1 from "../assets/kids/BP1.webp"
 import rp1 from "../assets/kids/RP1.webp"
@@ -144,7 +145,8 @@ const LevelCard = ({ l, i }) => (
           ))}
         </div>
 
-        <a href="https://wa.link/5pk793"
+        <a href={getWhatsAppLink(`Hi! I'd like to enrol in ${l.name} (${l.age}) at Pearlx.`)}
+          target="_blank" rel="noopener noreferrer"
           className="flex justify-center items-center gap-2 w-full py-3.5 rounded-2xl font-bold text-sm text-white transition-all duration-300"
           style={{ background:l.color, boxShadow:`0 6px 20px ${l.glow}` }}>
           <Sparkles className="w-4 h-4" /> Enrol Now
@@ -259,7 +261,8 @@ const SubjectSection = () => (
                 When children finally transition to Python or JavaScript, it feels <strong style={{ color:T.ink }}>natural, not scary.</strong>
               </p>
               <div className="flex gap-3 flex-wrap">
-                <a href="https://wa.link/2sqe3g"
+                <a href={getWhatsAppLink("Hi! I'd like to book a free trial class at Pearlx.")}
+                  target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm text-white"
                   style={{ background:`linear-gradient(135deg,${T.green},${T.sky})`,boxShadow:"0 6px 24px rgba(16,185,129,0.3)" }}>
                   Book Free Trial <ArrowRight className="w-4 h-4" />

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronDown, Trophy, Zap, Star, BookOpen, Users, Clock, Sprout, Bird, Medal, Code2, FlaskConical, Gamepad2, Smartphone, Globe, Award, Cpu } from "lucide-react";
+import { getWhatsAppLink } from "../utils/whatsapp";
 import lp1 from "../assets/kids/LP1.webp";
 import bp1 from "../assets/kids/BP1.webp";
 import rp1 from "../assets/kids/RP1.webp";
@@ -195,7 +196,8 @@ const LevelCard = ({ level, index }) => {
             </motion.div>
           )}
         </AnimatePresence>
-        <a href="https://wa.link/2sqe3g"
+        <a href={getWhatsAppLink(`Hi! I'd like to join ${level.name} (${level.age}) at Pearlx.`)}
+          target="_blank" rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-white text-sm mt-4"
           style={{ background: level.color, boxShadow: `0 6px 24px ${level.glow}` }}>
           Join {level.name} <ArrowRight className="w-4 h-4" />
@@ -356,7 +358,8 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
               Every level ends in a <strong style={{ color: T.ink }}>Capstone Project</strong> — students present their story, game, app, and website to parents and peers. Real certificates. Real pride.
             </p>
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-              <motion.a href="https://wa.link/2sqe3g"
+              <motion.a href={getWhatsAppLink("Hi! I'd like to join a coding level at Pearlx.")}
+                target="_blank" rel="noopener noreferrer"
                 whileHover={{ scale: 1.04, boxShadow: "0 12px 36px rgba(167,139,250,0.5)" }}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-sm font-bold text-white"
                 style={{ background: `linear-gradient(135deg,${T.purple},#7C3AED)`, boxShadow: "0 4px 20px rgba(167,139,250,0.3)" }}>
