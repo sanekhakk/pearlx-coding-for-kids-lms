@@ -6,14 +6,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PlusCircle, Pencil, Trash2, ChevronDown, ChevronRight,
   BookOpen, Loader2, CheckCircle, XCircle, X, Database, AlertCircle,
-  Image as ImageIcon, Upload, Users, ArrowRight,
+  Image as ImageIcon, Upload, Users, ArrowRight, FileText, ArrowUp, ArrowDown,
 } from "lucide-react";
 import {
   collection, query, where, onSnapshot, addDoc, updateDoc,
-  deleteDoc, doc, serverTimestamp, orderBy, getDocs,
+  deleteDoc, doc, serverTimestamp, orderBy, getDocs, getDoc, setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { CATEGORIES, seedCurriculumToFirestore, fetchAllCurriculumModules, fetchAllCurriculumLessons, saveStudentCurriculumOverride } from "../utils/curriculumData";
+import { CODING_CATEGORIES, CUSTOM_CHAPTER_CATEGORIES } from "./AdminDashboard_Part2";
 
 const C = {
   bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
@@ -41,6 +42,7 @@ const catColor = {
   bright_pearls:    { bg: "#F0FDF4", border: "#22C55E", text: "#16A34A", light: "#BBF7D0" },
   rising_pearls:    { bg: "#EFF6FF", border: "#60A5FA", text: "#2563EB", light: "#BFDBFE" },
   academic_tuition: { bg: "#F5F3FF", border: "#8B5CF6", text: "#6D28D9", light: "#DDD6FE" },
+  courses:          { bg: "#FDF2F8", border: "#EC4899", text: "#BE185D", light: "#FBCFE8" },
 };
 
 const Banner = ({ status }) => {
@@ -523,11 +525,20 @@ export function CurriculumManager() {
             {seedStatus && <Banner status={seedStatus} />}
           </div>
 
-          {/* Categories */}
+          {/* Categories — Modules/Lessons apply to coding categories only.
+              Academic Tuition & Courses students use per-student Chapters
+              under the "Assign to Students" tab instead. */}
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {CATEGORIES.map(cat => (
+            {CATEGORIES.filter(cat => CODING_CATEGORIES.includes(cat.value)).map(cat => (
               <CategoryPanel key={cat.value} cat={cat} />
             ))}
+          </div>
+          <div style={{ marginTop: 20, padding: 16, borderRadius: 12, background: C.violetLight, border: `1px solid ${C.violet}25`, display: "flex", gap: 10, alignItems: "flex-start" }}>
+            <FileText style={{ width: 18, height: 18, color: C.violet, flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 12, color: C.violet, lineHeight: 1.6 }}>
+              <strong>Academic Tuition</strong> and <strong>Courses</strong> students don't use the shared module curriculum above.
+              Go to the <strong>Assign to Students</strong> tab, pick the student, and add their custom chapters there.
+            </p>
           </div>
         </motion.div>
       )}
@@ -537,6 +548,212 @@ export function CurriculumManager() {
         <StudentCurriculumAssignment />
       )}
     </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHAPTER MODAL — add/edit a single chapter for an Academic Tuition / Courses student
+// ─────────────────────────────────────────────────────────────────────────────
+function ChapterModal({ chapter, onClose, onSave }) {
+  const isEdit = !!chapter;
+  const [form, setForm] = useState({ title: chapter?.title || "", content: chapter?.content || "" });
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState(null);
+
+  const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+
+  const handleSave = async () => {
+    if (!form.title.trim()) { setErr("Chapter title is required."); return; }
+    setSaving(true); setErr(null);
+    try {
+      await onSave({ title: form.title.trim(), content: form.content.trim() });
+      onClose();
+    } catch (e) {
+      setErr(e.message);
+    }
+    setSaving(false);
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(15,23,42,0.45)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}
+      onClick={onClose}>
+      <motion.div initial={{ scale: 0.94, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.94 }}
+        style={{ background: C.card, borderRadius: 20, width: "100%", maxWidth: 560, boxShadow: C.shadowModal, overflow: "hidden", maxHeight: "90vh", overflowY: "auto" }}
+        onClick={e => e.stopPropagation()}>
+        <div style={{ height: 4, background: C.gradPrimary }} />
+        <div style={{ padding: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 800, color: C.textPrimary }}>{isEdit ? "Edit Chapter" : "Add New Chapter"}</h3>
+            <button onClick={onClose} style={{ background: C.bg, border: "none", borderRadius: "50%", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+              <X style={{ width: 15, height: 15, color: C.textMuted }} />
+            </button>
+          </div>
+          <Banner status={err ? { ok: false, msg: err } : null} />
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div>
+              <FieldLabel required>Chapter Title</FieldLabel>
+              <input name="title" value={form.title} onChange={handleChange} placeholder="e.g. Chapter 3: Trigonometry" style={fieldStyle}
+                onFocus={e => e.target.style.borderColor = C.emerald} onBlur={e => e.target.style.borderColor = C.border} />
+            </div>
+            <div>
+              <FieldLabel>Notes / Content</FieldLabel>
+              <textarea name="content" value={form.content} onChange={handleChange} rows={6}
+                placeholder="Topics to cover, resources, or instructions for the tutor..."
+                style={{ ...fieldStyle, resize: "none" }}
+                onFocus={e => e.target.style.borderColor = C.emerald} onBlur={e => e.target.style.borderColor = C.border} />
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+            <button onClick={onClose} style={{ flex: 1, padding: "11px", borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, fontWeight: 700, color: C.textSecondary, cursor: "pointer" }}>Cancel</button>
+            <button onClick={handleSave} disabled={saving}
+              style={{ flex: 2, padding: "11px", borderRadius: 12, border: "none", background: C.gradPrimary, color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, opacity: saving ? 0.7 : 1 }}>
+              {saving ? <Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} /> : (isEdit ? "Save Changes" : "Add Chapter")}
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STUDENT CHAPTERS MANAGER — custom per-student chapter list
+// Used for Academic Tuition & Courses students instead of the shared
+// coding Module/Lesson curriculum.
+// ─────────────────────────────────────────────────────────────────────────────
+function StudentChaptersManager({ studentId, studentName, categoryLabel }) {
+  const [chapters, setChapters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [editChapter, setEditChapter] = useState(null);
+  const [status, setStatus] = useState(null);
+
+  useEffect(() => {
+    if (!studentId) return;
+    let cancelled = false;
+    setLoading(true);
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, "studentChapters", studentId));
+        if (cancelled) return;
+        const data = snap.exists() ? snap.data() : {};
+        setChapters((data.chapters || []).slice().sort((a, b) => a.order - b.order));
+      } catch (err) {
+        console.error("Error loading chapters:", err);
+      }
+      if (!cancelled) setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [studentId]);
+
+  const persist = async (nextChapters) => {
+    await setDoc(doc(db, "studentChapters", studentId), {
+      studentId,
+      chapters: nextChapters,
+      updatedAt: serverTimestamp(),
+    }, { merge: true });
+    setChapters(nextChapters);
+  };
+
+  const handleSaveChapter = async (form) => {
+    if (editChapter) {
+      const next = chapters.map(c => c.id === editChapter.id ? { ...c, ...form } : c);
+      await persist(next);
+      setStatus({ ok: true, msg: "Chapter updated" });
+    } else {
+      const nextOrder = chapters.length > 0 ? Math.max(...chapters.map(c => c.order)) + 1 : 1;
+      const newChapter = { id: `chap_${Date.now()}`, order: nextOrder, ...form };
+      await persist([...chapters, newChapter]);
+      setStatus({ ok: true, msg: "Chapter added" });
+    }
+    setTimeout(() => setStatus(null), 2000);
+  };
+
+  const handleDelete = async (chapterId) => {
+    if (!window.confirm("Delete this chapter?")) return;
+    await persist(chapters.filter(c => c.id !== chapterId));
+  };
+
+  const handleMove = async (index, direction) => {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= chapters.length) return;
+    const next = [...chapters];
+    [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
+    const reordered = next.map((c, i) => ({ ...c, order: i + 1 }));
+    await persist(reordered);
+  };
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: 40 }}>
+        <Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite", margin: "0 auto" }} />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <Banner status={status} />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+        <div>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary }}>
+            Chapters for <span style={{ color: C.indigo }}>{studentName}</span>
+          </h3>
+          {categoryLabel && <p style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{categoryLabel} · custom syllabus</p>}
+        </div>
+        <button onClick={() => { setEditChapter(null); setShowModal(true); }}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 10, border: "none", background: C.gradPrimary, color: "#fff", fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
+          <PlusCircle style={{ width: 15, height: 15 }} /> Add Chapter
+        </button>
+      </div>
+
+      {chapters.length === 0 ? (
+        <div style={{ textAlign: "center", padding: 40, background: C.bg, borderRadius: 12, color: C.textMuted, fontSize: 13 }}>
+          No chapters yet. Click "Add Chapter" to build this student's custom syllabus.
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 520, overflowY: "auto" }}>
+          {chapters.map((chap, i) => (
+            <div key={chap.id} style={{ display: "flex", gap: 10, padding: "12px 14px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
+              <div style={{ width: 34, height: 34, borderRadius: 10, background: C.violetLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <FileText style={{ width: 16, height: 16, color: C.violet }} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontWeight: 700, fontSize: 13, color: C.textPrimary }}>Chapter {i + 1}: {chap.title}</p>
+                {chap.content && <p style={{ fontSize: 11, color: C.textMuted, marginTop: 3, lineHeight: 1.4, whiteSpace: "pre-wrap" }}>{chap.content}</p>}
+              </div>
+              <div style={{ display: "flex", gap: 5, flexShrink: 0, alignItems: "flex-start" }}>
+                <button onClick={() => handleMove(i, -1)} disabled={i === 0}
+                  style={{ padding: "4px 6px", borderRadius: 7, background: C.card, border: `1px solid ${C.border}`, cursor: i === 0 ? "not-allowed" : "pointer", opacity: i === 0 ? 0.4 : 1 }}>
+                  <ArrowUp style={{ width: 12, height: 12, color: C.textSecondary }} />
+                </button>
+                <button onClick={() => handleMove(i, 1)} disabled={i === chapters.length - 1}
+                  style={{ padding: "4px 6px", borderRadius: 7, background: C.card, border: `1px solid ${C.border}`, cursor: i === chapters.length - 1 ? "not-allowed" : "pointer", opacity: i === chapters.length - 1 ? 0.4 : 1 }}>
+                  <ArrowDown style={{ width: 12, height: 12, color: C.textSecondary }} />
+                </button>
+                <button onClick={() => { setEditChapter(chap); setShowModal(true); }}
+                  style={{ padding: "4px 7px", borderRadius: 7, background: C.indigoLight, border: "none", cursor: "pointer" }}>
+                  <Pencil style={{ width: 12, height: 12, color: C.indigo }} />
+                </button>
+                <button onClick={() => handleDelete(chap.id)}
+                  style={{ padding: "4px 7px", borderRadius: 7, background: C.redLight, border: "none", cursor: "pointer" }}>
+                  <Trash2 style={{ width: 12, height: 12, color: C.red }} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <AnimatePresence>
+        {showModal && (
+          <ChapterModal chapter={editChapter} onClose={() => { setShowModal(false); setEditChapter(null); }} onSave={handleSaveChapter} />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -682,6 +899,12 @@ function StudentCurriculumAssignment() {
             <div style={{ textAlign: "center", padding: 40, color: C.textMuted }}>
               Select a student to customize their curriculum
             </div>
+          ) : CUSTOM_CHAPTER_CATEGORIES.includes(selectedStudent.category) ? (
+            <StudentChaptersManager
+              studentId={selectedStudent.uid}
+              studentName={selectedStudent.name}
+              categoryLabel={selectedStudent.category === "courses" ? "Courses" : "Academic Tuition"}
+            />
           ) : loadingCurr ? (
             <div style={{ textAlign: "center", padding: 40 }}>
               <Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite", margin: "0 auto" }} />
@@ -709,7 +932,7 @@ function StudentCurriculumAssignment() {
               {expandedCategory === null && (
                 <div style={{ maxHeight: "500px", overflowY: "auto", marginBottom: 16 }}>
                   <p style={{ fontSize: 11, color: C.textMuted, marginBottom: 10 }}>Select entire modules to assign to this student:</p>
-                  {CATEGORIES.map(cat => {
+                  {CATEGORIES.filter(cat => CODING_CATEGORIES.includes(cat.value)).map(cat => {
                     const categoryModules = allModules.filter(m => m.category === cat.value);
                     const col = catColor[cat.value];
                     return (
@@ -735,7 +958,7 @@ function StudentCurriculumAssignment() {
               {expandedCategory === "lessons" && (
                 <div style={{ maxHeight: "500px", overflowY: "auto", marginBottom: 16 }}>
                   <p style={{ fontSize: 11, color: C.textMuted, marginBottom: 10 }}>Select specific lessons to assign (sometimes a student from one category needs lessons from another):</p>
-                  {Object.entries(lessonsByCategory).map(([cat, lessons]) => {
+                  {Object.entries(lessonsByCategory).filter(([cat]) => CODING_CATEGORIES.includes(cat)).map(([cat, lessons]) => {
                     const category = CATEGORIES.find(c => c.value === cat);
                     const col = catColor[cat];
                     return (

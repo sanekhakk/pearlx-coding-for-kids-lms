@@ -1069,7 +1069,7 @@ export default function TutorDashboard() {
           </div>
         </div>
       </div>
-      <nav style={{ flex: 1, padding: "10px 10px", display: "flex", flexDirection: "column", gap: 3, overflowY: "auto" }}>
+      <nav style={{ flex: 1, padding: "10px 10px", display: "flex", flexDirection: "column", gap: 3 }}>
         <p style={{ fontSize: 10, fontWeight: 700, color: C.textMuted, letterSpacing: "0.08em", textTransform: "uppercase", padding: "4px 6px 8px" }}>MAIN MENU</p>
         {tabs.map(tab => <SideNavItem key={tab.id} tab={tab} active={activeTab === tab.id} onClick={() => handleTabChange(tab.id)} />)}
       </nav>
@@ -1088,17 +1088,22 @@ export default function TutorDashboard() {
         {isMobile && sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            style={{ position: "fixed", height: "100dvh",overflowY: "auto", inset: 0, background: "rgba(15,23,42,0.45)", zIndex: 999, backdropFilter: "blur(4px)" }} />
+            style={{ position: "fixed", height: "100dvh",overflowY: "auto", overscrollBehavior: "contain", inset: 0, background: "rgba(15,23,42,0.45)", zIndex: 999, backdropFilter: "blur(4px)" }} />
         )}
       </AnimatePresence>
 
       <motion.div initial={false} animate={isMobile ? { x: sidebarOpen ? 0 : -280 } : { x: 0 }} transition={{ type: "spring", damping: 28, stiffness: 300 }}
-        style={{ width: 256, minWidth: 256, height: "100dvh", background: C.sidebar, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0, position: isMobile ? "fixed" : "relative", zIndex: isMobile ? 1000 : "auto", top: 0, left: 0 }}>
+        style={{
+          width: 256, minWidth: 256, height: "100dvh", overflowY: "auto", paddingBottom: 100,
+          WebkitOverflowScrolling: "touch", overscrollBehavior: "contain",
+          background: C.sidebar, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0,
+          position: isMobile ? "fixed" : "relative", zIndex: isMobile ? 1000 : "auto", top: 0, left: 0
+        }}>
         <SidebarContent />
       </motion.div>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
-        <div style={{ height: 62, background: "rgba(244,246,251,0.96)", borderBottom: `1px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", flexShrink: 0, gap: 10 }}>
+        <div style={{ height: 62, background: "rgba(244,246,251,0.96)", borderBottom: `1px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", flexShrink: 0, gap: 10, position: "relative", zIndex: 10, transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
             {isMobile && (
               <button onClick={() => setSidebarOpen(true)}
@@ -1126,7 +1131,7 @@ export default function TutorDashboard() {
           </div>
         </div>
 
-        <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? 16 : 24 }}>
+        <div style={{ flex: 1, overflowY: "auto", overscrollBehavior: "contain", WebkitOverflowScrolling: "touch", padding: isMobile ? 16 : 24 }}>
           <AnimatePresence mode="wait">
             {activeTab === "overview" && (
               <motion.div key="ov" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>

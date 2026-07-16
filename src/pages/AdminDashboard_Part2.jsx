@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlusCircle, Loader2, XCircle, X, CheckCircle, ArrowLeft } from "lucide-react";
@@ -23,7 +22,13 @@ export const STUDENT_CATEGORIES = [
   { value: "bright_pearls",     label: "🌱 Bright Pearls  (Ages 8–11 • Grades 3–6)" },
   { value: "rising_pearls",     label: "🦋 Rising Pearls  (Ages 12–15 • Grades 7–10)" },
   { value: "academic_tuition",  label: "📖 Academic Tuition  (CS Subjects – Custom Syllabus)" },
+  { value: "courses",           label: "📘 Courses  (Self-Paced • Custom Chapters)" },
 ];
+
+// Categories that follow the shared coding Module/Lesson curriculum
+export const CODING_CATEGORIES = ["little_pearls", "bright_pearls", "rising_pearls"];
+// Categories that get a per-student custom Chapters list instead
+export const CUSTOM_CHAPTER_CATEGORIES = ["academic_tuition", "courses"];
 
 const TUTOR_TYPE_OPTIONS = [
   { value: "coding",   label: "💻 Coding Classes" },
@@ -105,7 +110,7 @@ const CategorySelector = ({ value, onChange }) => (
     <label style={{ fontSize: 12, fontWeight: 700, color: C.textSecondary, display: "block", marginBottom: 8 }}>
       Student Category <span style={{ color: C.red }}>*</span>
     </label>
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
       {STUDENT_CATEGORIES.map(cat => {
         const selected = value === cat.value;
         const emoji    = cat.label.charAt(0);
@@ -116,6 +121,7 @@ const CategorySelector = ({ value, onChange }) => (
           bright_pearls:    { bg: "#F0FDF4", border: "#22C55E", text: "#16A34A" },
           rising_pearls:    { bg: "#EFF6FF", border: "#60A5FA", text: "#2563EB" },
           academic_tuition: { bg: "#F5F3FF", border: "#8B5CF6", text: "#6D28D9" },
+          courses:          { bg: "#FDF2F8", border: "#EC4899", text: "#BE185D" },
         };
         const col = colorMap[cat.value];
         return (
@@ -134,12 +140,12 @@ const CategorySelector = ({ value, onChange }) => (
         );
       })}
     </div>
-    {value === "academic_tuition" && (
-      <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: "#F5F3FF", border: "1px solid #8B5CF625", display: "flex", alignItems: "flex-start", gap: 8 }}>
+    {(value === "academic_tuition" || value === "courses") && (
+      <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: value === "courses" ? "#FDF2F8" : "#F5F3FF", border: `1px solid ${value === "courses" ? "#EC489925" : "#8B5CF625"}`, display: "flex", alignItems: "flex-start", gap: 8 }}>
         <span style={{ fontSize: 16, flexShrink: 0 }}>📌</span>
-        <p style={{ fontSize: 12, color: "#6D28D9", lineHeight: 1.6 }}>
-          <strong>Academic Tuition students</strong> follow a <strong>custom per-student syllabus</strong> instead of the shared coding curriculum.
-          After registering, go to <strong>Curriculum → Academic Tuition</strong> to add lessons for this student.
+        <p style={{ fontSize: 12, color: value === "courses" ? "#BE185D" : "#6D28D9", lineHeight: 1.6 }}>
+          <strong>{value === "courses" ? "Courses" : "Academic Tuition"} students</strong> follow a <strong>custom per-student chapter list</strong> instead of the shared coding curriculum.
+          After registering, go to <strong>Curriculum → Assign to Students</strong> to add chapters for this student.
         </p>
       </div>
     )}
