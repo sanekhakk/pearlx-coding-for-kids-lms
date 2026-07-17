@@ -20,11 +20,17 @@ app.use(cors({
 
 app.options("*", cors());
 
+
+
 app.use(bodyParser.json({ limit: "1mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 const adminRoutes = require("./routes/admin");
 const demoBookingRoutes = require("./routes/demoBooking");
+
+const notesRoutes = require("./routes/notes");
+app.use("/notes", notesRoutes);
 
 app.use("/api", demoBookingRoutes);
 app.use("/admin", adminRoutes);

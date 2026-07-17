@@ -16,6 +16,8 @@ import { getProgressRef } from "../utils/paths";
 import { getDisplayTime } from "../utils/timeUtils";
 import { CATEGORIES } from "../utils/curriculumData";
 import PearlxLogo from "../assets/flat_logo.webp";
+import FileText from "lucide-react";
+import TutorNotesSection from "./TutorNotesSection";
 
 const C = {
   bg: "#F4F6FB", sidebar: "#FFFFFF", card: "#FFFFFF", border: "#E5E9F2",
@@ -1028,7 +1030,9 @@ export default function TutorDashboard() {
     { id: "activeClasses", label: "Active Classes",   icon: Calendar,   count: activeClasses.length },
     { id: "history",       label: "Class History",    icon: BarChart2 },
     { id: "progress",      label: "Progress Tracker", icon: TrendingUp },
+    { id: "notes", label: "Notes", icon: FileText, icon: BookOpen  },
     { id: "curriculum",    label: "Curriculum",       icon: BookOpen },
+
   ];
 
   const handleTabChange = (tabId) => { setActiveTab(tabId); setSidebarOpen(false); };
@@ -1221,6 +1225,8 @@ export default function TutorDashboard() {
                 </div>
               </motion.div>
             )}
+
+            {activeTab === "notes" && <TutorNotesSection />}
 
             {activeTab === "students" && (
               <motion.div key="st" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}

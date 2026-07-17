@@ -22,6 +22,8 @@ import { CATEGORIES } from "../utils/curriculumData";
 import { getProgressRef } from "../utils/paths";
 import { getDisplayTime } from "../utils/timeUtils";
 import PearlxLogo from "../assets/flat_logo.webp";
+import FileText from "lucide-react";
+import StudentNotesSection from "./StudentNotesSection";
 
 const C = {
   bg: "#F4F6FB",
@@ -471,9 +473,10 @@ export default function StudentDashboard() {
     { id: "overview",    label: "Overview",    icon: Home },
     { id: "upcoming",    label: "Upcoming",    icon: Calendar,    count: upcoming.length },
     { id: "progress",    label: "Progress",    icon: TrendingUp },
-    { id: "curriculum",  label: "My Curriculum", icon: BookOpen },
+    { id: "notes", label: "Notes", icon: FileText, icon: BookOpen },
     { id: "completed",   label: "Completed",   icon: CheckCircle, count: completed.length },
     { id: "missed",      label: "Missed",      icon: XCircle,     count: missed.length },
+    { id: "curriculum",  label: "My Curriculum", icon: BookOpen },
   ];
 
   const handleTabChange = (tabId) => {
@@ -707,6 +710,8 @@ export default function StudentDashboard() {
                   </div>
                 </motion.div>
               )}
+
+              {activeTab === "notes" && <StudentNotesSection />}
 
               {/* UPCOMING  */}
               {activeTab === "upcoming" && (

@@ -29,7 +29,6 @@ async function requireAdmin(req, res, next) {
     const data = doc.data();
     if (data.role !== "admin") return res.status(403).json({ success: false, error: "Admin role required" });
 
-    // Optionally attach the admin profile
     req.adminProfile = data;
     next();
   } catch (err) {
@@ -38,4 +37,24 @@ async function requireAdmin(req, res, next) {
   }
 }
 
-module.exports = { verifyIdToken, requireAdmin };
+// gate routes to tutors only, and attach their profile (used for tutorName on notes, etc.)
+async function requireTutor(req, res, next) {
+  try {
+    const uid = req.uid;
+    if (!uid) return res.status(401).json({ success: false, error: "No user" });
+
+    const doc = await firestore.collection("users").doc(uid).get();
+    if (!doc.exists) return res.status(403).json({ success: false, error: "No profile found for caller" });
+
+    const data = doc.data();
+    if (data.role !== "tutor") return res.status(403).json({ success: false, error: "Tutor role required" });
+
+    req.tutorProfile = data;
+    next();
+  } catch (err) {
+    console.error("requireTutor err:", err);
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+}
+
+module.exports = { verifyIdToken, requireAdmin, requireTutor };
