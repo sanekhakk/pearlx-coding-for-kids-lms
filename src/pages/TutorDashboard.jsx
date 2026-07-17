@@ -10,13 +10,12 @@ import {
   Loader2, User, CheckCircle, XCircle, X, Trash2, Calendar, Clock,
   TrendingUp, LogOut, Users, AlertCircle, Video, ArrowRight, Menu,
   Home, BarChart2, Bell, Award, Phone, BookOpen, ChevronDown, ChevronRight,
-  GraduationCap, Play, Zap,
+  GraduationCap, Play, Zap,FileText
 } from "lucide-react";
 import { getProgressRef } from "../utils/paths";
 import { getDisplayTime } from "../utils/timeUtils";
 import { CATEGORIES } from "../utils/curriculumData";
 import PearlxLogo from "../assets/flat_logo.webp";
-import FileText from "lucide-react";
 import TutorNotesSection from "./TutorNotesSection";
 
 const C = {

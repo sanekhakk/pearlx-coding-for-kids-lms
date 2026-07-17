@@ -16,13 +16,12 @@ import {
   BookOpen, User, Loader2, CheckCircle, XCircle, TrendingUp,
   Calendar, Clock, LogOut, Award, Target, Video, ArrowRight,
   Bell, Home, BarChart2, Star, Menu, X, ChevronDown, ChevronRight,
-  Zap, BookMarked, GraduationCap, Play,
+  Zap, BookMarked, GraduationCap, Play,FileText
 } from "lucide-react";
 import { CATEGORIES } from "../utils/curriculumData";
 import { getProgressRef } from "../utils/paths";
 import { getDisplayTime } from "../utils/timeUtils";
 import PearlxLogo from "../assets/flat_logo.webp";
-import FileText from "lucide-react";
 import StudentNotesSection from "./StudentNotesSection";
 
 const C = {
