@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { FileText, X, Calendar, User, Loader2, ChevronRight } from "lucide-react";
 
+// npm install react-markdown remark-gfm
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
@@ -78,7 +79,7 @@ export default function StudentNotesSection() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
-  const { uid } = useAuth();
+  const { userId: uid } = useAuth();
 
   useEffect(() => {
     if (!uid) return; // wait until auth is actually ready before fetching
@@ -96,7 +97,7 @@ export default function StudentNotesSection() {
         console.error("load student notes err:", err);
         setError(err.message);
       } finally {
-        setLoading(false); 
+        setLoading(false); // always clear the spinner, even on error
       }
     })();
   }, [uid]);

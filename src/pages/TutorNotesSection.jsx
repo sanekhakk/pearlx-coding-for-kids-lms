@@ -8,6 +8,7 @@ import {
   Calendar, BookOpen, Info, Users, ChevronDown,
 } from "lucide-react";
 
+// Point this at your backend base URL (same host your other admin/tutor calls hit)
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {
@@ -59,7 +60,7 @@ export default function TutorNotesSection() {
   const [success, setSuccess] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
-  const { uid } = useAuth();
+  const { userId: uid } = useAuth();
 
   const loadStudents = async () => {
     const q = query(collection(db, "userSummaries"), where("tutorUids", "array-contains", uid), where("role", "==", "student"));
