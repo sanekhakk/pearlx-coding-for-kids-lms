@@ -255,8 +255,92 @@ const SideNavItem = ({ tab, active, onClick }) => (
   </motion.button>
 );
 
-// Student Curriculum View
-function StudentCurriculumView({ category, studentName }) {
+// Categories that use a per-student custom Chapters list (studentChapters/{uid})
+// instead of the shared coding Module/Lesson curriculum (curriculum/{docId}).
+const CHAPTER_BASED_CATEGORIES = ["academic_tuition", "courses"];
+
+// Student Curriculum View — Chapters variant (Academic Tuition / Courses)
+function StudentChaptersView({ studentId, category }) {
+  const [chapters, setChapters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState({});
+
+  useEffect(() => {
+    if (!studentId) { setLoading(false); return; }
+    setLoading(true);
+    const ref = doc(db, "studentChapters", studentId);
+    const unsub = onSnapshot(ref,
+      snap => {
+        const data = snap.exists() ? snap.data() : { chapters: [] };
+        const chaps = (data.chapters || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
+        setChapters(chaps);
+        setLoading(false);
+      },
+      err => {
+        console.error("Student chapters snapshot error:", err);
+        setLoading(false);
+      }
+    );
+    return () => unsub();
+  }, [studentId]);
+
+  const catInfo = CATEGORIES.find(c => c.value === category);
+  const col = { bg: "#EEF2FF", border: "#6366F1", text: "#4F46E5", light: "#E0E7FF" };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ background: C.card, borderRadius: 18, border: `2px solid ${col.border}`, padding: "18px 22px", boxShadow: C.shadowCard }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <div style={{ width: 52, height: 52, borderRadius: 16, background: col.bg, border: `1px solid ${col.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, flexShrink: 0 }}>
+            {catInfo?.label.charAt(0) || "📘"}
+          </div>
+          <div>
+            <p style={{ fontWeight: 800, fontSize: 16, color: col.text }}>{catInfo?.label || "Custom Curriculum"}</p>
+            <p style={{ fontSize: 13, color: C.textMuted, marginTop: 2 }}>{chapters.length} chapters</p>
+          </div>
+        </div>
+      </div>
+
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center", padding: 40 }}><Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} /></div>
+      ) : chapters.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "40px 20px", background: C.card, borderRadius: 16, border: `1px solid ${C.border}` }}>
+          <p style={{ fontSize: 13, color: C.textMuted }}>Curriculum is being set up. Check back soon!</p>
+        </div>
+      ) : (
+        chapters.map((chap, i) => {
+          const isOpen = expanded[chap.id];
+          return (
+            <div key={chap.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard }}>
+              <div onClick={() => setExpanded(p => ({ ...p, [chap.id]: !p[chap.id] }))}
+                style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", cursor: "pointer" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 13, background: col.bg, border: `1px solid ${col.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: col.text, flexShrink: 0 }}>
+                  {i + 1}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontWeight: 800, fontSize: 14, color: C.textPrimary }}>{chap.title}</p>
+                </div>
+                {isOpen ? <ChevronDown style={{ width: 16, height: 16, color: C.textMuted }} /> : <ChevronRight style={{ width: 16, height: 16, color: C.textMuted }} />}
+              </div>
+              <AnimatePresence>
+                {isOpen && chap.content && (
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
+                    <div style={{ borderTop: `1px solid ${C.border}`, padding: "14px 18px" }}>
+                      <p style={{ fontSize: 12, color: C.textSecondary, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{chap.content}</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })
+      )}
+    </div>
+  );
+}
+
+// Student Curriculum View — routes to the Chapters view or the Module/Lesson view
+function StudentCurriculumView({ category, studentName, studentId }) {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedModules, setExpandedModules] = useState({});
@@ -267,8 +351,10 @@ function StudentCurriculumView({ category, studentName }) {
     rising_pearls: { bg: "#EFF6FF", border: "#60A5FA", text: "#2563EB", light: "#BFDBFE" },
   };
 
+  const isChapterBased = CHAPTER_BASED_CATEGORIES.includes(category);
+
   useEffect(() => {
-    if (!category) { setLoading(false); return; }
+    if (!category || isChapterBased) { setLoading(false); return; }
     setLoading(true);
     const q = query(collection(db, "curriculum"), where("category", "==", category));
     const unsub = onSnapshot(q, 
@@ -284,7 +370,7 @@ function StudentCurriculumView({ category, studentName }) {
       }
     );
     return () => unsub();
-  }, [category]);
+  }, [category, isChapterBased]);
 
   if (!category) {
     return (
@@ -293,6 +379,11 @@ function StudentCurriculumView({ category, studentName }) {
         <p style={{ fontSize: 14, color: C.textMuted }}>No category assigned yet. Contact your admin.</p>
       </div>
     );
+  }
+
+  // Academic Tuition / Courses students use the per-student Chapters list
+  if (isChapterBased) {
+    return <StudentChaptersView studentId={studentId} category={category} />;
   }
 
   const catInfo = CATEGORIES.find(c => c.value === category);
@@ -387,6 +478,7 @@ export default function StudentDashboard() {
   const [currModules, setCurrModules]         = useState([]);  // for coding students
   const [lessonProgressMap, setLessonProgress] = useState({}); // { key: status }
   const [academicLessons, setAcademicLessons] = useState({}); // { subject: [lesson] }
+  const [chapterList, setChapterList] = useState([]); // studentChapters, for academic_tuition/courses
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -426,6 +518,16 @@ export default function StudentDashboard() {
     return () => unsubs.forEach(u => u());
   }, [userId, profile]);
 
+  // Load the actual curriculum (chapters) for Academic Tuition / Courses students
+  useEffect(() => {
+    if (!userId || !CHAPTER_BASED_CATEGORIES.includes(profile?.category)) { setChapterList([]); return; }
+    const unsub = onSnapshot(doc(db, "studentChapters", userId), snap => {
+      const data = snap.exists() ? snap.data() : { chapters: [] };
+      setChapterList((data.chapters || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0)));
+    }, () => {});
+    return () => unsub();
+  }, [userId, profile?.category]);
+
   // Load curriculum modules for coding students (for next-lesson chip) 
   useEffect(() => {
     const isCoding = profile?.category && profile.category !== "academic_tuition";
@@ -460,7 +562,11 @@ export default function StudentDashboard() {
 
   const assignments = profile?.assignments || [];
   const permanentClassLink = profile?.permanentClassLink || "";
-  const totalModules = Object.values(progressData).reduce((s, p) => s + (p.completedChapters?.length || 0), 0);
+  const isChapterBasedStudent = CHAPTER_BASED_CATEGORIES.includes(profile?.category);
+  const chapterCompletedCount = chapterList.filter(c => c.completed).length;
+  const totalModules = isChapterBasedStudent
+    ? chapterCompletedCount
+    : Object.values(progressData).reduce((s, p) => s + (p.completedChapters?.length || 0), 0);
   const attendanceRate = completed.length + missed.length > 0
     ? Math.round((completed.length / (completed.length + missed.length)) * 100) : 100;
   const nextClass = upcoming[0];
@@ -772,39 +878,73 @@ export default function StudentDashboard() {
 
               {/* PROGRESS  */}
               {activeTab === "progress" && (
-                <motion.div key="pr" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                  style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
-                  {assignments.length === 0
-                    ? <div style={{ gridColumn: "1/-1" }}><Empty icon={TrendingUp} msg="No progress data available" /></div>
-                    : assignments.map((a, i) => {
-                        const data = progressData[a.subject] || { completedChapters: [] };
-                        const done = data.completedChapters?.length || 0;
-                        return (
-                          <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard }}>
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                              <div>
-                                <h3 style={{ fontSize: 15, fontWeight: 700, color: C.textPrimary }}>{a.subject}</h3>
-                                <p style={{ fontSize: 12, color: C.textMuted }}>with {a.tutorName}</p>
-                              </div>
-                              <div style={{ textAlign: "right" }}>
-                                <p style={{ fontSize: 24, fontWeight: 800, color: C.emerald }}>{done}</p>
-                                <p style={{ fontSize: 11, color: C.textMuted }}>chapters</p>
-                              </div>
-                            </div>
-                            <div style={{ height: 6, borderRadius: 6, background: C.emeraldLight, overflow: "hidden", marginBottom: 12 }}>
-                              <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, done * 10)}%` }} transition={{ duration: 0.8 }}
-                                style={{ height: "100%", borderRadius: 6, background: C.gradEmerald }} />
-                            </div>
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                              {data.completedChapters?.map((ch, ci) => (
-                                <span key={ci} style={{ padding: "4px 10px", borderRadius: 20, background: C.emeraldLight, color: C.emerald, fontSize: 12, fontWeight: 600 }}>✓ {ch}</span>
-                              ))}
-                              {done === 0 && <p style={{ fontSize: 13, color: C.textMuted }}>No chapters completed yet</p>}
-                            </div>
+                <motion.div key="pr" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                  {isChapterBasedStudent ? (
+                    // Chapter-based curriculum progress (Academic Tuition / Courses)
+                    chapterList.length === 0 ? (
+                      <Empty icon={TrendingUp} msg="No curriculum assigned yet" />
+                    ) : (
+                      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard, maxWidth: 520 }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                          <div>
+                            <h3 style={{ fontSize: 15, fontWeight: 700, color: C.textPrimary }}>Curriculum Progress</h3>
+                            <p style={{ fontSize: 12, color: C.textMuted }}>{chapterCompletedCount} of {chapterList.length} chapters completed</p>
                           </div>
-                        );
-                      })
-                  }
+                          <div style={{ textAlign: "right" }}>
+                            <p style={{ fontSize: 24, fontWeight: 800, color: C.emerald }}>{chapterCompletedCount}/{chapterList.length}</p>
+                          </div>
+                        </div>
+                        <div style={{ height: 6, borderRadius: 6, background: C.emeraldLight, overflow: "hidden", marginBottom: 16 }}>
+                          <motion.div initial={{ width: 0 }} animate={{ width: `${chapterList.length ? Math.round((chapterCompletedCount / chapterList.length) * 100) : 0}%` }} transition={{ duration: 0.8 }}
+                            style={{ height: "100%", borderRadius: 6, background: C.gradEmerald }} />
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          {chapterList.map((chap, i) => (
+                            <div key={chap.id || i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, background: chap.completed ? C.emeraldLight : C.bg, border: `1px solid ${chap.completed ? C.emerald + "35" : C.border}` }}>
+                              <div style={{ width: 22, height: 22, borderRadius: 7, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: chap.completed ? C.emerald : "#E2E8F0" }}>
+                                {chap.completed ? <span style={{ color: "#fff", fontSize: 11, fontWeight: 800 }}>✓</span> : <span style={{ color: "#94A3B8", fontSize: 10 }}>{i + 1}</span>}
+                              </div>
+                              <p style={{ fontSize: 13, fontWeight: chap.completed ? 700 : 500, color: C.textPrimary }}>{chap.title}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  ) : (
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
+                      {assignments.length === 0
+                        ? <div style={{ gridColumn: "1/-1" }}><Empty icon={TrendingUp} msg="No progress data available" /></div>
+                        : assignments.map((a, i) => {
+                            const data = progressData[a.subject] || { completedChapters: [] };
+                            const done = data.completedChapters?.length || 0;
+                            return (
+                              <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                                  <div>
+                                    <h3 style={{ fontSize: 15, fontWeight: 700, color: C.textPrimary }}>{a.subject}</h3>
+                                    <p style={{ fontSize: 12, color: C.textMuted }}>with {a.tutorName}</p>
+                                  </div>
+                                  <div style={{ textAlign: "right" }}>
+                                    <p style={{ fontSize: 24, fontWeight: 800, color: C.emerald }}>{done}</p>
+                                    <p style={{ fontSize: 11, color: C.textMuted }}>chapters</p>
+                                  </div>
+                                </div>
+                                <div style={{ height: 6, borderRadius: 6, background: C.emeraldLight, overflow: "hidden", marginBottom: 12 }}>
+                                  <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, done * 10)}%` }} transition={{ duration: 0.8 }}
+                                    style={{ height: "100%", borderRadius: 6, background: C.gradEmerald }} />
+                                </div>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                                  {data.completedChapters?.map((ch, ci) => (
+                                    <span key={ci} style={{ padding: "4px 10px", borderRadius: 20, background: C.emeraldLight, color: C.emerald, fontSize: 12, fontWeight: 600 }}>✓ {ch}</span>
+                                  ))}
+                                  {done === 0 && <p style={{ fontSize: 13, color: C.textMuted }}>No chapters completed yet</p>}
+                                </div>
+                              </div>
+                            );
+                          })
+                      }
+                    </div>
+                  )}
                 </motion.div>
               )}
 
@@ -826,7 +966,7 @@ export default function StudentDashboard() {
 
               {activeTab === "curriculum" && (
                 <motion.div key="cu" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                  <StudentCurriculumView category={profile?.category} studentName={profile?.name} />
+                  <StudentCurriculumView category={profile?.category} studentName={profile?.name} studentId={userId} />
                 </motion.div>
               )}
 

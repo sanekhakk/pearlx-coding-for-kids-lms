@@ -6,8 +6,6 @@ import { auth } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { FileText, X, Calendar, User, Loader2, ChevronRight } from "lucide-react";
 
-// npm install react-markdown remark-gfm
-
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {

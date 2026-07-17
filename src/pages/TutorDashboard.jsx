@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import {
   collection, query, where, onSnapshot, doc, getDocs,
-  getDoc,
+  getDoc, setDoc,
 } from "firebase/firestore";
 import {
   Loader2, User, CheckCircle, XCircle, X, Trash2, Calendar, Clock,
@@ -42,6 +42,10 @@ const catLabel = {
   bright_pearls: { label: "🌱 Bright Pearls", color: "#16A34A", bg: "#F0FDF4" },
   rising_pearls: { label: "🦋 Rising Pearls", color: "#2563EB", bg: "#EFF6FF" },
 };
+
+// Categories that use a per-student custom Chapters list (studentChapters/{uid})
+// instead of the shared coding Module/Lesson curriculum (curriculum/{docId}).
+const CHAPTER_BASED_CATEGORIES = ["academic_tuition", "courses"];
 
 // Helper: get next/ongoing lesson from progress map
 function getNextLessonLabel(modules, lessonProgressMap) {
@@ -385,10 +389,38 @@ const ProgressUpdateModal = ({ student, onClose }) => {
   );
 
   const catInfo = catLabel[student.category];
+  const isChapterBased = CHAPTER_BASED_CATEGORIES.includes(student.category);
 
-  // Fetch curriculum for student's category
+  // Chapter-based curriculum (Academic Tuition / Courses)
+  const [chapters, setChapters] = useState([]);
+  const [loadingChapters, setLoadingChapters] = useState(true);
+  const [savingChapter, setSavingChapter] = useState(null); // chapter id being toggled
+
   useEffect(() => {
-    if (!student.category) { setLoadingCurr(false); return; }
+    if (!isChapterBased) { setLoadingChapters(false); return; }
+    setLoadingChapters(true);
+    const unsub = onSnapshot(doc(db, "studentChapters", student.uid), snap => {
+      const data = snap.exists() ? snap.data() : { chapters: [] };
+      setChapters((data.chapters || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0)));
+      setLoadingChapters(false);
+    }, () => setLoadingChapters(false));
+    return () => unsub();
+  }, [isChapterBased, student.uid]);
+
+  const toggleChapterComplete = async (chapterId) => {
+    setSavingChapter(chapterId);
+    const next = chapters.map(c => c.id === chapterId ? { ...c, completed: !c.completed } : c);
+    try {
+      await setDoc(doc(db, "studentChapters", student.uid), { chapters: next }, { merge: true });
+    } catch (e) {
+      console.error("toggle chapter complete err:", e);
+    }
+    setSavingChapter(null);
+  };
+
+  // Fetch curriculum for student's category (coding categories only)
+  useEffect(() => {
+    if (!student.category || isChapterBased) { setLoadingCurr(false); return; }
     const q = query(collection(db, "curriculum"), where("category", "==", student.category));
     getDocs(q).then(snap => {
       const mods = snap.docs.map(d => ({ id: d.id, ...d.data() }))
@@ -397,7 +429,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
       if (mods.length > 0) setExpandedMods({ [mods[0].id]: true });
       setLoadingCurr(false);
     }).catch(() => setLoadingCurr(false));
-  }, [student.category]);
+  }, [student.category, isChapterBased]);
 
   // Listen to progress for each subject the student has
   useEffect(() => {
@@ -491,7 +523,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
         </div>
 
         {/* Subject tabs */}
-        {subjects.length > 1 && (
+        {!isChapterBased && subjects.length > 1 && (
           <div style={{ display: "flex", borderBottom: `1px solid ${C.border}`, flexShrink: 0, overflowX: "auto" }}>
             {subjects.map(subj => (
               <button key={subj} onClick={() => setSelSubject(subj)}
@@ -507,21 +539,70 @@ const ProgressUpdateModal = ({ student, onClose }) => {
         )}
 
         {/* Stats bar */}
-        <div style={{ display: "flex", gap: 16, padding: "12px 24px", background: C.bg, flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: C.emerald, display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: C.emerald }}>{completedCount} Completed</span>
+        {isChapterBased ? (
+          <div style={{ display: "flex", gap: 16, padding: "12px 24px", background: C.bg, flexShrink: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: C.emerald, display: "inline-block" }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.emerald }}>{chapters.filter(c => c.completed).length} of {chapters.length} Completed</span>
+            </div>
+            <span style={{ fontSize: 11, color: C.textMuted, marginLeft: "auto", lineHeight: 2 }}>Click a chapter to mark it complete</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: C.amber }}>{ongoingCount} Ongoing</span>
+        ) : (
+          <div style={{ display: "flex", gap: 16, padding: "12px 24px", background: C.bg, flexShrink: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: C.emerald, display: "inline-block" }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.emerald }}>{completedCount} Completed</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, display: "inline-block" }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.amber }}>{ongoingCount} Ongoing</span>
+            </div>
+            <span style={{ fontSize: 11, color: C.textMuted, marginLeft: "auto", lineHeight: 2 }}>Click to cycle status</span>
           </div>
-          <span style={{ fontSize: 11, color: C.textMuted, marginLeft: "auto", lineHeight: 2 }}>Click to cycle status</span>
-        </div>
+        )}
 
-        {/* Lessons list */}
+        {/* Content list */}
         <div style={{ overflowY: "auto", flex: 1 }}>
-          {loadingCurr ? (
+          {isChapterBased ? (
+            loadingChapters ? (
+              <div style={{ display: "flex", justifyContent: "center", padding: 40 }}>
+                <Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} />
+              </div>
+            ) : chapters.length === 0 ? (
+              <div style={{ padding: 32, textAlign: "center" }}>
+                <div style={{ width: 48, height: 48, borderRadius: 14, background: C.amberLight, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+                  <BookOpen style={{ width: 22, height: 22, color: C.amber }} />
+                </div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: C.textPrimary, marginBottom: 4 }}>No Chapters Yet</p>
+                <p style={{ fontSize: 12, color: C.textMuted }}>Ask admin to add chapters for this student under Curriculum → Assign to Students.</p>
+              </div>
+            ) : (
+              <div style={{ padding: "12px 24px", display: "flex", flexDirection: "column", gap: 6 }}>
+                {chapters.map((chap, i) => {
+                  const isSaving = savingChapter === chap.id;
+                  return (
+                    <div key={chap.id || i}
+                      onClick={() => !isSaving && toggleChapterComplete(chap.id)}
+                      style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, cursor: "pointer",
+                        background: chap.completed ? C.emeraldLight : C.bg, border: `1px solid ${chap.completed ? C.emerald + "35" : C.border}`, opacity: isSaving ? 0.6 : 1 }}>
+                      <div style={{ width: 24, height: 24, borderRadius: 7, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                        background: chap.completed ? C.emerald : "#E2E8F0" }}>
+                        {isSaving
+                          ? <Loader2 style={{ width: 12, height: 12, color: "#fff", animation: "spin 1s linear infinite" }} />
+                          : chap.completed ? <span style={{ color: "#fff", fontSize: 12, fontWeight: 800 }}>✓</span>
+                          : <span style={{ color: "#94A3B8", fontSize: 11 }}>{i + 1}</span>}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontSize: 13, fontWeight: chap.completed ? 700 : 500, color: C.textPrimary }}>{chap.title}</p>
+                        {chap.content && <p style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{chap.content}</p>}
+                      </div>
+                      {chap.completed && <span style={{ fontSize: 10, fontWeight: 700, color: C.emerald, background: C.emeraldLight, padding: "3px 8px", borderRadius: 20, flexShrink: 0 }}>✅ Done</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+          ) : loadingCurr ? (
             <div style={{ display: "flex", justifyContent: "center", padding: 40 }}>
               <Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} />
             </div>
@@ -777,114 +858,6 @@ const ClassCard = ({ cls, onMark, studentLinkMap, timezone, nextLesson }) => {
   );
 };
 
-// Curriculum Tab (read-only for tutors, shows all 3 categories) 
-function CurriculumView() {
-  const [activeCategory, setActiveCategory] = useState("little_pearls");
-  const [modules, setModules] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [expandedModules, setExpandedModules] = useState({});
-
-  const catColors = {
-    little_pearls: { bg: "#FFF7ED", border: "#FB923C", text: "#EA580C", light: "#FED7AA" },
-    bright_pearls: { bg: "#F0FDF4", border: "#22C55E", text: "#16A34A", light: "#BBF7D0" },
-    rising_pearls: { bg: "#EFF6FF", border: "#60A5FA", text: "#2563EB", light: "#BFDBFE" },
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    const q = query(collection(db, "curriculum"), where("category", "==", activeCategory));
-    const unsub = onSnapshot(q, 
-      snap => {
-        const mods = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => a.moduleNumber - b.moduleNumber);
-        setModules(mods);
-        if (mods.length > 0) setExpandedModules({ [mods[0].id]: true });
-        setLoading(false);
-      },
-      err => {
-        console.error("Curriculum snapshot error:", err);
-        setLoading(false);
-      }
-    );
-    return () => unsub();
-  }, [activeCategory]);
-
-  const col = catColors[activeCategory];
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      {/* Category selector */}
-      <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
-        <div style={{ display: "flex", borderBottom: `1px solid ${C.border}` }}>
-          {CATEGORIES.map(cat => {
-            const active = activeCategory === cat.value;
-            const cc = catColors[cat.value];
-            return (
-              <button key={cat.value} onClick={() => setActiveCategory(cat.value)}
-                style={{ flex: 1, padding: "13px 10px", border: "none", cursor: "pointer", fontWeight: active ? 800 : 600, fontSize: 12, background: active ? cc.bg : C.bg, color: active ? cc.text : C.textMuted, borderBottom: active ? `2px solid ${cc.border}` : "2px solid transparent" }}>
-                {cat.label}
-              </button>
-            );
-          })}
-        </div>
-        <div style={{ padding: "14px 16px" }}>
-          <p style={{ fontSize: 12, color: C.textMuted }}>{CATEGORIES.find(c => c.value === activeCategory)?.ages} · {modules.length} modules · {modules.reduce((s, m) => s + (m.lessons?.length || 0), 0)} lessons</p>
-        </div>
-      </div>
-
-      {/* Modules */}
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center", padding: 40 }}><Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} /></div>
-      ) : modules.length === 0 ? (
-        <Empty icon={BookOpen} msg="No curriculum data yet. Ask admin to add curriculum." />
-      ) : (
-        modules.map(mod => {
-          const isOpen = expandedModules[mod.id];
-          return (
-            <div key={mod.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard }}>
-              <div onClick={() => setExpandedModules(p => ({ ...p, [mod.id]: !p[mod.id] }))}
-                style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", cursor: "pointer" }}>
-                <div style={{ width: 44, height: 44, borderRadius: 13, background: col.bg, border: `1px solid ${col.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
-                  {mod.moduleEmoji}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{ fontWeight: 800, fontSize: 14, color: C.textPrimary }}>Module {mod.moduleNumber}: {mod.moduleName}</p>
-                  <p style={{ fontSize: 12, color: C.textMuted }}>{mod.lessons?.length || 0} lessons</p>
-                </div>
-                {isOpen ? <ChevronDown style={{ width: 16, height: 16, color: C.textMuted }} /> : <ChevronRight style={{ width: 16, height: 16, color: C.textMuted }} />}
-              </div>
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }} style={{ overflow: "hidden" }}>
-                    <div style={{ borderTop: `1px solid ${C.border}`, padding: "12px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
-                      {(mod.lessons || []).sort((a, b) => a.lessonNumber - b.lessonNumber).map(lesson => (
-                        <div key={lesson.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", borderRadius: 10, background: C.bg }}>
-                          <div style={{ width: 26, height: 26, borderRadius: 8, background: col.light, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 11, fontWeight: 800, color: col.text }}>
-                            {lesson.lessonNumber}
-                          </div>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <p style={{ fontWeight: 700, fontSize: 13, color: C.textPrimary }}>{lesson.title}</p>
-                            <p style={{ fontSize: 11, color: C.cyan, fontWeight: 600, marginTop: 2 }}>📱 {lesson.platform}</p>
-                            {lesson.description && <p style={{ fontSize: 11, color: C.textSecondary, marginTop: 4, lineHeight: 1.5 }}>{lesson.description}</p>}
-                            {lesson.notes && <p style={{ fontSize: 11, color: C.amber, marginTop: 3 }}>📝 {lesson.notes}</p>}
-                            {lesson.pptLink && (
-                              <a href={lesson.pptLink} target="_blank" rel="noopener noreferrer"
-                                style={{ fontSize: 11, color: C.indigo, fontWeight: 600, display: "inline-block", marginTop: 3 }}>🔗 View PPT / Resource</a>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })
-      )}
-    </div>
-  );
-}
-
 // Main Dashboard 
 export default function TutorDashboard() {
   const { userId, logout, tutorMarkAttendance, tutorUpdateChapterProgress, tutorDeleteChapterProgress, tutorSaveLessonProgress } = useAuth();
@@ -1030,8 +1003,6 @@ export default function TutorDashboard() {
     { id: "history",       label: "Class History",    icon: BarChart2 },
     { id: "progress",      label: "Progress Tracker", icon: TrendingUp },
     { id: "notes", label: "Notes", icon: FileText, icon: BookOpen  },
-    { id: "curriculum",    label: "Curriculum",       icon: BookOpen },
-
   ];
 
   const handleTabChange = (tabId) => { setActiveTab(tabId); setSidebarOpen(false); };
@@ -1465,11 +1436,6 @@ export default function TutorDashboard() {
               </motion.div>
             )}
 
-            {activeTab === "curriculum" && (
-              <motion.div key="cu" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                <CurriculumView />
-              </motion.div>
-            )}
           </AnimatePresence>
         </div>
       </div>

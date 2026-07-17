@@ -8,7 +8,6 @@ import {
   Calendar, BookOpen, Info, Users, ChevronDown,
 } from "lucide-react";
 
-// Point this at your backend base URL (same host your other admin/tutor calls hit)
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {
