@@ -1,4 +1,3 @@
-// src/pages/AcademicTuition.jsx - COMPREHENSIVE ACADEMIC TUITION PAGE
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -96,7 +95,7 @@ const TESTIMONIALS = [
   { name: "Rohan (Class 11, ISC)", subject: "Chemistry", mark: "72 → 94", t: "Organic chemistry became my favourite subject after Pearlx tuition. Amazing teaching!", TIcon: FlaskConical },
 ];
 
-// ─── Components ──────────────────────────────────────────────────────
+// Components
 const SectionBadge = ({ children, color }) => (
   <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
     className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black border"
@@ -222,13 +221,13 @@ const TestimonialCard = ({ name, subject, mark, t, TIcon }) => (
   </motion.div>
 );
 
-// ─── MAIN COMPONENT ──────────────────────────────────────────────────
+//MAIN COMPONENT
 const AcademicTuition = ({ openDemoModal }) => {
   const [expandedClass, setExpandedClass] = useState("Classes 1-7");
 
   return (
     <main className="pt-28">
-      {/* ─── HERO ─── */}
+      {/*HERO */}
       <section className="py-28 px-4 relative overflow-hidden" style={{ background: T.bg }}>
         <div className="absolute inset-0 pointer-events-none">
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
@@ -264,7 +263,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── FEE STRUCTURE ─── */}
+      {/*FEE STRUCTURE*/}
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -290,7 +289,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── AVAILABLE SYLLABUS ─── */}
+      {/* AVAILABLE SYLLABUS */}
       <section className="py-24 px-4" style={{ background: T.bg }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -317,7 +316,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── SUBJECTS BY CLASS ─── */}
+      {/* SUBJECTS BY CLASS */}
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -354,7 +353,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── KEY FEATURES ─── */}
+      {/*  KEY FEATURES */}
       <section className="py-24 px-4" style={{ background: T.bg }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -371,7 +370,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/*  TESTIMONIALS  */}
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -388,7 +387,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── FAQs ─── */}
+      {/*  FAQs  */}
       <section className="py-24 px-4" style={{ background: T.bg }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -401,7 +400,7 @@ const AcademicTuition = ({ openDemoModal }) => {
         </div>
       </section>
 
-      {/* ─── CTA BOTTOM ─── */}
+      {/*  CTA BOTTOM  */}
       <section className="py-24 px-4" style={{ background: "linear-gradient(160deg, #F0FFFE, #E0F2FE)" }}>
         <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

@@ -123,7 +123,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
   setLoading(true);
 
   try {
-    // IMPORTANT: Full backend URL
+    // backend URL
     const response = await fetch(
   "https://brainbugz-learning-management-system.onrender.com/api/submit-demo-booking",
   {

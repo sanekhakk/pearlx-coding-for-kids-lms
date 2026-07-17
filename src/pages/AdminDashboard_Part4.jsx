@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard_Part4.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -36,7 +35,7 @@ const statusCfg = {
   pending:   { color: C.indigo,  bg: C.indigoLight,  label: "Scheduled", icon: Calendar,   border: `${C.indigo}30` },
 };
 
-// ── Stat Card ─────────────────────────────────────────────────
+// Stat Card 
 const MiniStatCard = ({ icon: Icon, label, value, grad, light, iconColor }) => (
   <motion.div whileHover={{ y: -2 }}
     style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 18px", boxShadow: C.shadowCard }}>
@@ -48,7 +47,7 @@ const MiniStatCard = ({ icon: Icon, label, value, grad, light, iconColor }) => (
   </motion.div>
 );
 
-// ── Class Card ─────────────────────────────────────────────────
+// Class Card 
 const ClassCard = ({ cls, onDelete, isDeleting }) => {
   const cfg = statusCfg[cls.status] || statusCfg.scheduled;
   const Icon = cfg.icon;
@@ -107,7 +106,7 @@ const ClassCard = ({ cls, onDelete, isDeleting }) => {
   );
 };
 
-// ── Student Card ───────────────────────────────────────────────
+// Student Card 
 const StudentCard = ({ student, classCount, onSelect }) => {
   const stats = classCount[student.uid] || { total: 0, scheduled: 0, completed: 0, missed: 0 };
 
@@ -154,7 +153,7 @@ const StudentCard = ({ student, classCount, onSelect }) => {
   );
 };
 
-// ── Student Detail View ────────────────────────────────────────
+// Student Detail View 
 const StudentDetailView = ({ student, classes, onBack, onDeleteClass, isDeletingId }) => {
   const [filterStatus, setFilterStatus] = useState("all");
 
@@ -238,9 +237,7 @@ const StudentDetailView = ({ student, classes, onBack, onDeleteClass, isDeleting
   );
 };
 
-// ====================================================================
 // MAIN CLASSES OVERVIEW
-// ====================================================================
 export function ClassesOverview({ setActiveView, adminDeleteClass }) {
   const [allClasses, setAllClasses]           = useState([]);
   const [students, setStudents]               = useState([]);

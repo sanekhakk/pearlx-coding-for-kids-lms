@@ -66,7 +66,7 @@ const AuthModal = () => {
             onClick={closeLoginModal}
           />
 
-          {/* Modal wrapper — pointer-events passthrough so overlay click still fires */}
+          
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none">
             <motion.div
               initial={{ scale: 0.94, y: 20, opacity: 0 }}
@@ -86,7 +86,7 @@ const AuthModal = () => {
                   style={{ background: "linear-gradient(90deg, #0EA5E9, #10B981)" }}
                 />
 
-                {/* Static decorative blobs — no animation, no blur */}
+                
                 <div
                   className="absolute top-0 right-0 w-56 h-56 rounded-full pointer-events-none"
                   style={{

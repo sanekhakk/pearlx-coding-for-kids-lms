@@ -1,4 +1,3 @@
-// src/pages/TutorDashboard.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
@@ -43,7 +42,7 @@ const catLabel = {
   rising_pearls: { label: "🦋 Rising Pearls", color: "#2563EB", bg: "#EFF6FF" },
 };
 
-// ── Helper: get next/ongoing lesson from progress map ──────────
+// Helper: get next/ongoing lesson from progress map
 function getNextLessonLabel(modules, lessonProgressMap) {
   if (!modules || modules.length === 0) return null;
   for (const mod of modules) {
@@ -98,7 +97,7 @@ const SideNavItem = ({ tab, active, onClick }) => (
   </motion.button>
 );
 
-// ── Attendance Modal — lessons with Completed / Ongoing toggle ─
+// Attendance Modal — lessons with Completed / Ongoing toggle
 const AttendanceModal = ({ classItem, onClose, markAttendance }) => {
   const { userId, tutorSaveLessonProgress } = useAuth();
   const [status, setStatus] = useState("completed");
@@ -372,12 +371,12 @@ const AttendanceModal = ({ classItem, onClose, markAttendance }) => {
   );
 };
 
-// ── Progress Detail Modal — curriculum-based lesson progress ──
+// Progress Detail Modal — curriculum-based lesson progress 
 const ProgressUpdateModal = ({ student, onClose }) => {
   const { tutorSaveLessonProgress } = useAuth();
   const [modules, setModules] = useState([]);
   const [loadingCurr, setLoadingCurr] = useState(true);
-  const [progress, setProgress] = useState({}); // { subject: { lessons: [...] } }
+  const [progress, setProgress] = useState({}); 
   const [expandedMods, setExpandedMods] = useState({});
   const [saving, setSaving] = useState(null); // lessonKey being saved
   const [activeSubject] = useState(
@@ -614,7 +613,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
   );
 };
 
-// ── Class Card ────────────────────────────────────────────────
+//  Class Card 
 const ClassCard = ({ cls, onMark, studentLinkMap, timezone, nextLesson }) => {
   const due = isClassDue(cls);
   const time = getDisplayTime(cls.classDate, cls.classTime, timezone);
@@ -669,7 +668,7 @@ const ClassCard = ({ cls, onMark, studentLinkMap, timezone, nextLesson }) => {
       </div>
 
       <div style={{ display: "flex", minHeight: 130 }}>
-        {/* ── LEFT: Content ── */}
+        {/* LEFT: Content */}
         <div style={{ flex: 1, padding: "20px 22px 20px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between", minWidth: 0 }}>
           <div>
             {/* Subject */}
@@ -737,7 +736,7 @@ const ClassCard = ({ cls, onMark, studentLinkMap, timezone, nextLesson }) => {
           </div>
         </div>
 
-        {/* ── RIGHT: Big Time Block ── */}
+        {/* RIGHT: Big Time Block  */}
         <div style={{
           flexShrink: 0, width: 120,
           background: `linear-gradient(160deg, ${accentColor}12 0%, ${accentColor}04 100%)`,
@@ -777,7 +776,7 @@ const ClassCard = ({ cls, onMark, studentLinkMap, timezone, nextLesson }) => {
   );
 };
 
-// ── Curriculum Tab (read-only for tutors, shows all 3 categories) ──
+// Curriculum Tab (read-only for tutors, shows all 3 categories) 
 function CurriculumView() {
   const [activeCategory, setActiveCategory] = useState("little_pearls");
   const [modules, setModules] = useState([]);
@@ -885,7 +884,7 @@ function CurriculumView() {
   );
 }
 
-// ── Main Dashboard ────────────────────────────────────────────
+// Main Dashboard 
 export default function TutorDashboard() {
   const { userId, logout, tutorMarkAttendance, tutorUpdateChapterProgress, tutorDeleteChapterProgress, tutorSaveLessonProgress } = useAuth();
 
@@ -898,9 +897,7 @@ export default function TutorDashboard() {
   const [studentLinkMap, setLinkMap]        = useState({});
   const [loadingStudents, setLS]            = useState(true);
   const [loadingClasses, setLC]             = useState(true);
-  // For next-lesson chips: { category: [module,...] }
   const [categoryModulesMap, setCatModules] = useState({});
-  // Per-student lesson progress: { uid: { subject: { key: status } } }
   const [studentLessonProgress, setStudentLessonProgress] = useState({});
   const [activeTab, setActiveTab]           = useState("overview");
   const [showAttendance, setShowAttendance] = useState(false);
@@ -942,7 +939,6 @@ export default function TutorDashboard() {
     prog[st.uid] = {};
     const assignments = st.assignments || [];
 
-    // ← FIX: if no assignments, still populate studentsWP
     if (assignments.length === 0) {
       setStudentsWP(prev => {
         const without = prev.filter(s => s.uid !== st.uid);
@@ -959,7 +955,6 @@ export default function TutorDashboard() {
           setStudentsWP(students.map(s => ({ ...s, progress: { ...(prog[s.uid] || {}) } })));
         },
         err => {
-          // ← FIX: on error still show the student, just with no progress
           console.error("Progress read error:", err);
           setStudentsWP(students.map(s => ({ ...s, progress: { ...(prog[s.uid] || {}) } })));
         }
@@ -982,7 +977,7 @@ export default function TutorDashboard() {
     });
   }, [userId]);
 
-  // ── Load curriculum modules per category (for next-lesson chips) ──
+  // Load curriculum modules per category (for next-lesson chips)
   useEffect(() => {
     if (!students.length) return;
     const codingCategories = [...new Set(
@@ -1000,7 +995,7 @@ export default function TutorDashboard() {
     return () => unsubs.forEach(u => u());
   }, [students]);
 
-  // ── Load per-student per-subject lesson progress ──
+  // Load per-student per-subject lesson progress
   useEffect(() => {
     if (!students.length) return;
     const unsubs = [];

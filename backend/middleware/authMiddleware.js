@@ -1,9 +1,5 @@
-// backend/middleware/authMiddleware.js
 const { admin, firestore } = require("../firebaseAdmin");
 
-/**
- * Extract bearer token and verify id token, then attach decodedToken to req
- */
 async function verifyIdToken(req, res, next) {
   try {
     const authHeader = req.headers.authorization || "";
@@ -22,9 +18,6 @@ async function verifyIdToken(req, res, next) {
   }
 }
 
-/**
- * Ensure the requesting user has role === 'admin' in Firestore user profile
- */
 async function requireAdmin(req, res, next) {
   try {
     const uid = req.uid;

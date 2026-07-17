@@ -1,35 +1,34 @@
-// src/utils/paths.js
 import { doc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 
-// ------------------ USERS ------------------
+// USERS 
 export const getUserProfileRef = (uid) =>
   doc(db, "users", uid); // /users/{uid}
 
 export const getUserSummaryRef = (uid) =>
   doc(db, "userSummaries", uid); // /userSummaries/{uid}
 
-// ------------------ ASSIGNMENTS ------------------
+// ASSIGNMENTS
 export const getAssignmentsCollection = () =>
   collection(db, "assignments"); // /assignments
 
-// ------------------ CLASSES ------------------
+// CLASSES
 export const getClassesCollection = () =>
   collection(db, "classes"); // /classes
 
-// ------------------ ATTENDANCE ------------------
+//ATTENDANCE
 export const getAttendanceCollection = () =>
   collection(db, "attendance"); // /attendance
 
-// ------------------ PROGRESS ------------------
+//PROGRESS
 export const getProgressRef = (uid, subject) =>
   doc(db, "progress", `${uid}_${subject}`);
 
-// ------------------ FEEDBACK ------------------
+//FEEDBACK
 export const getFeedbackCollection = () =>
   collection(db, "feedback");
 
-// -------------- SUBJECT OPTIONS ----------------
+// SUBJECT OPTIONS
 export const SUBJECT_OPTIONS = [
   "Maths",
   "Physics",
@@ -41,7 +40,7 @@ export const SUBJECT_OPTIONS = [
   "Computer Science"
 ];
 
-// -------------- CURRICULUM ------------------
+// CURRICULUM 
 export const CURRICULUM = {
   Maths: ["Chapter 1", "Chapter 2", "Chapter 3"],
   Physics: ["Chapter 1", "Chapter 2", "Chapter 3"],

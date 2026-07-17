@@ -1,23 +1,3 @@
-// src/utils/curriculumData.js
-// ─────────────────────────────────────────────────────────────────────────────
-// SEED DATA  –  run seedCurriculumToFirestore() once from the admin panel
-//              to populate Firestore with the initial PearlX curriculum.
-//
-// Firestore structure:
-//   /curriculum/{docId}
-//     category     : "little_pearls" | "bright_pearls" | "rising_pearls"
-//     moduleNumber : number
-//     moduleName   : string
-//     moduleEmoji  : string
-//     lessons      : [{ id, lessonNumber, title, platform, description, notes, pptLink }]
-//
-// Per-student curriculum overrides:
-//   /studentCurriculum/{studentId}
-//     studentId    : string
-//     enabledModules: string[]   // array of module doc IDs that are enabled for this student
-//     customOrder  : number[]    // optional custom ordering of module numbers
-//     updatedAt    : timestamp
-// ─────────────────────────────────────────────────────────────────────────────
 import { 
   collection, addDoc, getDocs, query, where, serverTimestamp, 
   doc, setDoc, getDoc, updateDoc, orderBy 
@@ -30,7 +10,7 @@ export const CATEGORIES = [
   { value: "rising_pearls",  label: "🦋 Rising Pearls",  ages: "Ages 12–15 • Grades 7–10" },
 ];
 
-// ── Little Pearls: 7 Modules ──────────────────────────────────────────────────
+// Little Pearls: 7 Modules 
 const LITTLE_PEARLS_MODULES = [
   {
     moduleNumber: 1, moduleName: "Coding Fundamentals", moduleEmoji: "🖥️",
@@ -160,7 +140,7 @@ const LITTLE_PEARLS_MODULES = [
   },
 ];
 
-// ── Bright Pearls: 6 Modules ──────────────────────────────────────────────────
+// Bright Pearls: 6 Modules 
 const BRIGHT_PEARLS_MODULES = [
   {
     moduleNumber: 1, moduleName: "Coding Fundamentals", moduleEmoji: "🖥️",
@@ -272,7 +252,7 @@ const BRIGHT_PEARLS_MODULES = [
   },
 ];
 
-// ── Rising Pearls: 10 Modules ─────────────────────────────────────────────────
+// Rising Pearls: 10 Modules 
 const RISING_PEARLS_MODULES = [
   {
     moduleNumber: 1, moduleName: "Coding Fundamentals", moduleEmoji: "🖥️",
@@ -456,14 +436,14 @@ const RISING_PEARLS_MODULES = [
   },
 ];
 
-// ── Category → Module mapping ──────────────────────────────────────────────────
+//  Category → Module mapping 
 export const DEFAULT_MODULES_BY_CATEGORY = {
   little_pearls: LITTLE_PEARLS_MODULES,
   bright_pearls: BRIGHT_PEARLS_MODULES,
   rising_pearls: RISING_PEARLS_MODULES,
 };
 
-// ── Module counts summary ──────────────────────────────────────────────────────
+// Module counts summary 
 export const CURRICULUM_SUMMARY = {
   little_pearls: { modules: 7, totalLessons: 84 },
   bright_pearls: { modules: 6, totalLessons: 72 },
@@ -559,12 +539,8 @@ export async function fetchCurriculumForCategory(category) {
     .sort((a, b) => a.moduleNumber - b.moduleNumber);
 }
 
-// ── Per-student curriculum override helpers ────────────────────────────────────
+// Per-student curriculum override helpers 
 
-/**
- * Save which modules are enabled for a student.
- * enabledModuleIds: array of Firestore doc IDs from the "curriculum" collection
- */
 export async function fetchStudentCurriculumOverride(studentId) {
   const ref = doc(db, "studentCurriculum", studentId);
   const snap = await getDoc(ref);

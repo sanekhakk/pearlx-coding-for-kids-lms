@@ -1,4 +1,3 @@
-// src/pages/WebDevelopmentServices.jsx — REDESIGNED FROM SCRATCH
 import { motion } from "framer-motion";
 import { Layout, Code, Rocket, Shield, Globe, Zap, ArrowRight, Check, ExternalLink, Star, Palette, Monitor, ShoppingCart, Wrench, Settings, Mail, Trophy, Target, CheckCircle2, Cpu } from "lucide-react";
 
@@ -235,7 +234,7 @@ const WebDevelopmentServices = () => (
         </div>
       </div>
 
-      {/* ── PACKAGES ── */}
+      {/*  PACKAGES */}
       <div className="mb-24">
         <motion.h2 initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
           className="font-black text-3xl mb-3 text-center" style={{color:T.ink,letterSpacing:"-0.03em"}}>
@@ -291,7 +290,7 @@ const WebDevelopmentServices = () => (
         </motion.div>
       </div>
 
-      {/* ── PROCESS ── */}
+      {/* PROCESS */}
       <div className="mb-24">
         <motion.h2 initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
           className="font-black text-3xl mb-10 text-center" style={{color:T.ink,letterSpacing:"-0.03em"}}>
@@ -324,7 +323,7 @@ const WebDevelopmentServices = () => (
         </div>
       </div>
 
-      {/* ── PORTFOLIO ── */}
+      {/* PORTFOLIO  */}
       <div id="portfolio" className="mb-24">
         <motion.h2 initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
           className="font-black text-3xl mb-10 text-center" style={{color:T.ink,letterSpacing:"-0.03em"}}>
@@ -360,7 +359,7 @@ const WebDevelopmentServices = () => (
         </div>
       </div>
 
-      {/* ── TECH STACK ── */}
+      {/* TECH STACK */}
       <div className="mb-24">
         <motion.h2 initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
           className="font-black text-3xl mb-10 text-center" style={{color:T.ink,letterSpacing:"-0.03em"}}>
@@ -380,7 +379,7 @@ const WebDevelopmentServices = () => (
         </div>
       </div>
 
-      {/* ── CTA STRIP ── */}
+      {/* CTA STRIP */}
       <motion.div initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
         className="rounded-[2.5rem] overflow-hidden border-2 relative"
         style={{borderColor:"rgba(201,168,76,0.3)",boxShadow:"0 20px 64px rgba(201,168,76,0.12)"}}>

@@ -7,12 +7,9 @@ import {
   Terminal, Users,
 } from "lucide-react";
 
-// NOTE: adjust this relative path if Pricing.jsx doesn't live one folder
-// below theme.js's location (theme.js is at src/utils/theme.js).
 import { COLORS } from "../utils/theme";
 import { getWhatsAppLink } from "../utils/whatsapp";
 
-// ─── Theme (pulled from the official PearlX palette) ────────────────────────
 const T = {
   bg:            COLORS.bgSecondary,
   ink:           COLORS.ink,
@@ -34,7 +31,7 @@ const T = {
   bronzeLight:   COLORS.bronzeLight,
 };
 
-// ─── Data ─────────────────────────────────────────────────────────────────
+// Data 
 const TABS = [
   { id: "coding",   label: "Kids Coding",      icon: Code2,         sub: "Ages 1–15",                    color: T.indigo, light: T.indigoLight },
   { id: "courses",  label: "Courses",     icon: GraduationCap, sub: "12th Passed & Above",          color: T.sky,    light: T.skyLight },
@@ -149,7 +146,7 @@ const FAQS = [
   { q: "Can I try before paying?", a: "Yes! Book a free 30-minute demo class — no payment, no commitment." },
 ];
 
-// ─── Small building blocks ───────────────────────────────────────────────
+// Small building blocks
 const SectionBadge = ({ children, color }) => (
   <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black border"
     style={{ background: `${color}15`, borderColor: `${color}30`, color }}>
@@ -178,7 +175,7 @@ const IncludedChips = () => (
   </div>
 );
 
-// ─── Compact price row (collapsed by default, expands to show bundles) ──────
+// Compact price row (collapsed by default, expands to show bundles) 
 const PriceRow = ({ tier, color, mode, expanded, onToggle }) => {
   const hourly = mode === "solo" ? tier.hourly : tier.grpHourly;
   const monthly = mode === "solo" ? tier.monthly : tier.grpMonthly;
@@ -269,7 +266,7 @@ const TierPriceList = ({ tiers, color, showToggle = true }) => {
   );
 };
 
-// ─── Sections ─────────────────────────────────────────────────────────────
+// Sections 
 const CodingSection = () => (
   <div>
     <div className="flex items-center gap-3 mb-6">
@@ -481,7 +478,7 @@ const FAQ = () => {
   );
 };
 
-// ─── Main ───────────────────────────────────────────────────────────────
+// Main 
 export default function Pricing({ openDemoModal }) {
   const [activeTab, setActiveTab] = useState("coding");
 

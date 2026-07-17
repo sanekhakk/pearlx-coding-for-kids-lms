@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard_Part3.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, X, Search, ChevronRight, Loader2, CheckCircle, AlertCircle, ArrowLeft } from "lucide-react";
@@ -32,10 +31,7 @@ const LabeledField = ({ label, required, children }) => (
     {children}
   </div>
 );
-
-// ====================================================================
 // STUDENT SELECTION VIEW
-// ====================================================================
 export function StudentSelectionView({ students, onSelectStudent, setActiveView }) {
   const [search, setSearch] = useState("");
 
@@ -98,9 +94,7 @@ export function StudentSelectionView({ students, onSelectStudent, setActiveView 
   );
 }
 
-// ====================================================================
 // CLASS SCHEDULING FORM
-// ====================================================================
 export function ClassSchedulingForm({ selectedStudent, onBack, adminScheduleClass, setActiveView }) {
   const [form, setForm]                   = useState({ subject: "", classDate: "", classTime: "", isRescheduled: false, originalClassDate: "" });
   const [selectedTutor, setSelectedTutor] = useState(null);

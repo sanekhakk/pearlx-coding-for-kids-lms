@@ -1,4 +1,3 @@
-// src/App.jsx - WITH COURSES PAGE
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";

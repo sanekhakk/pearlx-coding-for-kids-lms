@@ -14,7 +14,7 @@ const navLinks = [
   { label: "Web Dev", to: "/services/web-development" },
 ];
 
-// ✅ Accept openDemoModal as prop
+
 const NavBar = ({ openDemoModal }) => {
   const { role = "guest", logout, openLoginModal } = useAuth();
   const [isOpen, setIsOpen] = useState(false);

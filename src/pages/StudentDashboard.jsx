@@ -1,4 +1,3 @@
-// src/pages/StudentDashboard.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
@@ -79,7 +78,7 @@ const StatCard = ({ icon: Icon, label, value, light, iconColor }) => (
   </motion.div>
 );
 
-// ── Helper: get the next lesson to cover from progress data ──
+// Helper: get the next lesson to cover from progress data 
 function getNextLessonLabel(modules, lessonProgressMap) {
   if (!modules || modules.length === 0) return null;
   for (const mod of modules) {
@@ -99,8 +98,8 @@ const ClassCard = ({ cls, type, permanentClassLink, timezone, nextLesson }) => {
   const Icon = cfg.icon;
   const time = getDisplayTime(cls.classDate, cls.classTime, timezone);
   const timeParts = time.split(" ");
-  const timeNum = timeParts[0];   // e.g. "3:45"
-  const timePeriod = timeParts[1] || ""; // e.g. "PM"
+  const timeNum = timeParts[0];   
+  const timePeriod = timeParts[1] || ""; 
 
   const dateObj = cls.classDate ? new Date(cls.classDate) : null;
   const dayName  = dateObj ? dateObj.toLocaleDateString("en-US", { weekday: "long" }) : "TBD";
@@ -136,7 +135,7 @@ const ClassCard = ({ cls, type, permanentClassLink, timezone, nextLesson }) => {
 
       <div style={{ display: "flex", minHeight: 120 }}>
 
-        {/* ── LEFT: Subject + Tutor + Lesson chip ── */}
+        {/* LEFT: Subject + Tutor + Lesson chip */}
         <div style={{ flex: 1, padding: "20px 22px 20px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between", minWidth: 0 }}>
           <div>
             {/* Status badge */}
@@ -202,7 +201,7 @@ const ClassCard = ({ cls, type, permanentClassLink, timezone, nextLesson }) => {
           )}
         </div>
 
-        {/* ── RIGHT: Big Time Block ── */}
+        {/* RIGHT: Big Time Block  */}
         <div style={{
           flexShrink: 0, width: 120,
           background: `linear-gradient(160deg, ${cfg.accent}12 0%, ${cfg.accent}05 100%)`,
@@ -255,7 +254,7 @@ const SideNavItem = ({ tab, active, onClick }) => (
   </motion.button>
 );
 
-// ── Student Curriculum View ───────────────────────────────────
+// Student Curriculum View
 function StudentCurriculumView({ category, studentName }) {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -426,7 +425,7 @@ export default function StudentDashboard() {
     return () => unsubs.forEach(u => u());
   }, [userId, profile]);
 
-  // ── Load curriculum modules for coding students (for next-lesson chip) ──
+  // Load curriculum modules for coding students (for next-lesson chip) 
   useEffect(() => {
     const isCoding = profile?.category && profile.category !== "academic_tuition";
     if (!isCoding) return;
@@ -438,7 +437,7 @@ export default function StudentDashboard() {
     return () => unsub();
   }, [profile?.category]);
 
-  // ── Load per-lesson progress for coding students ──
+  // Load per-lesson progress for coding students
   useEffect(() => {
     if (!userId || !profile) return;
     const isCoding = profile?.category && profile.category !== "academic_tuition";
@@ -540,7 +539,7 @@ export default function StudentDashboard() {
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* ── MOBILE BACKDROP ── */}
+      {/*  MOBILE BACKDROP  */}
       <AnimatePresence>
         {isMobile && sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -549,7 +548,7 @@ export default function StudentDashboard() {
         )}
       </AnimatePresence>
 
-      {/* ── SIDEBAR ── */}
+      {/*  SIDEBAR  */}
       <motion.div
         initial={false}
         animate={isMobile ? { x: sidebarOpen ? 0 : -280 } : { x: 0 }}
@@ -609,7 +608,7 @@ export default function StudentDashboard() {
           ) : (
             <AnimatePresence mode="wait">
 
-              {/* ── OVERVIEW ── */}
+              {/* OVERVIEW  */}
               {activeTab === "overview" && (
                 <motion.div key="ov" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                   {/* Banner */}
@@ -709,7 +708,7 @@ export default function StudentDashboard() {
                 </motion.div>
               )}
 
-              {/* ── UPCOMING ── */}
+              {/* UPCOMING  */}
               {activeTab === "upcoming" && (
                 <motion.div key="up" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                   {loadingClasses ? (
@@ -767,7 +766,7 @@ export default function StudentDashboard() {
                 </motion.div>
               )}
 
-              {/* ── PROGRESS ── */}
+              {/* PROGRESS  */}
               {activeTab === "progress" && (
                 <motion.div key="pr" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
@@ -805,7 +804,7 @@ export default function StudentDashboard() {
                 </motion.div>
               )}
 
-              {/* ── COMPLETED ── */}
+              {/*  COMPLETED  */}
               {activeTab === "completed" && (
                 <motion.div key="co" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   {completed.length === 0 ? <Empty icon={CheckCircle} msg="No completed classes yet" />
@@ -813,7 +812,7 @@ export default function StudentDashboard() {
                 </motion.div>
               )}
 
-              {/* ── MISSED ── */}
+              {/*  MISSED  */}
               {activeTab === "missed" && (
                 <motion.div key="mi" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   {missed.length === 0 ? <Empty icon={CheckCircle} msg="No missed classes — great work! 🎉" color={C.emerald} />

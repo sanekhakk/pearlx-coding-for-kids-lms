@@ -1,13 +1,3 @@
-/**
- * TIME UTILITIES FOR TIMEZONE CONVERSION
- * 
- * Admin schedules classes in IST (Indian Standard Time)
- * Students and Tutors see times in their registered timezone
- */
-
-/**
- * Convert 24-hour time string (HH:MM) to 12-hour format with AM/PM
- */
 export function convertTo12Hour(time24) {
   if (!time24) return "Time TBD";
 

@@ -1,19 +1,17 @@
-// src/utils/theme.js
-
 export const COLORS = {
-  // ── Backgrounds ──────────────────────────────
+  // Backgrounds 
   bgPrimary:    "#FFFFFF",
   bgSecondary:  "#F8FAFC",
   bgTertiary:   "#F1F5F9",
 
-  // ── Text ──────────────────────────────────────
+  //  Text 
   ink:          "#0F172A",
   inkLight:     "#1E293B",
   textPrimary:  "#0F172A",
   textSecondary:"#334155",
   textMuted:    "#64748B",
 
-  // ── Education Accents (Emerald / Cyan / Indigo) ──
+  // Education Accents (Emerald / Cyan / Indigo) 
   emerald:      "#10B981",
   emeraldLight: "rgba(16,185,129,0.1)",
   cyan:         "#0EA5E9",
@@ -21,7 +19,7 @@ export const COLORS = {
   indigo:       "#6366F1",
   indigoLight:  "rgba(99,102,241,0.1)",
 
-  // ── Web / Premium Accents (Gold / Silver / Bronze) ──
+  // Web / Premium Accents (Gold / Silver / Bronze) 
   gold:         "#C9A84C",
   goldDeep:     "#A07830",
   goldLight:    "rgba(201,168,76,0.12)",
@@ -31,11 +29,11 @@ export const COLORS = {
   bronze:       "#B87333",
   bronzeLight:  "rgba(184,115,51,0.12)",
 
-  // ── Base ──────────────────────────────────────
+  // Base 
   white:        "#FFFFFF",
   navDark:      "#0B1120",
 
-  // ── Borders ──────────────────────────────────
+  // Borders 
   border:       "rgba(15,23,42,0.08)",
   borderMed:    "rgba(15,23,42,0.15)",
   borderDark:   "rgba(255,255,255,0.1)",

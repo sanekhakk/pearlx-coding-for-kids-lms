@@ -6,7 +6,6 @@ import { getWhatsAppLink } from "../utils/whatsapp";
 const T = { bg:"#F8FAFC", ink:"#0F172A", green:"#10B981", sky:"#0EA5E9",
   yellow:"#FFD166", pink:"#FF6B9D", purple:"#A78BFA" };
 
-/* background-removed floating image */
 const FloatImg = ({ src, emoji, style, delay=0 }) => (
   <motion.div animate={{ y:[0,-12,0] }} transition={{ duration:5+delay,repeat:Infinity,ease:"easeInOut",delay }}
     className="absolute pointer-events-none select-none" style={style}>

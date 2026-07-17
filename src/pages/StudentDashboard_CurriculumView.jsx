@@ -1,6 +1,3 @@
-// src/pages/StudentDashboard_CurriculumView.jsx
-// Shows student their personalized curriculum with lesson thumbnails
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {

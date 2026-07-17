@@ -1,4 +1,3 @@
-// backend/routes/admin.js
 const express = require("express");
 const router = express.Router();
 const { admin, firestore } = require("../firebaseAdmin");
@@ -24,7 +23,7 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
         role, 
         contactNumber, 
         classLevel,
-        grade,          // NEW: separate grade field
+        grade,         
         emergencyContact, 
         subjects, 
         qualifications, 
@@ -34,7 +33,6 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
         assignments,
         permanentClassLink,
         timezone,
-        // NEW FIELDS
         category,       // "little_pearls" | "bright_pearls" | "rising_pearls"
         tutorTypes,     // ["coding"] | ["cs_tuition"] | ["coding", "cs_tuition"]
     } = req.body;
@@ -97,8 +95,8 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
       email,
       role,
       contactNumber: contactNumber || "",
-      classLevel: effectiveGrade,     // kept for backward compat
-      grade: effectiveGrade,          // NEW explicit grade field
+      classLevel: effectiveGrade,     
+      grade: effectiveGrade,          
       emergencyContact: emergencyContact || "",
       qualifications: qualifications || "",
       hourlyRate: hourlyRate || "",
@@ -132,7 +130,6 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
       tutorUids,
       subjects: role === 'tutor' ? (subjects || []) : [], 
       permanentClassLink: permanentClassLink || "",
-      // NEW
       category: role === 'student' ? (category || "") : "",
       tutorTypes: role === 'tutor' ? (tutorTypes || []) : [],
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -158,7 +155,7 @@ router.put("/update-user/:uid", verifyIdToken, requireAdmin, async (req, res) =>
     email,
     contactNumber, 
     classLevel,
-    grade,          // NEW
+    grade,         
     emergencyContact, 
     subjects,
     qualifications, 
@@ -169,7 +166,6 @@ router.put("/update-user/:uid", verifyIdToken, requireAdmin, async (req, res) =>
     permanentClassLink,
     role,
     timezone,
-    // NEW
     category,
     tutorTypes,
   } = req.body;
@@ -203,20 +199,20 @@ router.put("/update-user/:uid", verifyIdToken, requireAdmin, async (req, res) =>
         profileUpdates.tutorUids = tutorUids;
         profileUpdates.syllabus = syllabus || "";
         profileUpdates.permanentClassLink = permanentClassLink || "";
-        profileUpdates.category = category || "";  // NEW
+        profileUpdates.category = category || ""; 
 
         summaryUpdates.subjects = profileUpdates.subjects;
         summaryUpdates.assignments = profileUpdates.assignments;
         summaryUpdates.tutorUids = profileUpdates.tutorUids;
         summaryUpdates.syllabus = profileUpdates.syllabus;
         summaryUpdates.permanentClassLink = profileUpdates.permanentClassLink;
-        summaryUpdates.category = category || "";  // NEW
+        summaryUpdates.category = category || "";  
 
     } else if (role === 'tutor') {
         profileUpdates.subjects = subjects || [];
-        profileUpdates.tutorTypes = tutorTypes || [];  // NEW
+        profileUpdates.tutorTypes = tutorTypes || [];  
         summaryUpdates.subjects = profileUpdates.subjects;
-        summaryUpdates.tutorTypes = profileUpdates.tutorTypes;  // NEW
+        summaryUpdates.tutorTypes = profileUpdates.tutorTypes; 
     }
     
     profileUpdates.email = email;

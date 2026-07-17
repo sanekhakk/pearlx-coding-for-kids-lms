@@ -105,7 +105,6 @@ const LevelCard = ({ l, i }) => (
       <img 
         src={l.customIcon} 
         alt={l.name} 
-        // max-h-full ensures it stops growing before hitting the stats bar
         className="h-full w-auto object-contain pointer-events-none drop-shadow-2xl" 
         style={{ filter: "drop-shadow(0 12px 20px rgba(0,0,0,0.15))" }}
       />

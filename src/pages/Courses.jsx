@@ -1,16 +1,14 @@
-// src/pages/Courses.jsx
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Zap, Star, BookOpen, Users, Clock, ChevronDown, Rocket, Award, Code2, Database, Globe, Layers, ChevronLeft, ChevronRight, GraduationCap, MessageSquare, Check } from "lucide-react";
-// Uncomment and set your offer image import:
+
 // import offerImage from "../assets/offers/offer-20pct.png";
 
-// ── CAROUSEL DATA ─────────────────────────────────────────────────────────────
+// CAROUSEL DATA 
 const CAROUSEL_SLIDES = [
   {
     id: "offer",
     type: "image",
-    // imageSrc: offerImage,   ← uncomment once you import the image above
     imageSrc: null,
     fallback: {
       gradient: "linear-gradient(135deg, #f0fff9 0%, #e0f2fe 40%, #ede9fe 100%)",
@@ -56,7 +54,7 @@ const CAROUSEL_SLIDES = [
   },
 ];
 
-// ── HERO CAROUSEL COMPONENT ───────────────────────────────────────────────────
+// HERO CAROUSEL COMPONENT 
 const HeroCarousel = ({ openDemoModal }) => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -296,7 +294,7 @@ const T = {
   blue: "#3B82F6"
 };
 
-// ── REAL LOGOS ──
+// REAL LOGOS 
 const LOGOS = {
   python: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
   java:   "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg",
@@ -571,7 +569,7 @@ const CourseCard = ({ course, i, openDemoModal }) => {
 const Courses = ({ openDemoModal }) => (
   <section className="min-h-screen relative overflow-hidden" style={{ background: T.bg }}>
 
-    {/* ── BG ── */}
+    {/* BG  */}
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       <div className="absolute inset-0 opacity-10"
         style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(14,165,233,0.2) 1px, transparent 0)", backgroundSize: "44px 44px" }} />
@@ -594,10 +592,10 @@ const Courses = ({ openDemoModal }) => (
 
     <div className="max-w-7xl mx-auto px-6 py-24 relative z-10">
 
-      {/* ── BIG OFFER CAROUSEL ── */}
+      {/* BIG OFFER CAROUSEL */}
       <HeroCarousel openDemoModal={openDemoModal} />
 
-      {/* ── HERO ── */}
+      {/*  HERO */}
       <div className="text-center mb-16">
         <motion.div initial={{ opacity: 0, y: -12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-6 border"
@@ -658,7 +656,7 @@ const Courses = ({ openDemoModal }) => (
         </motion.div>
       </div>
 
-      {/* ── COURSES GRID ── */}
+      {/* COURSES GRID */}
       <div className="mb-20">
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="font-black text-3xl mb-2 text-center" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
@@ -677,7 +675,7 @@ const Courses = ({ openDemoModal }) => (
         </div>
       </div>
 
-      {/* ── WHY PEARLX ── */}
+      {/* WHY PEARLX  */}
       <div className="mb-20">
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="font-black text-3xl mb-10 text-center" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
@@ -700,7 +698,7 @@ const Courses = ({ openDemoModal }) => (
         </div>
       </div>
 
-      {/* ── BOARDS ── */}
+      {/* BOARDS */}
       <div className="mb-20">
         <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="font-black text-3xl mb-8 text-center" style={{ color: T.ink, letterSpacing: "-0.03em" }}>
@@ -723,7 +721,7 @@ const Courses = ({ openDemoModal }) => (
         </div>
       </div>
 
-      {/* ── BOTTOM CTA ── */}
+      {/* BOTTOM CTA */}
       <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         className="rounded-[2.5rem] overflow-hidden border-2 relative"
         style={{ borderColor: "rgba(14,165,233,0.3)", boxShadow: "0 20px 64px rgba(14,165,233,0.12)" }}>

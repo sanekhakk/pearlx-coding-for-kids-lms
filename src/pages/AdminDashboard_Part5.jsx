@@ -1,6 +1,3 @@
-// src/pages/AdminDashboard_Part5_Updated.jsx
-// Enhanced Curriculum Manager with lesson thumbnails & per-student assignment
-
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -64,9 +61,7 @@ const FieldLabel = ({ children, required }) => (
   </label>
 );
 
-// ─────────────────────────────────────────────────────────────────────────────
 // ENHANCED LESSON MODAL WITH THUMBNAIL UPLOAD
-// ─────────────────────────────────────────────────────────────────────────────
 function LessonModal({ moduleDoc, lesson, onClose, onSave }) {
   const isEdit = !!lesson;
   const blankLesson = { title: "", platform: "", description: "", notes: "", pptLink: "", thumbnailUrl: "" };
@@ -193,9 +188,7 @@ function LessonModal({ moduleDoc, lesson, onClose, onSave }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // MODULE MODAL (unchanged)
-// ─────────────────────────────────────────────────────────────────────────────
 function ModuleModal({ category, existingModule, onClose, onSave }) {
   const isEdit = !!existingModule;
   const [form, setForm] = useState({
@@ -282,9 +275,7 @@ function ModuleModal({ category, existingModule, onClose, onSave }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // MODULE ROW (enhanced to show lesson thumbnails)
-// ─────────────────────────────────────────────────────────────────────────────
 function ModuleRow({ mod, col }) {
   const [open, setOpen] = useState(false);
   const [showLessonModal, setShowLessonModal] = useState(false);
@@ -400,9 +391,7 @@ function ModuleRow({ mod, col }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CATEGORY PANEL (unchanged)
-// ─────────────────────────────────────────────────────────────────────────────
 function CategoryPanel({ cat }) {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -461,9 +450,7 @@ function CategoryPanel({ cat }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // MAIN CURRICULUM MANAGER
-// ─────────────────────────────────────────────────────────────────────────────
 export function CurriculumManager() {
   const [tab, setTab] = useState("upload"); // "upload" | "assign"
   const [seedStatus, setSeedStatus] = useState(null);
@@ -551,9 +538,7 @@ export function CurriculumManager() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CHAPTER MODAL — add/edit a single chapter for an Academic Tuition / Courses student
-// ─────────────────────────────────────────────────────────────────────────────
 function ChapterModal({ chapter, onClose, onSave }) {
   const isEdit = !!chapter;
   const [form, setForm] = useState({ title: chapter?.title || "", content: chapter?.content || "" });
@@ -619,11 +604,9 @@ function ChapterModal({ chapter, onClose, onSave }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // STUDENT CHAPTERS MANAGER — custom per-student chapter list
 // Used for Academic Tuition & Courses students instead of the shared
 // coding Module/Lesson curriculum.
-// ─────────────────────────────────────────────────────────────────────────────
 function StudentChaptersManager({ studentId, studentName, categoryLabel }) {
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -757,9 +740,7 @@ function StudentChaptersManager({ studentId, studentName, categoryLabel }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// STUDENT CURRICULUM ASSIGNMENT (NEW COMPONENT)
-// ─────────────────────────────────────────────────────────────────────────────
+// STUDENT CURRICULUM ASSIGNMENT 
 function StudentCurriculumAssignment() {
   const [students, setStudents] = useState([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
@@ -852,7 +833,7 @@ function StudentCurriculumAssignment() {
         .filter(Boolean);
 
       await saveStudentCurriculumOverride(selectedStudentId, selectedModules, lessonsForSave);
-      setStatus({ ok: true, msg: `✅ Curriculum saved for ${selectedStudent?.name || "student"}` });
+      setStatus({ ok: true, msg: `Curriculum saved for ${selectedStudent?.name || "student"}` });
     } catch (err) {
       setStatus({ ok: false, msg: `Error: ${err.message}` });
     }

@@ -315,7 +315,7 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
           <TextInput label="Contact Number" name="contactNumber" value={form.contactNumber} onChange={handleFormChange} required />
           <SelectInput label="Timezone" name="timezone" value={form.timezone || "Asia/Kolkata"} onChange={handleFormChange} options={TIMEZONES} required />
 
-          {/* ── STUDENT FIELDS ── */}
+          {/*  STUDENT FIELDS  */}
           {regRole === "student" && (<>
             {/* Category selector spans full width */}
             <CategorySelector value={studentCategory} onChange={setStudentCategory} />
@@ -326,7 +326,7 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
             <TextInput label="Permanent Class Link (Google Meet / Zoom)" name="permanentClassLink" value={form.permanentClassLink} onChange={handleFormChange} type="url" placeholder="https://meet.google.com/xyz" required />
           </>)}
 
-          {/* ── TUTOR FIELDS ── */}
+          {/*  TUTOR FIELDS  */}
           {regRole === "tutor" && (<>
             {/* Tutor type checkboxes span full width */}
             <div style={{ gridColumn: "1 / -1" }}>
@@ -375,9 +375,7 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
   );
 }
 
-// ====================================================================
 // EDIT USER PANEL
-// ====================================================================
 export function EditUserPanel({ user, setActiveView, tutors, adminUpdateUser }) {
   const { uid, name, email, role, contactNumber = "", emergencyContact = "", classLevel = "",
     subjects = [], qualifications = "", hourlyRate = "", permanentClassLink = "",

@@ -103,7 +103,7 @@ const HeroSection = ({ openDemoModal }) => {
           />
         ))}
 
-        {/* Floating code blocks — reduced from 6 to 4, only on large screens */}
+        {/* Floating code blocks */}
         {BLOCK_SNIPPETS.slice(0, 4).map((b, i) => (
           <div
             key={i}

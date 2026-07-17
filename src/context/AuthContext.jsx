@@ -138,7 +138,6 @@ export const AuthProvider = ({ children }) => {
           email,
           password,
           role: regRole,
-          // other optional fields taken from form if present
           contactNumber: form.contactNumber || "",
           classLevel: form.classLevel || "",
           emergencyContact: form.emergencyContact || "",
@@ -363,7 +362,6 @@ export const AuthProvider = ({ children }) => {
       }
   };
 
-     // ... after tutorSaveLessonProgress ends
 
 const tutorUpdateChapterProgress = async (studentId, subject, chapter) => {
     try {
@@ -390,7 +388,6 @@ const tutorUpdateChapterProgress = async (studentId, subject, chapter) => {
     }
 };
 
-// ... before tutorDeleteChapterProgress starts
 
   
 
@@ -460,8 +457,8 @@ const tutorUpdateChapterProgress = async (studentId, subject, chapter) => {
       adminUpdateUser,
       tutorMarkAttendance,
       tutorUpdateChapterProgress,
-      tutorDeleteChapterProgress, // ADDED
-      tutorSaveLessonProgress,    // NEW structured lesson progress
+      tutorDeleteChapterProgress, 
+      tutorSaveLessonProgress,    
       adminScheduleClass,
 
     };

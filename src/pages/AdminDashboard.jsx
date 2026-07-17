@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -17,7 +16,7 @@ import { CurriculumManager } from "./AdminDashboard_Part5";
 import { ClassesOverview } from "./AdminDashboard_Part4";
 import PearlxLogo from "../assets/flat_logo.webp";
 
-// ── Design Tokens (same as Tutor/Student) ──────────────────────
+// Design Tokens (same as Tutor/Student)
 const C = {
   bg: "#F4F6FB",
   sidebar: "#FFFFFF",
@@ -61,7 +60,7 @@ const roleBadge = (role) => {
   return map[role] || map.student;
 };
 
-// ── Sidebar nav item ───────────────────────────────────────────
+// Sidebar nav item 
 const SideNavItem = ({ tab, active, onClick }) => (
   <motion.button onClick={onClick} whileTap={{ scale: 0.97 }}
     style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 12, border: `1px solid ${active ? C.emerald + "30" : "transparent"}`, background: active ? C.emeraldLight : "transparent", cursor: "pointer", transition: "all 0.15s" }}>
@@ -75,7 +74,7 @@ const SideNavItem = ({ tab, active, onClick }) => (
   </motion.button>
 );
 
-// ── Stat Card ─────────────────────────────────────────────────
+// Stat Card
 const StatCard = ({ icon: Icon, label, value, light, iconColor, onClick }) => (
   <motion.div whileHover={{ y: -2, boxShadow: C.shadowHover }} onClick={onClick}
     style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard, cursor: onClick ? "pointer" : "default" }}>
@@ -87,7 +86,7 @@ const StatCard = ({ icon: Icon, label, value, light, iconColor, onClick }) => (
   </motion.div>
 );
 
-// ── User List ─────────────────────────────────────────────────
+// User List
 function UserList({ users, isLoadingUsers, userError, setActiveView, adminDeleteUser, currentAdminUid, setSelectedUserToEdit }) {
   const [search, setSearch]     = useState("");
   const [filterRole, setFilter] = useState("all");
@@ -231,7 +230,7 @@ function UserList({ users, isLoadingUsers, userError, setActiveView, adminDelete
   );
 }
 
-// ── Overview Dashboard ─────────────────────────────────────────
+// Overview Dashboard 
 function OverviewTab({ users, classes, setActiveView }) {
   const students = users.filter(u => u.role === "student");
   const tutors   = users.filter(u => u.role === "tutor");
@@ -333,7 +332,7 @@ function OverviewTab({ users, classes, setActiveView }) {
   );
 }
 
-// ── Main ──────────────────────────────────────────────────────
+// Main 
 export default function AdminDashboard() {
   const { adminRegisterUser, adminDeleteUser, adminDeleteClass, adminUpdateUser, adminScheduleClass, logout, role, userId } = useAuth();
 
@@ -349,11 +348,9 @@ export default function AdminDashboard() {
 
   const initialFormState = {
   name: "", email: "", password: "", contactNumber: "", emergencyContact: "",
-  classLevel: "", grade: "",           // grade is the new explicit field
+  classLevel: "", grade: "",          
   subjects: [], qualifications: "", hourlyRate: "",
   availability: "", timezone: "Asia/Kolkata", permanentClassLink: "",
-  // new fields — managed separately in RegistrationPanel state,
-  // but need defaults here for form resets
 };
 
   const [form, setForm]               = useState(initialFormState);
