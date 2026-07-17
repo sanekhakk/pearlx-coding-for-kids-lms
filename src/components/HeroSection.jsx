@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { MonitorPlay, Sparkles, Rocket, Trophy, Layers } from "lucide-react";
-import kid2 from "../assets/kids/KID2.webp";
+import heroKid from "../assets/kids/heroKid.webp";
 
 const BLOCK_SNIPPETS = [
   { icon: "RefreshCw", label: "repeat 10 times", color: "#10B981", x: "8%", y: "22%" },
@@ -327,7 +327,7 @@ const HeroSection = ({ openDemoModal }) => {
             {/* Hero image */}
             <div className="relative z-20 w-full max-w-[440px]">
               <img
-                src={kid2}
+                src={heroKid}
                 alt="Kid Coding"
                 className="w-full h-auto object-contain"
                 style={{ filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.1))" }}

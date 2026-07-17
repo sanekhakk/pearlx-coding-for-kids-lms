@@ -1,6 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Target, Puzzle, Gamepad2, GraduationCap, BarChart3, RefreshCw, Globe, Trophy, Rocket, Hammer } from "lucide-react";
+import step1 from "../assets/process/step1.webp";
+import step2 from "../assets/process/step2.webp";
+import step3 from "../assets/process/step3.webp";
+import step4 from "../assets/process/step4.webp";
+import step5 from "../assets/process/step5.webp";
 
 
 const STEP_ICON_MAP = { Target, Rocket, Hammer, Trophy, Brain: Target };
@@ -15,35 +20,35 @@ const STEPS = [
     d:"Book your free 30-min trial — no payment, no pressure. We understand your child's grade, interest, and pace.",
     color:T.green, glow:"rgba(16,185,129,0.22)",
     bubbles:["Zero risk","30 min demo","Expert teacher"],
-    kidImg:"/images/kids/step-trial-kid.png",
+    kidImg:step1,
   },
   {
     n:"02", t:"Logic with Blocks",
     d:"Block-based coding builds solid mental models without syntax frustration. Every child starts here — no exceptions.",
     color:T.sky, glow:"rgba(14,165,233,0.22)",
     bubbles:["Visual coding","No typing","Fun stories"],
-    kidImg:"/images/kids/step-block-kid.png",
+    kidImg:step2,
   },
   {
     n:"03", t:"Build Real Projects",
     d:"Students apply concepts immediately — building games, apps, and websites they're genuinely proud of showing friends.",
     color:T.purple, glow:"rgba(167,139,250,0.22)",
     bubbles:["Games","Apps","Websites"],
-    kidImg:"/images/kids/step-project-kid.png",
+    kidImg:step3,
   },
   {
     n:"04", t:"Text Code Mastery",
     d:"Only when truly ready — Python, HTML, CSS, JavaScript. The leap feels natural, never forced. Confidence is built in.",
     color:T.pink, glow:"rgba(255,107,157,0.22)",
     bubbles:["Python","JavaScript","Real syntax"],
-    kidImg:"/images/kids/step-code-kid.png",
+    kidImg:step4,
   },
   {
     n:"05", t:"Grand Showcase",
     d:"Every level ends in a Showcase — students present to parents and peers. Real certificates. Real pride. Real memories.",
     color:T.yellow, glow:"rgba(255,209,102,0.25)",
     bubbles:["Capstone","Certificate","Parent event"],
-    kidImg:"/images/kids/step-showcase-kid.png",
+    kidImg:step5,
   },
 ];
 
@@ -144,7 +149,7 @@ const ProcessSection = ({ openDemoModal }) => (
                     style={{ fontSize:"clamp(5rem,12vw,9rem)",color:`${s.color}12`,lineHeight:1 }}>{s.n}</div>
                   {/* Kid image (bg-removed) */}
                   <img src={s.kidImg} alt={s.t}
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-4/5 object-contain mix-blend-multiply"
+                    className="absolute object-contain mix-blend-multiply"
                     onError={e=>{e.target.style.display="none";}} />
                   {/* Floating emoji */}
                   
