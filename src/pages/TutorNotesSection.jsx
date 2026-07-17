@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { db, auth } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { useAuth } from "../context/AuthContext";
 import {
   FileText, Plus, X, Trash2, Loader2, CheckCircle, AlertCircle,
   Calendar, BookOpen, Info, Users, ChevronDown,
@@ -58,29 +59,30 @@ export default function TutorNotesSection() {
   const [success, setSuccess] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
-  const uid = auth.currentUser?.uid;
+  const { uid } = useAuth();
 
   const loadStudents = async () => {
-    if (!uid) return;
-    const q = query(collection(db, "users"), where("tutorUids", "array-contains", uid), where("role", "==", "student"));
+    const q = query(collection(db, "userSummaries"), where("tutorUids", "array-contains", uid), where("role", "==", "student"));
     const snap = await getDocs(q);
     setStudents(snap.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
   const loadNotes = async () => {
-    try {
-      const data = await authedFetch("/notes/mine");
-      setNotes(data.notes);
-    } catch (err) {
-      console.error("load notes err:", err);
-    }
+    const data = await authedFetch("/notes/mine");
+    setNotes(data.notes);
   };
 
   useEffect(() => {
+    if (!uid) return; // wait until auth is actually ready before querying anything
     (async () => {
       setLoading(true);
-      await Promise.all([loadStudents(), loadNotes()]);
-      setLoading(false);
+      try {
+        await Promise.all([loadStudents(), loadNotes()]);
+      } catch (err) {
+        console.error("load notes/students err:", err);
+      } finally {
+        setLoading(false); // always clear the spinner, even on error
+      }
     })();
   }, [uid]);
 

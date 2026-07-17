@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 import { FileText, X, Calendar, User, Loader2, ChevronRight } from "lucide-react";
 
 
@@ -77,9 +78,12 @@ export default function StudentNotesSection() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
+  const { uid } = useAuth();
 
   useEffect(() => {
+    if (!uid) return; // wait until auth is actually ready before fetching
     (async () => {
+      setLoading(true);
       try {
         const token = await auth.currentUser.getIdToken();
         const res = await fetch(`${API_BASE}/notes/student`, {
@@ -91,10 +95,11 @@ export default function StudentNotesSection() {
       } catch (err) {
         console.error("load student notes err:", err);
         setError(err.message);
+      } finally {
+        setLoading(false); 
       }
-      setLoading(false);
     })();
-  }, []);
+  }, [uid]);
 
   if (loading) {
     return (
