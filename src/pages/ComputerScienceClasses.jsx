@@ -274,8 +274,8 @@ const ComputerScienceClasses = ({ openDemoModal }) => (
         <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ delay: 0.3 }} className="flex flex-wrap justify-center gap-4 mb-8">
           {[
-            { icon: <Users className="w-4 h-4" />, v: "500+", l: "Kids Taught", c: T.green },
-            { icon: <BookOpen className="w-4 h-4" />, v: "276", l: "Lessons", c: T.sky },
+            { icon: <Users className="w-4 h-4" />, v: "50+", l: "Kids Taught", c: T.green },
+            { icon: <BookOpen className="w-4 h-4" />, v: "200+", l: "Lessons", c: T.sky },
             { icon: <Star className="w-4 h-4" />, v: "4.9★", l: "Parent Rating", c: T.yellow },
             { icon: <Clock className="w-4 h-4" />, v: "3", l: "Age Levels", c: T.purple },
           ].map((s, i) => (
