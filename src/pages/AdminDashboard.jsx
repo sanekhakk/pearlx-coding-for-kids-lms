@@ -16,6 +16,7 @@ import { CurriculumManager } from "./AdminDashboard_Part5";
 import { PaymentHistory } from "./AdminDashboard_Part6";
 import { ClassesOverview } from "./AdminDashboard_Part4";
 import { resolveAvatarUrl } from "../utils/defaultAvatars";
+import RoleAvatar from "../components/RoleAvatar";
 import PearlxLogo from "../assets/flat_logo.webp";
 
 // Design Tokens (same as Tutor/Student)
@@ -192,13 +193,7 @@ function UserList({ users, isLoadingUsers, userError, setActiveView, adminDelete
                     </td>
                     <td style={{ padding: "14px 18px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 34, height: 34, borderRadius: "50%", overflow: "hidden", flexShrink: 0, background: C.gradPrimary, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          {resolveAvatarUrl(u.photoURL) ? (
-                            <img src={resolveAvatarUrl(u.photoURL)} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                          ) : (
-                            <span style={{ color: "#fff", fontWeight: 800, fontSize: 13 }}>{u.name?.charAt(0)?.toUpperCase() || "?"}</span>
-                          )}
-                        </div>
+                        <RoleAvatar role={u.role} photoURL={u.photoURL} name={u.name} size={34} />
                         <div>
                           <p style={{ fontWeight: 700, fontSize: 14, color: C.textPrimary }}>{u.name}</p>
                           <p style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{u.customId || "—"}</p>
@@ -440,9 +435,7 @@ export default function AdminDashboard() {
         {/* Admin info */}
         <div style={{ padding: "16px 14px", borderBottom: `1px solid ${C.border}` }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <div style={{ width: 42, height: 42, borderRadius: 13, background: C.gradIndigo, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 17, flexShrink: 0 }}>
-              {adminProfile?.name?.charAt(0) || "A"}
-            </div>
+            <RoleAvatar role="admin" size={42} radius={13} />
             <div style={{ minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 14, color: C.textPrimary, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{adminProfile?.name || "Admin"}</p>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 8px", borderRadius: 20, background: C.redLight }}>
@@ -496,9 +489,7 @@ export default function AdminDashboard() {
             <div style={{ padding: "6px 14px", borderRadius: 20, background: C.indigoLight, border: `1px solid ${C.indigo}20` }}>
               <span style={{ fontSize: 12, fontWeight: 700, color: C.indigo }}>Admin Portal</span>
             </div>
-            <div style={{ width: 36, height: 36, borderRadius: 11, background: C.gradIndigo, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 15 }}>
-              {adminProfile?.name?.charAt(0) || "A"}
-            </div>
+            <RoleAvatar role="admin" size={36} radius={11} />
           </div>
         </div>
 

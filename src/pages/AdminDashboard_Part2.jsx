@@ -4,6 +4,7 @@ import { PlusCircle, Loader2, XCircle, X, CheckCircle, ArrowLeft, Info } from "l
 import { TIMEZONES } from "../utils/timeUtils";
 import { COURSES, CATEGORIES } from "../utils/curriculumData";
 import { DEFAULT_AVATARS, resolveAvatarUrl } from "../utils/defaultAvatars";
+import RoleAvatar from "../components/RoleAvatar";
 
 const C = {
   bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
@@ -294,6 +295,19 @@ const AvatarField = ({ value, onChange, label = "Default Avatar" }) => (
   </div>
 );
 
+// Tutors (and admins) don't get a picker — they always show the role icon.
+const RoleIconNote = ({ role }) => (
+  <div style={{ gridColumn: "1 / -1", display: "flex", gap: 14, alignItems: "center", padding: 16, borderRadius: 14, background: C.bg, border: `1px solid ${C.border}` }}>
+    <RoleAvatar role={role} size={56} />
+    <div>
+      <p style={{ fontSize: 12, fontWeight: 700, color: C.textSecondary }}>Profile Icon</p>
+      <p style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>
+        {role === "tutor" ? "Tutors use the standard tutor icon — no profile photo needed." : "Admins use the standard admin icon."}
+      </p>
+    </div>
+  </div>
+);
+
 export function RegistrationPanel({ form, regRole, regStatus, regLoading, handleFormChange, setRegRole, setActiveView, setRegStatus, tutors, setForm, initialFormState, adminRegisterUser, setRegLoading }) {
   const [currentSubjectInput, setCurrentSubjectInput] = useState("");
   const [selectedTutor, setSelectedTutor]             = useState({ id: "", name: "" });
@@ -357,7 +371,7 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
     const finalForm = {
       ...Object.fromEntries(Object.entries(form).map(([k, v]) => typeof v === "string" ? [k, v.trim()] : [k, v])),
       role: regRole,
-      photoURL: selectedPhoto,
+      photoURL: regRole === "student" ? selectedPhoto : "", // only students have an avatar
       // Student fields
       course: regRole === "student" ? studentCourse : "",
       category: regRole === "student" ? (isTieredCourse ? studentCategory : "") : "",
@@ -409,7 +423,9 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
       <form onSubmit={handleSubmit}>
         {/* Basic fields */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
-          <AvatarField value={selectedPhoto} onChange={setSelectedPhoto} label="Choose a Default Avatar" />
+          {regRole === "student"
+            ? <AvatarField value={selectedPhoto} onChange={setSelectedPhoto} label="Choose a Default Avatar" />
+            : <RoleIconNote role={regRole} />}
 
           <TextInput label="Full Name" name="name" value={form.name} onChange={handleFormChange} required />
           <TextInput label="Email Address" name="email" value={form.email} onChange={handleFormChange} type="email" required />
@@ -420,8 +436,8 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
           {/*  STUDENT FIELDS  */}
           {regRole === "student" && (<>
             {/* Course, then tier — both span full width */}
-            <CourseSelector value={studentCourse} onChange={(c) => { setStudentCourse(c); setStudentCategory(""); }} />
-            {isTieredCourse && <TierSelector value={studentCategory} onChange={setStudentCategory} />}
+            <CourseSelector value={studentCourse} onChange={(c) => { setStudentCourse(c); setStudentCategory(""); setRegStatus(null); }} />
+            {isTieredCourse && <TierSelector value={studentCategory} onChange={(cat) => { setStudentCategory(cat); setRegStatus(null); }} />}
 
             <TextInput label="Student Grade / Class" name="grade" value={form.grade || ""} onChange={handleFormChange}
               placeholder="e.g. Grade 3, Class 5, KG" required />
@@ -540,7 +556,7 @@ export function EditUserPanel({ user, setActiveView, tutors, adminUpdateUser }) 
     const tutorSubjectsArray = form.tutorSubjectsString ? form.tutorSubjectsString.split(",").map(s => s.trim()).filter(Boolean) : [];
     const finalForm = {
       ...form, role,
-      photoURL: selectedPhoto,
+      photoURL: role === "student" ? selectedPhoto : "", // only students have an avatar
       course: role === "student" ? studentCourse : "",
       category: role === "student" ? (isTieredCourse ? studentCategory : "") : "",
       classLevel: role === "student" ? form.grade : form.classLevel,
@@ -574,15 +590,17 @@ export function EditUserPanel({ user, setActiveView, tutors, adminUpdateUser }) 
 
       <form onSubmit={handleSubmit}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
-          <AvatarField value={selectedPhoto} onChange={setSelectedPhoto} label="Default Avatar" />
+          {role === "student"
+            ? <AvatarField value={selectedPhoto} onChange={setSelectedPhoto} label="Default Avatar" />
+            : <RoleIconNote role={role} />}
 
           <TextInput label="Full Name" name="name" value={form.name} onChange={handleFormChange} required />
           <TextInput label="Email (Read-only)" name="email" value={form.email} readOnly disabled />
           <TextInput label="Contact Number" name="contactNumber" value={form.contactNumber} onChange={handleFormChange} required />
 
           {role === "student" && (<>
-            <CourseSelector value={studentCourse} onChange={(c) => { setStudentCourse(c); setStudentCategory(""); }} />
-            {isTieredCourse && <TierSelector value={studentCategory} onChange={setStudentCategory} />}
+            <CourseSelector value={studentCourse} onChange={(c) => { setStudentCourse(c); setStudentCategory(""); setUpdateStatus(null); }} />
+            {isTieredCourse && <TierSelector value={studentCategory} onChange={(cat) => { setStudentCategory(cat); setUpdateStatus(null); }} />}
             <TextInput label="Student Grade / Class" name="grade" value={form.grade} onChange={handleFormChange}
               placeholder="e.g. Grade 3" required />
             <SelectInput label="Timezone" name="timezone" value={form.timezone} onChange={handleFormChange} options={TIMEZONES} required />

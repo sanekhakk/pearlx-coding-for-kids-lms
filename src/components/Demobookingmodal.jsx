@@ -142,6 +142,8 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      // Wake the backend now so submit doesn't hit a cold start.
+      fetch("https://brainbugz-learning-management-system.onrender.com/api/ping").catch(() => {});
     } else {
       document.body.style.overflow = "";
       setFormData(getInitialForm(source));
@@ -254,32 +256,31 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
 
     setLoading(true);
 
-    try {
-      /*
-        IMPORTANT:
-        preferredDate is sent as YYYY-MM-DD and preferredTime as HH:MM,
-        exactly as the previous modal sent them. The backend already maps
-        these two values directly into the Google Sheets row.
-      */
-      const payload = {
-        ...formData,
-        source,
-      };
+    /*
+      Optimistic submit: show the "booked" screen immediately instead of
+      making the parent stare at a spinner while the server talks to Google
+      Sheets / Gmail. The request still runs (with one automatic retry); only
+      if it ultimately fails do we go back to the form with the error and the
+      data intact.
 
+      IMPORTANT: preferredDate is sent as YYYY-MM-DD and preferredTime as
+      HH:MM, exactly as before. The backend maps them into the Sheets row.
+    */
+    const payload = { ...formData, source };
+    setSuccess(true);
+
+    const send = async () => {
       const response = await fetch(
         "https://brainbugz-learning-management-system.onrender.com/api/submit-demo-booking",
         {
           method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
 
       const text = await response.text();
       let result = {};
-
       try {
         result = JSON.parse(text);
       } catch {
@@ -287,16 +288,28 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
       }
 
       if (!response.ok) {
-        throw new Error(result.error || "Failed to submit booking");
+        const err = new Error(result.error || "Failed to submit booking");
+        err.retryable = response.status >= 500;
+        throw err;
       }
+    };
 
-      setSuccess(true);
+    try {
+      try {
+        await send();
+      } catch (firstErr) {
+        // Retry once for network hiccups / server errors (not validation errors)
+        if (firstErr.retryable === false) throw firstErr;
+        await new Promise((r) => setTimeout(r, 1500));
+        await send();
+      }
 
       setTimeout(() => {
         onClose();
       }, 3000);
     } catch (err) {
       console.error("Booking submission error:", err);
+      setSuccess(false);
       setError(err.message || "Failed to submit booking. Please try again.");
     } finally {
       setLoading(false);

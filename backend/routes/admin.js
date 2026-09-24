@@ -36,6 +36,7 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
         category,       // "little_pearls" | "bright_pearls" | "rising_pearls" (only for coding/math courses)
         course,         // "coding" | "math" | "academic_tuition"
         tutorTypes,     // ["coding"] | ["math"] | ["cs_tuition"] | any combination
+        photoURL,       // default-avatar id — students only
     } = req.body;
 
     if (!email || !password || !name || !role) {
@@ -118,6 +119,7 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
       course: role === 'student' ? (course || "") : "",
       category: role === 'student' ? (category || "") : "",
       tutorTypes: role === 'tutor' ? (tutorTypes || []) : [],
+      photoURL: role === 'student' ? (photoURL || "") : "",   // tutors/admins use a fixed role icon
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       timezone: timezone || "Asia/Kolkata",
     };
@@ -141,6 +143,7 @@ router.post("/create-user", verifyIdToken, requireAdmin, async (req, res) => {
       course: role === 'student' ? (course || "") : "",
       category: role === 'student' ? (category || "") : "",
       tutorTypes: role === 'tutor' ? (tutorTypes || []) : [],
+      photoURL: role === 'student' ? (photoURL || "") : "",   // tutors/admins use a fixed role icon
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       timezone: timezone || "Asia/Kolkata",
     };
@@ -178,6 +181,7 @@ router.put("/update-user/:uid", verifyIdToken, requireAdmin, async (req, res) =>
     category,
     course,
     tutorTypes,
+    photoURL,
   } = req.body;
 
   if (!uid) {
@@ -241,6 +245,10 @@ router.put("/update-user/:uid", verifyIdToken, requireAdmin, async (req, res) =>
         summaryUpdates.permanentClassLink = profileUpdates.permanentClassLink;
         summaryUpdates.course = course || "";
         summaryUpdates.category = category || "";  
+
+        // Avatar is a student-only field
+        profileUpdates.photoURL = photoURL || "";
+        summaryUpdates.photoURL = photoURL || "";
 
     } else if (role === 'tutor') {
         profileUpdates.subjects = subjects || [];
