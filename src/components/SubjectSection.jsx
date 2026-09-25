@@ -1,514 +1,1247 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+
 import {
-  ArrowRight, Sparkles, Code2, Calculator, BookOpen,
-  Check, ChevronRight, Star, Rocket, Brain, GraduationCap
+  Check,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Calculator,
+  Brain,
+  Layers,
 } from "lucide-react";
+
+import {
+  SiPython,
+  SiHtml5,
+  SiCss,
+  SiJavascript,
+  SiMysql,
+  SiReact,
+  SiNodedotjs,
+  SiMongodb,
+  SiDjango,
+  SiGit,
+} from "react-icons/si";
+
 import { getWhatsAppLink } from "../utils/whatsapp";
 import { COLORS, GRADIENTS, SHADOWS } from "../utils/theme";
 
-import lp1 from "../assets/kids/LP1.webp";
-import bp1 from "../assets/kids/BP1.webp";
-import rp1 from "../assets/kids/RP1.webp";
-import kid1 from "../assets/kids/KID1.webp";
+/* =========================================================
+   COURSE BANNERS
+========================================================= */
 
-const CODING_ROUTE = "/services/education";
-const MATHS_ROUTE = "/mathsclasses";
-const ACADEMIC_ROUTE = "/services/academic-tuition";
+import pythonBanner from "../assets/courses/python.webp";
+import htmlBanner from "../assets/courses/html.webp";
+import cssBanner from "../assets/courses/css.webp";
+import javascriptBanner from "../assets/courses/javascript.webp";
+import sqlBanner from "../assets/courses/sql.webp";
+import reactBanner from "../assets/courses/react.webp";
+import nodeBanner from "../assets/courses/node.webp";
+import mongodbBanner from "../assets/courses/mongodb.webp";
+import djangoBanner from "../assets/courses/django.webp";
+import gitBanner from "../assets/courses/git.webp";
+import mathsBanner from "../assets/courses/mathsbanner.webp";
+import logicalThinkingBanner from "../assets/courses/logical-thinking.webp";
 
-const LEVELS = [
+/* =========================================================
+   COURSE DATA
+========================================================= */
+
+const COURSES = [
   {
-    id: "little",
-    name: "Little Pearls",
-    label: "START HERE",
-    color: COLORS.gold,
-    light: COLORS.goldLight,
-    image: lp1,
-    icon: Sparkles,
-    sticker: "🌱",
-    headline: "Play. Discover. Learn.",
-    desc: "A gentle first step into coding and maths through stories, games and playful challenges.",
-    chips: ["Block Coding", "Number Play", "Mini Games"],
-    stats: ["7 Modules", "84 Lessons"],
-    cta: "Explore level",
-    route: CODING_ROUTE,
-    secondaryRoute: MATHS_ROUTE,
+    id: "python",
+    name: "Python",
+    icon: SiPython,
+    iconColor: "#3776AB",
+    banner: pythonBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Learn Python from programming fundamentals to advanced concepts and problem solving.",
   },
+
   {
-    id: "bright",
-    name: "Bright Pearls",
-    label: "LEVEL UP",
-    color: COLORS.emerald,
-    light: COLORS.emeraldLight,
-    image: bp1,
-    icon: Rocket,
-    sticker: "🚀",
-    headline: "Build things for real.",
-    desc: "Kids turn ideas into games, apps and clever maths solutions they can proudly show off.",
-    chips: ["Scratch + Python", "Fractions", "Projects"],
-    stats: ["6 Modules", "72 Lessons"],
-    cta: "Explore level",
-    route: CODING_ROUTE,
-    secondaryRoute: MATHS_ROUTE,
+    id: "html",
+    name: "HTML",
+    icon: SiHtml5,
+    iconColor: "#E34F26",
+    banner: htmlBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Learn how websites are structured and build clean web pages from scratch.",
   },
+
   {
-    id: "rising",
-    name: "Rising Pearls",
-    label: "GO FURTHER",
-    color: COLORS.indigo,
-    light: COLORS.indigoLight,
-    image: rp1,
+    id: "css",
+    name: "CSS",
+    icon: SiCss,
+    iconColor: "#1572B6",
+    banner: cssBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Create beautiful, responsive and modern website designs with CSS.",
+  },
+
+  {
+    id: "javascript",
+    name: "JavaScript",
+    icon: SiJavascript,
+    iconColor: "#F7DF1E",
+    banner: javascriptBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Learn JavaScript and create interactive, dynamic web experiences.",
+  },
+
+  {
+    id: "sql",
+    name: "SQL",
+    icon: SiMysql,
+    iconColor: "#4479A1",
+    banner: sqlBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Learn databases, queries, joins and practical data management.",
+  },
+
+  {
+    id: "react",
+    name: "React.js",
+    icon: SiReact,
+    iconColor: "#61DAFB",
+    banner: reactBanner,
+    prices: {
+      starter: 450,
+      intermediate: 550,
+      advanced: 650,
+    },
+    description:
+      "Build modern interactive web applications using React.js.",
+  },
+
+  {
+    id: "node",
+    name: "Node.js",
+    icon: SiNodedotjs,
+    iconColor: "#339933",
+    banner: nodeBanner,
+    prices: {
+      starter: 450,
+      intermediate: 550,
+      advanced: 650,
+    },
+    description:
+      "Learn backend development, APIs and server-side JavaScript.",
+  },
+
+  {
+    id: "mongodb",
+    name: "MongoDB",
+    icon: SiMongodb,
+    iconColor: "#47A248",
+    banner: mongodbBanner,
+    prices: {
+      starter: 450,
+      intermediate: 550,
+      advanced: 650,
+    },
+    description:
+      "Learn NoSQL databases and work with real-world application data.",
+  },
+
+  {
+    id: "django",
+    name: "Django",
+    icon: SiDjango,
+    iconColor: "#092E20",
+    banner: djangoBanner,
+    prices: {
+      starter: 500,
+      intermediate: 600,
+      advanced: 700,
+    },
+    description:
+      "Build powerful backend applications using Python and Django.",
+  },
+
+
+  {
+    id: "git",
+    name: "Git & GitHub",
+    icon: SiGit,
+    iconColor: "#F05032",
+    banner: gitBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Learn version control and professional development workflows.",
+  },
+
+  {
+    id: "maths",
+    name: "Maths",
+    icon: Calculator,
+    iconColor: COLORS.indigo,
+    banner: mathsBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Build stronger mathematical thinking through concepts and problem solving.",
+  },
+
+  {
+    id: "logical-thinking",
+    name: "Logical Thinking",
     icon: Brain,
-    sticker: "⚡",
-    headline: "Think bigger. Build smarter.",
-    desc: "Advanced coding, web development and competitive maths for curious young minds.",
-    chips: ["Python + Web", "Algebra", "Advanced Projects"],
-    stats: ["10 Modules", "120 Lessons"],
-    cta: "Explore level",
-    route: CODING_ROUTE,
-    secondaryRoute: MATHS_ROUTE,
-  },
-  {
-    id: "academic",
-    name: "Academic Tuition",
-    label: "SCHOOL SUPPORT",
-    color: COLORS.cyan,
-    light: COLORS.cyanLight,
-    image: kid1,
-    icon: GraduationCap,
-    sticker: "📚",
-    headline: "School feels easier.",
-    desc: "Personalized support for Maths, Science, English, Social Science, Computer Science and more.",
-    chips: ["CBSE / ICSE", "IGCSE", "State Boards"],
-    stats: ["Classes 1–12", "1:1 Support"],
-    cta: "Explore tuition",
-    route: ACADEMIC_ROUTE,
-    secondaryRoute: null,
+    iconColor: COLORS.emerald,
+    banner: logicalThinkingBanner,
+    prices: {
+      starter: 350,
+      intermediate: 400,
+      advanced: 500,
+    },
+    description:
+      "Develop reasoning, analytical thinking and structured problem solving.",
   },
 ];
 
-const StepDots = ({ active, onChange }) => (
-  <div className="flex items-center justify-center gap-2">
-    {LEVELS.map((level, index) => (
-      <button
-        key={level.id}
-        aria-label={`Show ${level.name}`}
-        onClick={() => onChange(index)}
-        className="h-2.5 rounded-full transition-all duration-300"
-        style={{
-          width: active === index ? 28 : 8,
-          background: active === index ? level.color : COLORS.borderMed,
-        }}
-      />
-    ))}
-  </div>
-);
+/* =========================================================
+   LEVELS
+========================================================= */
+
+const LEVELS = [
+  {
+    id: "starter",
+    name: "Starter",
+    description: "Build strong fundamentals",
+  },
+  {
+    id: "intermediate",
+    name: "Intermediate",
+    description: "Build practical skills",
+  },
+  {
+    id: "advanced",
+    name: "Advanced",
+    description: "Master advanced concepts",
+  },
+];
+
+/* =========================================================
+   CLASS PACKAGES
+========================================================= */
+
+const CLASS_PACKAGES = [12, 24, 30, 60];
+
+/* =========================================================
+   PRICE FORMATTER
+========================================================= */
+
+const formatPrice = (price) =>
+  `₹${price.toLocaleString("en-IN")}`;
+
+/* =========================================================
+   MAIN COMPONENT
+========================================================= */
 
 const SubjectSection = () => {
-  const [active, setActive] = useState(0);
-  const level = LEVELS[active];
-  const Icon = level.icon;
+  const [activeCourse, setActiveCourse] =
+    useState("python");
 
-  const next = () => setActive((v) => (v + 1) % LEVELS.length);
+  const [activeLevel, setActiveLevel] =
+    useState("intermediate");
+
+  const [classCount, setClassCount] =
+    useState(30);
+
+  const course =
+    COURSES.find(
+      (item) => item.id === activeCourse
+    ) || COURSES[0];
+
+  const level =
+    LEVELS.find(
+      (item) => item.id === activeLevel
+    ) || LEVELS[1];
+
+  const CourseIcon = course.icon;
+
+  const pricePerClass =
+    course.prices[activeLevel];
+
+  const totalPrice =
+    pricePerClass * classCount;
+
+  /* =======================================================
+     CHANGE COURSE
+  ======================================================= */
+
+  const changeCourse = (direction) => {
+    const currentIndex =
+      COURSES.findIndex(
+        (item) => item.id === activeCourse
+      );
+
+    let nextIndex;
+
+    if (direction === "next") {
+      nextIndex = currentIndex + 1;
+
+      if (nextIndex >= COURSES.length) {
+        nextIndex = 0;
+      }
+    } else {
+      nextIndex = currentIndex - 1;
+
+      if (nextIndex < 0) {
+        nextIndex = COURSES.length - 1;
+      }
+    }
+
+    setActiveCourse(
+      COURSES[nextIndex].id
+    );
+  };
+
+  /* =======================================================
+     WHATSAPP
+  ======================================================= */
+
+  const handleEnquiry = () => {
+    const message = `Hi! I'm interested in the ${course.name} course at Pearlx.
+
+Level: ${level.name}
+Classes: ${classCount}
+Price: ${formatPrice(totalPrice)}
+
+I'd like to know more about the course and available timings.`;
+
+    window.open(
+      getWhatsAppLink(message),
+      "_blank"
+    );
+  };
 
   return (
     <section
       id="curriculum"
-      className="relative overflow-hidden py-16 sm:py-20 lg:py-28"
-      style={{ background: COLORS.bgSecondary }}
+      className="
+        relative
+        overflow-hidden
+        py-16
+        sm:py-20
+        lg:py-24
+      "
+      style={{
+        background: COLORS.bgSecondary,
+      }}
     >
-      {/* Playful, lightweight background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+
+      {/* =====================================================
+          BACKGROUND
+      ====================================================== */}
+
+      <div
+        className="
+          absolute
+          inset-0
+          pointer-events-none
+          overflow-hidden
+        "
+      >
+
         <div
-          className="absolute -top-32 -left-24 w-72 h-72 rounded-full blur-3xl opacity-60"
-          style={{ background: COLORS.cyanLight }}
-        />
-        <div
-          className="absolute -bottom-40 -right-24 w-80 h-80 rounded-full blur-3xl opacity-60"
-          style={{ background: COLORS.emeraldLight }}
+          className="
+            absolute
+            -top-40
+            -left-32
+            w-80
+            h-80
+            rounded-full
+            blur-3xl
+            opacity-50
+          "
+          style={{
+            background: COLORS.cyanLight,
+          }}
         />
 
         <div
-          className="absolute top-20 right-[8%] text-2xl opacity-50 rotate-12"
-          style={{ color: COLORS.gold }}
-        >
-          ✦
-        </div>
-        <div
-          className="absolute top-[42%] left-[4%] text-xl opacity-40 -rotate-12"
-          style={{ color: COLORS.indigo }}
-        >
-          ●
-        </div>
-        <div
-          className="absolute bottom-24 right-[7%] text-3xl opacity-40"
-          style={{ color: COLORS.cyan }}
-        >
-          +
-        </div>
+          className="
+            absolute
+            -bottom-40
+            -right-32
+            w-96
+            h-96
+            rounded-full
+            blur-3xl
+            opacity-50
+          "
+          style={{
+            background: COLORS.emeraldLight,
+          }}
+        />
+
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Header */}
-        <div className="max-w-2xl mx-auto text-center mb-9 sm:mb-12">
-          {/* <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-black mb-4"
+      {/* =====================================================
+          MAIN CONTAINER
+      ====================================================== */}
+
+      <div
+        className="
+          relative
+          z-10
+          w-full
+          px-4
+          sm:px-6
+          lg:px-10
+          xl:px-16
+        "
+      >
+
+        {/* ===================================================
+            HEADER
+        ==================================================== */}
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 18,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          className="
+            max-w-2xl
+            mx-auto
+            text-center
+            mb-8
+            sm:mb-10
+          "
+        >
+
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              px-3
+              py-1.5
+              rounded-full
+              text-[9px]
+              font-black
+              uppercase
+              tracking-widest
+              mb-4
+            "
             style={{
-              color: COLORS.emerald,
-              background: COLORS.emeraldLight,
-              border: `1px solid ${COLORS.emerald}22`,
+              background:
+                COLORS.emeraldLight,
+              color:
+                COLORS.emerald,
             }}
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            Pick their adventure
-          </motion.div> */}
+            <span>✦</span>
+            Pearlx Learning
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-black tracking-tight leading-[0.98] text-4xl sm:text-5xl lg:text-6xl"
-            style={{ color: COLORS.ink, letterSpacing: "-0.055em" }}
+          <h2
+            className="
+              font-black
+              tracking-tight
+              leading-[0.98]
+              text-4xl
+              sm:text-5xl
+              lg:text-6xl
+            "
+            style={{
+              color: COLORS.ink,
+              letterSpacing:
+                "-0.055em",
+            }}
           >
-            Learning should feel
+            Choose what
             <br />
+
             <span
               style={{
-                background: GRADIENTS.textGlow,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                background:
+                  GRADIENTS.textGlow,
+                WebkitBackgroundClip:
+                  "text",
+                WebkitTextFillColor:
+                  "transparent",
+                backgroundClip:
+                  "text",
               }}
             >
-              like an adventure.
+              you want to learn.
             </span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.12 }}
-            className="mt-4 text-sm sm:text-base leading-relaxed"
-            style={{ color: COLORS.textSecondary }}
-          >
-            The right challenge at the right age — with room to explore,
-            make mistakes and get excited about learning.
-          </motion.p>
-        </div>
-
-        {/* Mobile-first adventure selector */}
-        <div className="flex gap-2.5 overflow-x-auto pb-3 mb-5 snap-x snap-mandatory scrollbar-hide lg:justify-center">
-          {LEVELS.map((item, index) => {
-            const ActiveIcon = item.icon;
-            const selected = active === index;
-
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActive(index)}
-                className="snap-start shrink-0 flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl border-2 transition-all duration-200"
-                style={{
-                  background: selected ? COLORS.white : "rgba(255,255,255,0.55)",
-                  borderColor: selected ? item.color : COLORS.border,
-                  boxShadow: selected ? SHADOWS.sm : "none",
-                  color: selected ? item.color : COLORS.textMuted,
-                }}
-              >
-                <span
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
-                  style={{
-                    background: selected ? item.light : COLORS.bgTertiary,
-                  }}
-                >
-                  <ActiveIcon className="w-4 h-4" />
-                </span>
-                <span className="text-left leading-none">
-                  <span className="block text-[11px] font-black">{item.name}</span>
-                  
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Main interactive level scene */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={level.id}
-            initial={{ opacity: 0, x: 18 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -18 }}
-            transition={{ duration: 0.28 }}
-            className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] border-2 bg-white"
+          <p
+            className="
+              mt-4
+              text-sm
+              sm:text-base
+              leading-relaxed
+            "
             style={{
-              borderColor: `${level.color}35`,
-              boxShadow: SHADOWS.card,
+              color:
+                COLORS.textSecondary,
             }}
           >
-            <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
-              {/* Visual playground */}
-              <div
-                className="relative min-h-[285px] sm:min-h-[360px] lg:min-h-[460px] overflow-hidden"
-                style={{
-                  background: `linear-gradient(145deg, ${level.light}, ${COLORS.bgPrimary})`,
-                }}
-              >
-                {/* Doodle shapes */}
-                <div
-                  className="absolute w-36 h-36 rounded-full border-2 border-dashed opacity-40 -top-10 -left-10"
-                  style={{ borderColor: level.color }}
-                />
-                <motion.div
-                  animate={{ rotate: [0, 8, 0, -8, 0], y: [0, -5, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-7 right-6 w-14 h-14 rounded-[1.25rem] flex items-center justify-center rotate-6"
+            Explore courses, choose your
+            level and find the package
+            that works for you.
+          </p>
+
+        </motion.div>
+
+        {/* ===================================================
+            MOBILE COURSE NAVIGATION
+        ==================================================== */}
+
+        <div
+          className="
+            lg:hidden
+            mb-5
+          "
+        >
+
+          <div
+            className="
+              flex
+              items-center
+              justify-between
+              mb-2.5
+            "
+          >
+
+            <span
+              className="
+                text-xs
+                font-black
+              "
+              style={{
+                color:
+                  COLORS.ink,
+              }}
+            >
+              Courses
+            </span>
+
+            <span
+              className="
+                text-[9px]
+                font-bold
+              "
+              style={{
+                color:
+                  COLORS.textMuted,
+              }}
+            >
+              Swipe to explore →
+            </span>
+
+          </div>
+
+          <div
+            className="
+              flex
+              gap-2
+              overflow-x-auto
+              pb-2
+              snap-x
+              snap-mandatory
+              scrollbar-hide
+            "
+            style={{
+              scrollbarWidth:
+                "none",
+            }}
+          >
+
+            {COURSES.map((item) => {
+
+              const ItemIcon =
+                item.icon;
+
+              const selected =
+                item.id === activeCourse;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() =>
+                    setActiveCourse(
+                      item.id
+                    )
+                  }
+                  className="
+                    snap-start
+                    shrink-0
+                    flex
+                    items-center
+                    gap-2
+                    px-3.5
+                    py-3
+                    rounded-xl
+                    border-2
+                    transition-all
+                    active:scale-95
+                  "
                   style={{
-                    background: COLORS.white,
-                    border: `2px solid ${level.color}30`,
-                    boxShadow: SHADOWS.sm,
+                    background:
+                      selected
+                        ? COLORS.white
+                        : "rgba(255,255,255,0.65)",
+
+                    borderColor:
+                      selected
+                        ? item.iconColor
+                        : COLORS.border,
+
+                    boxShadow:
+                      selected
+                        ? SHADOWS.sm
+                        : "none",
                   }}
                 >
-                  <span className="text-2xl">{level.sticker}</span>
-                </motion.div>
 
-                <div className="absolute left-5 top-5">
-                  <span
-                    className="px-3 py-1.5 rounded-full text-[9px] font-black tracking-widest text-white"
-                    style={{ background: level.color }}
-                  >
-                    {level.label}
-                  </span>
-                </div>
-
-                {/* Character */}
-                <motion.div
-                  animate={{ y: [0, -9, 0], rotate: [-1.5, 1.5, -1.5] }}
-                  transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-x-0 bottom-0 top-16 flex items-end justify-center px-8"
-                >
-                  <img
-                    src={level.image}
-                    alt={level.name}
-                    className="h-[82%] sm:h-[88%] w-auto max-w-[82%] object-contain"
+                  <ItemIcon
+                    className="
+                      w-5.5
+                      h-5.5
+                    "
                     style={{
-                      filter: "drop-shadow(0 18px 24px rgba(15,23,42,0.14))",
+                      color:
+                        item.iconColor,
                     }}
                   />
-                </motion.div>
 
-                {/* Little floating learning tokens */}
-                <div
-                  className="absolute left-4 bottom-5 sm:left-7 sm:bottom-7 px-3 py-2 rounded-2xl bg-white border"
-                  style={{ borderColor: `${level.color}25`, boxShadow: SHADOWS.sm }}
-                >
-                  <div className="text-[9px] font-black" style={{ color: level.color }}>
-                    TODAY'S QUEST
-                  </div>
-                  <div className="text-xs font-black mt-0.5" style={{ color: COLORS.ink }}>
-                    Learn something new ✨
-                  </div>
-                </div>
-
-                <button
-                  onClick={next}
-                  aria-label="Next learning level"
-                  className="absolute right-4 bottom-5 sm:right-7 sm:bottom-7 w-11 h-11 rounded-full flex items-center justify-center text-white active:scale-95 transition-transform"
-                  style={{ background: level.color, boxShadow: SHADOWS.sm }}
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="p-6 sm:p-8 lg:p-11 flex flex-col justify-center">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div>
-                    {/* <div
-                      className="text-[10px] font-black uppercase tracking-widest mb-2"
-                      style={{ color: level.color }}
-                    >
-                      Ages {level.age}
-                    </div> */}
-                    <h3
-                      className="font-black text-3xl sm:text-4xl tracking-tight"
-                      style={{ color: COLORS.ink, letterSpacing: "-0.045em" }}
-                    >
-                      {level.name}
-                    </h3>
-                  </div>
-
-                  <div
-                    className="shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center"
+                  <span
+                    className="
+                      text-[11px]
+                      font-black
+                      whitespace-nowrap
+                    "
                     style={{
-                      background: level.light,
-                      color: level.color,
+                      color:
+                        selected
+                          ? COLORS.ink
+                          : COLORS.textMuted,
                     }}
                   >
-                    <Icon className="w-5 h-5" />
-                  </div>
-                </div>
+                    {item.name}
+                  </span>
 
-                <h4
-                  className="text-lg sm:text-xl font-black mb-2"
-                  style={{ color: COLORS.textPrimary }}
+                </button>
+              );
+            })}
+
+          </div>
+
+        </div>
+
+        {/* ===================================================
+            DESKTOP EXPLORER
+        ==================================================== */}
+
+        <div
+          className="
+            hidden
+            lg:grid
+            lg:grid-cols-[320px_minmax(0,1fr)]
+            xl:grid-cols-[350px_minmax(0,1fr)]
+            gap-5
+            xl:gap-6
+            items-stretch
+          "
+        >
+
+          {/* =================================================
+              COURSE LIST
+          ================================================== */}
+
+          <div
+            className="
+              rounded-[2rem]
+              bg-white
+              border
+              p-3.5
+              h-full
+              flex
+              flex-col
+            "
+            style={{
+              borderColor:
+                COLORS.border,
+              boxShadow:
+                SHADOWS.card,
+            }}
+          >
+
+            <div
+              className="
+                px-3
+                pt-2
+                pb-4
+              "
+            >
+
+              <div
+                className="
+                  text-[9px]
+                  font-black
+                  uppercase
+                  tracking-widest
+                "
+                style={{
+                  color:
+                    COLORS.textMuted,
+                }}
+              >
+                Explore
+              </div>
+
+              <div
+                className="
+                  text-lg
+                  font-black
+                  mt-1
+                "
+                style={{
+                  color:
+                    COLORS.ink,
+                }}
+              >
+                Courses
+              </div>
+
+            </div>
+
+            {/* TWO COLUMN COURSE LIST */}
+
+            <div
+              className="
+                flex-1
+                min-h-0
+                grid
+                grid-cols-2
+                grid-rows-6
+                gap-2
+              "
+            >
+
+              {COURSES.map((item) => {
+
+                const ItemIcon =
+                  item.icon;
+
+                const selected =
+                  item.id === activeCourse;
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() =>
+                      setActiveCourse(
+                        item.id
+                      )
+                    }
+                    className="
+                      w-full
+                      h-full
+                      flex
+                      items-center
+                      gap-2.5
+                      px-3
+                      py-3
+                      rounded-xl
+                      text-left
+                      transition-all
+                      duration-200
+                    "
+                    style={{
+                      background:
+                        selected
+                          ? `${item.iconColor}10`
+                          : "transparent",
+
+                      color:
+                        selected
+                          ? COLORS.ink
+                          : COLORS.textSecondary,
+                    }}
+                  >
+
+                    {/* ICON */}
+
+                    <div
+                      className="
+                        w-9
+                        h-9
+                        rounded-xl
+                        flex
+                        items-center
+                        justify-center
+                        shrink-0
+                      "
+                      style={{
+                        background:
+                          selected
+                            ? `${item.iconColor}16`
+                            : COLORS.bgTertiary,
+                      }}
+                    >
+
+                      <ItemIcon
+                        className="
+                          w-[18px]
+                          h-[18px]
+                        "
+                        style={{
+                          color:
+                            item.iconColor,
+                        }}
+                      />
+
+                    </div>
+
+                    {/* NAME */}
+
+                    <span
+                      className="
+                        text-[11px]
+                        xl:text-xs
+                        font-bold
+                        leading-tight
+                        truncate
+                      "
+                      style={{
+                        color:
+                          selected
+                            ? COLORS.ink
+                            : COLORS.textSecondary,
+                      }}
+                    >
+                      {item.name}
+                    </span>
+
+                    {/* ACTIVE INDICATOR */}
+
+                    {selected && (
+                      <div
+                        className="
+                          ml-auto
+                          w-1.5
+                          h-1.5
+                          rounded-full
+                          shrink-0
+                        "
+                        style={{
+                          background:
+                            item.iconColor,
+                        }}
+                      />
+                    )}
+
+                  </button>
+                );
+              })}
+
+            </div>
+
+          </div>
+
+          {/* =================================================
+              COURSE DETAILS
+          ================================================== */}
+
+          <CourseDetails
+            course={course}
+            level={level}
+            activeLevel={activeLevel}
+            setActiveLevel={
+              setActiveLevel
+            }
+            classCount={classCount}
+            setClassCount={
+              setClassCount
+            }
+            pricePerClass={
+              pricePerClass
+            }
+            totalPrice={
+              totalPrice
+            }
+            CourseIcon={
+              CourseIcon
+            }
+            handleEnquiry={
+              handleEnquiry
+            }
+            changeCourse={
+              changeCourse
+            }
+          />
+
+        </div>
+
+        {/* ===================================================
+            MOBILE COURSE DETAILS
+        ==================================================== */}
+
+        <div className="lg:hidden">
+
+          <CourseDetails
+            course={course}
+            level={level}
+            activeLevel={activeLevel}
+            setActiveLevel={
+              setActiveLevel
+            }
+            classCount={classCount}
+            setClassCount={
+              setClassCount
+            }
+            pricePerClass={
+              pricePerClass
+            }
+            totalPrice={
+              totalPrice
+            }
+            CourseIcon={
+              CourseIcon
+            }
+            handleEnquiry={
+              handleEnquiry
+            }
+            changeCourse={
+              changeCourse
+            }
+          />
+
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+/* =========================================================
+   COURSE DETAILS
+========================================================= */
+
+const CourseDetails = ({
+  course,
+  level,
+  activeLevel,
+  setActiveLevel,
+  classCount,
+  setClassCount,
+  pricePerClass,
+  totalPrice,
+  CourseIcon,
+  handleEnquiry,
+  changeCourse,
+}) => {
+  return (
+    <motion.div
+      key={course.id}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="relative bg-white rounded-[1.75rem] sm:rounded-[2rem] border-2 overflow-hidden"
+      style={{
+        borderColor: `${course.iconColor}30`,
+        boxShadow: SHADOWS.card,
+      }}
+    >
+      <div className="p-4 sm:p-6 lg:p-7 xl:p-8">
+        {/* BANNER + DESCRIPTION */}
+        <div className="grid lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] gap-5 lg:gap-7 items-center mb-6">
+          {/* BANNER */}
+          <div className="relative w-full h-[170px] sm:h-[200px] lg:h-[220px] xl:h-[240px] rounded-2xl sm:rounded-[1.5rem] overflow-hidden flex items-center justify-center bg-slate-50">
+            <img
+              src={course.banner}
+              alt={`${course.name} course`}
+              className="w-full h-full object-contain block"
+            />
+          </div>
+
+          {/* DESCRIPTION + NAVIGATION */}
+          <div className="min-w-0">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div
+                  className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest mb-1.5"
+                  style={{ color: course.iconColor }}
                 >
-                  {level.headline}
-                </h4>
-
+                  Course Overview
+                </div>
                 <p
-                  className="text-sm sm:text-base leading-relaxed mb-5"
+                  className="text-sm sm:text-base leading-relaxed font-medium"
                   style={{ color: COLORS.textSecondary }}
                 >
-                  {level.desc}
+                  {course.description}
                 </p>
+              </div>
 
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {level.chips.map((chip) => (
-                    <span
-                      key={chip}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-[10px] sm:text-[11px] font-black"
-                      style={{
-                        color: level.color,
-                        background: level.light,
-                      }}
-                    >
-                      <Check className="w-3 h-3" />
-                      {chip}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  onClick={() => changeCourse("prev")}
+                  aria-label="Previous course"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+                  style={{ borderColor: COLORS.border, color: COLORS.textSecondary }}
+                >
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
 
-                <div className="grid grid-cols-2 gap-2.5 mb-6">
-                  {level.stats.map((stat) => (
-                    <div
-                      key={stat}
-                      className="rounded-2xl p-3.5 border"
-                      style={{
-                        borderColor: COLORS.border,
-                        background: COLORS.bgSecondary,
-                      }}
-                    >
-                      <div
-                        className="text-sm font-black"
-                        style={{ color: COLORS.ink }}
-                      >
-                        {stat}
-                      </div>
-                      <div
-                        className="text-[9px] font-bold uppercase tracking-wider mt-1"
-                        style={{ color: COLORS.textMuted }}
-                      >
-                        Learning path
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-2.5">
-                  <a
-                    href={level.route}
-                    className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl text-sm font-black text-white active:scale-[0.98] transition-transform"
-                    style={{
-                      background: level.color,
-                      boxShadow:
-                        level.color === COLORS.gold
-                          ? SHADOWS.glowGold
-                          : level.color === COLORS.cyan
-                          ? SHADOWS.glowCyan
-                          : level.color === COLORS.indigo
-                          ? SHADOWS.sm
-                          : SHADOWS.glowEmer,
-                    }}
-                  >
-                    {level.cta}
-                    <ArrowRight className="w-4 h-4" />
-                  </a>
-
-                  {level.secondaryRoute && (
-                    <a
-                      href={level.secondaryRoute}
-                      className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl text-sm font-black border-2 active:scale-[0.98] transition-transform"
-                      style={{
-                        borderColor: `${level.color}35`,
-                        color: level.color,
-                        background: COLORS.white,
-                      }}
-                    >
-                      <Calculator className="w-4 h-4" />
-                      Try Maths
-                    </a>
-                  )}
-                </div>
+                <button
+                  onClick={() => changeCourse("next")}
+                  aria-label="Next course"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+                  style={{ borderColor: COLORS.border, color: COLORS.textSecondary }}
+                >
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
               </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Swipe / progress cue */}
-        <div className="mt-6 flex flex-col items-center gap-3">
-          <StepDots active={active} onChange={setActive} />
-          <div
-            className="flex items-center gap-1.5 text-[10px] font-bold"
-            style={{ color: COLORS.textMuted }}
-          >
-            <span>Tap a level</span>
-            <span>•</span>
-            <span>or swipe to explore</span>
           </div>
         </div>
 
-        {/* Bottom parent reassurance — intentionally compact */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-10 sm:mt-12 mx-auto max-w-3xl rounded-2xl sm:rounded-3xl p-4 sm:p-5 border flex flex-col sm:flex-row items-center justify-between gap-4"
-          style={{
-            background: COLORS.white,
-            borderColor: COLORS.border,
-            boxShadow: SHADOWS.sm,
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0"
-              style={{
-                background: COLORS.goldLight,
-                color: COLORS.goldDeep,
-              }}
-            >
-              <Star className="w-5 h-5 fill-current" />
+        {/* OPTIONS + PRICE */}
+        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1fr_1.05fr] gap-4 sm:gap-5 lg:gap-6 items-stretch">
+          {/* LEVEL COLUMN */}
+          <div>
+            <div className="flex items-center justify-between mb-2.5">
+              <h4 className="text-xs sm:text-sm font-black" style={{ color: COLORS.ink }}>
+                Level
+              </h4>
+              <span className="text-[9px]" style={{ color: COLORS.textMuted }}>
+                Choose level
+              </span>
             </div>
-            <div>
-              <div className="text-sm font-black" style={{ color: COLORS.ink }}>
-                One journey. No pressure.
-              </div>
-              <div className="text-xs mt-0.5" style={{ color: COLORS.textMuted }}>
-                Kids move forward when they’re ready.
-              </div>
+
+            <div className="flex flex-col gap-2.5">
+              {LEVELS.map((item) => {
+                const selected = activeLevel === item.id;
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveLevel(item.id)}
+                    className="relative w-full min-h-[64px] sm:min-h-[70px] px-3.5 py-3 rounded-xl border-2 text-left transition-all duration-200"
+                    style={{
+                      background: selected ? COLORS.emeraldLight : COLORS.bgSecondary,
+                      borderColor: selected ? COLORS.emerald : COLORS.border,
+                    }}
+                  >
+                    {selected && (
+                      <span
+                        className="absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center"
+                        style={{ background: COLORS.emerald, color: COLORS.white }}
+                      >
+                        <Check className="w-2.5 h-2.5" />
+                      </span>
+                    )}
+
+                    <div
+                      className="text-[10px] sm:text-xs font-black pr-5"
+                      style={{ color: selected ? COLORS.emerald : COLORS.ink }}
+                    >
+                      {item.name}
+                    </div>
+
+                    <div
+                      className="text-[9px] mt-1 leading-tight"
+                      style={{ color: COLORS.textMuted }}
+                    >
+                      {item.description}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          <a
-            href={getWhatsAppLink("Hi! I'd like to book a free trial class for my child at Pearlx.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-2xl text-xs font-black text-white"
+          {/* CLASSES COLUMN */}
+          <div>
+            <div className="flex items-center justify-between mb-2.5">
+              <h4 className="text-xs sm:text-sm font-black" style={{ color: COLORS.ink }}>
+                Classes
+              </h4>
+              <span className="text-[9px]" style={{ color: COLORS.textMuted }}>
+                {formatPrice(pricePerClass)} / class
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              {CLASS_PACKAGES.map((count) => {
+                const selected = classCount === count;
+
+                return (
+                  <button
+                    key={count}
+                    onClick={() => setClassCount(count)}
+                    className="relative w-full min-h-[46px] sm:min-h-[50px] px-4 rounded-xl border-2 text-left flex items-center justify-between transition-all duration-200 active:scale-[0.98]"
+                    style={{
+                      background: selected ? `${course.iconColor}10` : COLORS.bgSecondary,
+                      borderColor: selected ? course.iconColor : COLORS.border,
+                      color: selected ? course.iconColor : COLORS.ink,
+                    }}
+                  >
+                    <span className="text-xs sm:text-sm font-black">
+                      {count} classes
+                    </span>
+
+                    {count === 30 && (
+                      <span
+                        className="px-2 py-0.5 rounded-full text-[7px] font-black"
+                        style={{ background: COLORS.gold, color: COLORS.white }}
+                      >
+                        POPULAR
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* PRICE + ENQUIRY COLUMN */}
+          <div
+            className="col-span-2 lg:col-span-1 rounded-2xl p-4 sm:p-5 flex flex-col justify-between"
             style={{
-              background: GRADIENTS.primary,
-              boxShadow: SHADOWS.glowEmer,
+              background: `linear-gradient(145deg, ${COLORS.bgSecondary}, #FFFFFF)`,
+              border: `1px solid ${COLORS.border}`,
             }}
           >
-            Book a free trial
-            <ArrowRight className="w-3.5 h-3.5" />
-          </a>
-        </motion.div>
+            <div>
+              <div
+                className="text-[9px] font-black uppercase tracking-widest"
+                style={{ color: COLORS.textMuted }}
+              >
+                Price Details
+              </div>
+
+              <div className="mt-3">
+                <div
+                  className="text-[8px] font-bold uppercase tracking-wider"
+                  style={{ color: COLORS.textMuted }}
+                >
+                  Selected level
+                </div>
+                <div
+                  className="text-sm sm:text-base font-black mt-0.5"
+                  style={{ color: COLORS.ink }}
+                >
+                  {level.name}
+                </div>
+              </div>
+
+              {/* Compact class + per-class summary */}
+              <div
+                className="mt-3 flex items-center gap-5 py-2.5 border-y"
+                style={{ borderColor: COLORS.border }}
+              >
+                <div>
+                  <div
+                    className="text-[8px] font-bold uppercase tracking-wider"
+                    style={{ color: COLORS.textMuted }}
+                  >
+                    Classes
+                  </div>
+                  <div
+                    className="text-base sm:text-lg font-black mt-0.5"
+                    style={{ color: COLORS.ink }}
+                  >
+                    {classCount}
+                  </div>
+                </div>
+
+                <div
+                  className="h-7 w-px"
+                  style={{ background: COLORS.border }}
+                />
+
+                <div>
+                  <div
+                    className="text-[8px] font-bold uppercase tracking-wider"
+                    style={{ color: COLORS.textMuted }}
+                  >
+                    Per class
+                  </div>
+                  <div
+                    className="text-base sm:text-lg font-black mt-0.5"
+                    style={{ color: COLORS.ink }}
+                  >
+                    {formatPrice(pricePerClass)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-3">
+                <div
+                  className="text-[8px] font-black uppercase tracking-widest"
+                  style={{ color: COLORS.textMuted }}
+                >
+                  Total price
+                </div>
+                <div
+                  className="text-2xl sm:text-3xl font-black tracking-tight mt-0.5"
+                  style={{ color: COLORS.emerald }}
+                >
+                  {formatPrice(totalPrice)}
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleEnquiry}
+              className="w-full mt-3 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black text-white active:scale-[0.98] transition-transform"
+              style={{ background: GRADIENTS.primary, boxShadow: SHADOWS.glowEmer }}
+            >
+              Enquire about this course
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
-    </section>
+    </motion.div>
   );
 };
 

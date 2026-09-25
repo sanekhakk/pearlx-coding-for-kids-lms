@@ -26,7 +26,7 @@ const HeroSection = ({ openDemoModal }) => {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6">
+      <div className="relative z-10 md:mx-30 px-5 sm:px-6 pt-10 md:pt-0">
         <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-8 lg:gap-12 items-center min-h-[calc(100vh-120px)] py-10 lg:py-14">
           <motion.div
             initial={{ opacity: 0, y: 24 }}

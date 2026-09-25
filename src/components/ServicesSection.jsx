@@ -142,7 +142,7 @@ export default function ServicesSection({ openDemoModal }) {
       className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
       style={{ background: COLORS.bgPrimary }}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="md:mx-20 px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
         <div className="mb-8 max-w-3xl sm:mb-10">
           <div
