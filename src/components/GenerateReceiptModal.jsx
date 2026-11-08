@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Receipt, Loader2, AlertCircle, Download, IndianRupee, Calendar } from "lucide-react";
-import { auth } from "../firebase";
+import { apiRequest } from "../utils/api";
 import ReceiptDocument from "./ReceiptDocument";
 import { downloadReceiptAsPdf } from "../utils/downloadReceiptPdf";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
+
 
 const C = {
   bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
@@ -55,19 +55,15 @@ export default function GenerateReceiptModal({ student, onClose }) {
 
     setIsGenerating(true);
     try {
-      const token = await auth.currentUser.getIdToken();
-      const res = await fetch(`${API_BASE}/receipts/generate`, {
+      const data = await apiRequest("/receipts/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          studentId: student.uid,
+        body: {
+          studentId: student.uid || student.id,
           feePerHour: rate,
           periodFrom: periodFrom || null,
           periodTo: periodTo || null,
-        }),
+        },
       });
-      const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || "Failed to generate receipt");
       setReceipt(data.receipt);
     } catch (err) {
       console.error("generate receipt err:", err);

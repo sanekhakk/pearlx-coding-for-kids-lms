@@ -4,11 +4,11 @@ import {
   IndianRupee, Search, Loader2, AlertCircle, CheckCircle, Clock,
   X, Download, Calendar, RefreshCw, Receipt as ReceiptIcon,
 } from "lucide-react";
-import { auth } from "../firebase";
+import { apiRequest } from "../utils/api";
 import ReceiptDocument from "../components/ReceiptDocument";
 import { downloadReceiptAsPdf } from "../utils/downloadReceiptPdf";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
+
 
 const C = {
   bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
@@ -99,13 +99,8 @@ export function PaymentHistory() {
     setLoading(true);
     setError(null);
     try {
-      const token = await auth.currentUser.getIdToken();
-      const res = await fetch(`${API_BASE}/receipts/admin`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || "Failed to load payment history");
-      setReceipts(data.receipts);
+      const data = await apiRequest("/receipts/admin");
+      setReceipts(data.receipts || []);
     } catch (err) {
       console.error("load payment history err:", err);
       setError(err.message);
@@ -120,14 +115,7 @@ export function PaymentHistory() {
     const newStatus = receipt.status === "paid" ? "unpaid" : "paid";
     setUpdatingId(receipt.id);
     try {
-      const token = await auth.currentUser.getIdToken();
-      const res = await fetch(`${API_BASE}/receipts/${receipt.id}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || "Failed to update status");
+      await apiRequest(`/receipts/${receipt.id}/status`, { method: "PATCH", body: { status: newStatus } });
       setReceipts(prev => prev.map(r => r.id === receipt.id ? { ...r, status: newStatus } : r));
       setSelected(prev => (prev && prev.id === receipt.id) ? { ...prev, status: newStatus } : prev);
     } catch (err) {

@@ -1,5 +1,10 @@
 const express = require("express");
 const router = express.Router();
+// Sort newest-first in memory instead of using Firestore orderBy(),
+// so these queries don't depend on composite indexes existing.
+const toMillis = (v) => (v && typeof v.toMillis === "function" ? v.toMillis() : v && v._seconds ? v._seconds * 1000 : 0);
+const newestFirst = (field) => (a, b) => toMillis(b[field]) - toMillis(a[field]);
+
 const { admin, firestore } = require("../firebaseAdmin");
 const { verifyIdToken, requireTutor } = require("../middleware/authMiddleware");
 
@@ -73,9 +78,9 @@ router.get("/mine", verifyIdToken, requireTutor, async (req, res) => {
   try {
     const snap = await firestore.collection("notes")
       .where("tutorId", "==", req.uid)
-      .orderBy("createdAt", "desc")
       .get();
-    const notes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const notes = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+    notes.sort(newestFirst("createdAt"));
     return res.status(200).json({ success: true, notes });
   } catch (err) {
     console.error("get-tutor-notes err:", err);
@@ -88,9 +93,9 @@ router.get("/student", verifyIdToken, async (req, res) => {
   try {
     const snap = await firestore.collection("notes")
       .where("studentIds", "array-contains", req.uid)
-      .orderBy("createdAt", "desc")
       .get();
-    const notes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const notes = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+    notes.sort(newestFirst("createdAt"));
     return res.status(200).json({ success: true, notes });
   } catch (err) {
     console.error("get-student-notes err:", err);

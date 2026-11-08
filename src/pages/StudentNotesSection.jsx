@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { auth } from "../firebase";
+import { apiRequest } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import { FileText, X, Calendar, User, Loader2, ChevronRight } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
+
 
 const C = {
   bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
@@ -84,13 +84,9 @@ export default function StudentNotesSection() {
     (async () => {
       setLoading(true);
       try {
-        const token = await auth.currentUser.getIdToken();
-        const res = await fetch(`${API_BASE}/notes/student`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.error || "Failed to load notes");
-        setNotes(data.notes);
+        setError(null);
+        const data = await apiRequest("/notes/student");
+        setNotes(data.notes || []);
       } catch (err) {
         console.error("load student notes err:", err);
         setError(err.message);

@@ -4,6 +4,8 @@ Backend/node_modules
 
 # Environment variables
 .env
+.env.local
+.env.*.local
 Backend/.env
 
 
@@ -19,4 +21,3 @@ serviceAccountKey.json
 Backend/service-account-key.json
 Backend/serviceAccountKey.json
 *.json
-

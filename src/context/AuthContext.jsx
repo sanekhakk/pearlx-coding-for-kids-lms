@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db, secondaryAuth } from "../firebase";
+import { API_BASE } from "../utils/api";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -127,7 +128,7 @@ export const AuthProvider = ({ children }) => {
       const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
 
       // Call backend
-      const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/create-user`, {
+      const resp = await fetch(`${API_BASE}/admin/create-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -179,7 +180,7 @@ export const AuthProvider = ({ children }) => {
       const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
 
       // Call backend DELETE endpoint
-      const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/delete-user/${uid}`, {
+      const resp = await fetch(`${API_BASE}/admin/delete-user/${uid}`, {
         method: "DELETE", 
         headers: {
           "Content-Type": "application/json",
@@ -235,7 +236,7 @@ export const AuthProvider = ({ children }) => {
       const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
 
       // Call backend DELETE endpoint
-      const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/class/${classId}`, {
+      const resp = await fetch(`${API_BASE}/admin/class/${classId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -265,7 +266,7 @@ export const AuthProvider = ({ children }) => {
 
       const idToken = await currentUser.getIdToken(/* forceRefresh */ true);
 
-      const resp = await fetch(`${import.meta.env.VITE_API_URL}/admin/update-user/${uid}`, {
+      const resp = await fetch(`${API_BASE}/admin/update-user/${uid}`, {
         method: "PUT", 
         headers: {
           "Content-Type": "application/json",
@@ -418,7 +419,7 @@ const tutorUpdateChapterProgress = async (studentId, subject, chapter) => {
   const adminScheduleClass = async (classData) => {
     try {
       const idToken = await auth.currentUser.getIdToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/schedule-class`, {
+      const response = await fetch(`${API_BASE}/admin/schedule-class`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -443,7 +444,7 @@ const tutorUpdateChapterProgress = async (studentId, subject, chapter) => {
   const adminScheduleDemoClass = async (demoData) => {
     try {
       const idToken = await auth.currentUser.getIdToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/schedule-demo-class`, {
+      const response = await fetch(`${API_BASE}/admin/schedule-demo-class`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

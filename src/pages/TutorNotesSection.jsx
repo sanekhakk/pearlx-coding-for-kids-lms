@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { db, auth } from "../firebase";
+import { db } from "../firebase";
+import { apiRequest } from "../utils/api";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -8,7 +9,7 @@ import {
   Calendar, BookOpen, Info, Users, ChevronDown,
 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
+
 
 const C = {
   bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
@@ -29,19 +30,12 @@ const inputStyle = {
 };
 const labelStyle = { fontSize: 12, fontWeight: 700, color: C.textSecondary, marginBottom: 6, display: "block" };
 
+// Thin wrapper kept so the rest of this file stays unchanged.
 async function authedFetch(path, options = {}) {
-  const token = await auth.currentUser.getIdToken();
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      ...(options.headers || {}),
-    },
+  return apiRequest(path, {
+    method: options.method || "GET",
+    body: options.body !== undefined ? JSON.parse(options.body) : undefined,
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.error || "Request failed");
-  return data;
 }
 
 const emptyForm = {
@@ -58,28 +52,35 @@ export default function TutorNotesSection() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [loadError, setLoadError] = useState(null);
 
   const { userId: uid } = useAuth();
 
   const loadStudents = async () => {
-    const q = query(collection(db, "userSummaries"), where("tutorUids", "array-contains", uid), where("role", "==", "student"));
+    // Single where() so this never needs a composite index; role is filtered here.
+    const q = query(collection(db, "userSummaries"), where("tutorUids", "array-contains", uid));
     const snap = await getDocs(q);
-    setStudents(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+    setStudents(snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(s => !s.role || s.role === "student"));
   };
 
   const loadNotes = async () => {
     const data = await authedFetch("/notes/mine");
-    setNotes(data.notes);
+    setNotes(data.notes || []);
   };
 
   useEffect(() => {
     if (!uid) return; // wait until auth is actually ready before querying anything
     (async () => {
       setLoading(true);
+      setLoadError(null);
       try {
-        await Promise.all([loadStudents(), loadNotes()]);
-      } catch (err) {
-        console.error("load notes/students err:", err);
+        // allSettled: one failing request no longer hides the other's result
+        const results = await Promise.allSettled([loadStudents(), loadNotes()]);
+        const failed = results.find(r => r.status === "rejected");
+        if (failed) {
+          console.error("load notes/students err:", failed.reason);
+          setLoadError(failed.reason?.message || "Couldn't load notes. Please refresh.");
+        }
       } finally {
         setLoading(false); // always clear the spinner, even on error
       }
@@ -131,6 +132,11 @@ export default function TutorNotesSection() {
 
   return (
     <div>
+      {loadError && (
+        <div style={{ marginBottom: 16, padding: "12px 14px", borderRadius: 14, background: "#FEF2F2", border: "2px solid #FECACA", color: "#DC2626", fontSize: 13, fontWeight: 600 }}>
+          {loadError}
+        </div>
+      )}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <h2 style={{ fontSize: 16, fontWeight: 800, color: C.textPrimary }}>Notes</h2>
         <motion.button whileTap={{ scale: 0.97 }} onClick={() => { resetForm(); setShowForm(true); }}

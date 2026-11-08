@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { auth } from "../firebase";
+import { apiRequest } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import { Receipt, X, Calendar, IndianRupee, Loader2, ChevronRight, Download } from "lucide-react";
 import ReceiptDocument from "./ReceiptDocument";
 import { downloadReceiptAsPdf } from "../utils/downloadReceiptPdf";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
+
 
 const C = {
   bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
@@ -70,13 +70,9 @@ export default function StudentReceiptsSection() {
     (async () => {
       setLoading(true);
       try {
-        const token = await auth.currentUser.getIdToken();
-        const res = await fetch(`${API_BASE}/receipts/student`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.error || "Failed to load receipts");
-        setReceipts(data.receipts);
+        setError(null);
+        const data = await apiRequest("/receipts/student");
+        setReceipts(data.receipts || []);
       } catch (err) {
         console.error("load student receipts err:", err);
         setError(err.message);

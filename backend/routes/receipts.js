@@ -1,5 +1,10 @@
 const express = require("express");
 const router = express.Router();
+// Sort newest-first in memory instead of using Firestore orderBy(),
+// so these queries don't depend on composite indexes existing.
+const toMillis = (v) => (v && typeof v.toMillis === "function" ? v.toMillis() : v && v._seconds ? v._seconds * 1000 : 0);
+const newestFirst = (field) => (a, b) => toMillis(b[field]) - toMillis(a[field]);
+
 const { admin, firestore } = require("../firebaseAdmin");
 const { verifyIdToken, requireAdmin } = require("../middleware/authMiddleware");
 
@@ -153,9 +158,9 @@ router.get("/student", verifyIdToken, async (req, res) => {
   try {
     const snap = await firestore.collection("receipts")
       .where("studentId", "==", req.uid)
-      .orderBy("generatedAt", "desc")
       .get();
     const receipts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    receipts.sort(newestFirst("generatedAt"));
     return res.status(200).json({ success: true, receipts });
   } catch (err) {
     console.error("get-student-receipts err:", err);
@@ -167,10 +172,9 @@ router.get("/student", verifyIdToken, async (req, res) => {
 // Powers the admin "Payment History" view.
 router.get("/admin", verifyIdToken, requireAdmin, async (req, res) => {
   try {
-    const snap = await firestore.collection("receipts")
-      .orderBy("generatedAt", "desc")
-      .get();
+    const snap = await firestore.collection("receipts").get();
     const receipts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    receipts.sort(newestFirst("generatedAt"));
     return res.status(200).json({ success: true, receipts });
   } catch (err) {
     console.error("get-all-receipts err:", err);
@@ -212,9 +216,9 @@ router.get("/admin/:studentId", verifyIdToken, requireAdmin, async (req, res) =>
   try {
     const snap = await firestore.collection("receipts")
       .where("studentId", "==", req.params.studentId)
-      .orderBy("generatedAt", "desc")
       .get();
     const receipts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    receipts.sort(newestFirst("generatedAt"));
     return res.status(200).json({ success: true, receipts });
   } catch (err) {
     console.error("get-admin-receipts err:", err);
