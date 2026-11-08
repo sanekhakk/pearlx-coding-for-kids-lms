@@ -1,202 +1,177 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
 
 /* =========================================================
-   PEARLX BRAND — "Where Little Gems Shine"
-   Palette is unchanged (sky · emerald · gold · indigo · navy).
-   Display type: Fredoka (rounded, friendly)  ·  Body: Nunito
+   PEARLX — professional, parent-friendly UI
+   Palette unchanged (sky · emerald · gold · indigo · navy).
+   Type: Plus Jakarta Sans for everything on the public site.
 ========================================================= */
 
 :root {
   --px-sky: #0EA5E9;
-  --px-sky-deep: #0284C7;
   --px-emerald: #10B981;
-  --px-emerald-deep: #059669;
   --px-gold: #C9A84C;
-  --px-gold-deep: #A07830;
   --px-indigo: #6366F1;
-  --px-indigo-deep: #4F46E5;
-  --px-bronze: #B87333;
   --px-ink: #0F172A;
   --px-navy: #0B1120;
   --px-text: #334155;
   --px-muted: #64748B;
-  --px-line: rgba(15, 23, 42, 0.09);
-  --px-cloud: #F8FAFC;
-  --px-sky-wash: #F0F9FF;
-  --px-mint-wash: #ECFDF5;
+  --px-line: #E2E8F0;
   --px-grad: linear-gradient(135deg, #0EA5E9 0%, #10B981 100%);
-  --px-font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
-  --px-font-body: 'Nunito', system-ui, sans-serif;
+  --px-font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --px-font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --px-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --px-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.14);
+  --px-shadow-lg: 0 2px 4px rgba(15, 23, 42, 0.04), 0 18px 40px -16px rgba(15, 23, 42, 0.22);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
   font-family: var(--px-font-body);
+  font-size: 15px;
   background-color: #FFFFFF;
   color: var(--px-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+@media (min-width: 640px) {
+  body { font-size: 16px; }
+}
 
-/* Display font — used by every heading on the public site */
 .font-display,
 .px-display {
   font-family: var(--px-font-display);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #F1F5F9; }
-::-webkit-scrollbar-thumb { background: rgba(14,165,233,0.35); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(16,185,129,0.55); }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-::selection { background: rgba(16,185,129,0.22); color: var(--px-ink); }
+::selection { background: rgba(16,185,129,0.2); color: var(--px-ink); }
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { scrollbar-width: none; }
 
 :focus-visible {
-  outline: 3px solid rgba(14,165,233,0.55);
-  outline-offset: 3px;
-  border-radius: 12px;
+  outline: 3px solid rgba(14,165,233,0.45);
+  outline-offset: 2px;
+  border-radius: 10px;
 }
 
 @layer components {
-/* =========================================================
-   CHUNKY BUTTONS — the signature "press-down" toy button
-========================================================= */
-.px-btn {
-  --btn-bg: var(--px-ink);
-  --btn-fg: #fff;
-  --btn-edge: #000;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--px-font-display);
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 1;
-  padding: 0.95rem 1.5rem;
-  border-radius: 999px;
-  background: var(--btn-bg);
-  color: var(--btn-fg);
-  box-shadow: 0 5px 0 var(--btn-edge);
-  transform: translateY(0);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.2s ease;
-  cursor: pointer;
-  white-space: nowrap;
-  border: none;
-  text-decoration: none;
-}
-.px-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--btn-edge); filter: saturate(1.08); }
-.px-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--btn-edge); }
-.px-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  /* ---------- Buttons ---------- */
+  .px-btn {
+    --btn-bg: var(--px-ink);
+    --btn-fg: #fff;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    font-family: var(--px-font-body);
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 1;
+    height: 2.75rem;
+    padding: 0 1.15rem;
+    border-radius: 12px;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    border: 1px solid transparent;
+    box-shadow: var(--px-shadow-sm);
+    transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .px-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px -6px rgba(15,23,42,0.3); filter: brightness(1.03); }
+  .px-btn:active { transform: translateY(0); box-shadow: var(--px-shadow-sm); }
+  .px-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-.px-btn--grad  { --btn-bg: var(--px-grad); --btn-edge: #047857; }
-.px-btn--sky   { --btn-bg: var(--px-sky); --btn-edge: #0369A1; }
-.px-btn--green { --btn-bg: var(--px-emerald); --btn-edge: #047857; }
-.px-btn--gold  { --btn-bg: var(--px-gold); --btn-edge: #7C5A1E; --btn-fg: var(--px-navy); }
-.px-btn--indigo{ --btn-bg: var(--px-indigo); --btn-edge: #3730A3; }
-.px-btn--ink   { --btn-bg: var(--px-ink); --btn-edge: #000; }
-.px-btn--white {
-  --btn-bg: #fff; --btn-fg: var(--px-ink); --btn-edge: rgba(15,23,42,0.16);
-  border: 2px solid rgba(15,23,42,0.12);
-}
-.px-btn--sm { font-size: 0.85rem; padding: 0.7rem 1.1rem; }
-.px-btn--lg { font-size: 1.08rem; padding: 1.1rem 1.9rem; }
-.px-btn--block { width: 100%; }
+  .px-btn--grad  { --btn-bg: var(--px-grad); }
+  .px-btn--sky   { --btn-bg: var(--px-sky); }
+  .px-btn--green { --btn-bg: var(--px-emerald); }
+  .px-btn--gold  { --btn-bg: var(--px-gold); --btn-fg: var(--px-navy); }
+  .px-btn--indigo{ --btn-bg: var(--px-indigo); }
+  .px-btn--ink   { --btn-bg: var(--px-ink); }
+  .px-btn--white {
+    --btn-bg: #fff; --btn-fg: var(--px-ink);
+    border-color: var(--px-line);
+  }
+  .px-btn--white:hover { border-color: #CBD5E1; box-shadow: var(--px-shadow); }
+  .px-btn--sm { height: 2.35rem; font-size: 0.8125rem; padding: 0 0.9rem; border-radius: 10px; }
+  .px-btn--lg { height: 2.9rem; font-size: 0.9rem; padding: 0 1.3rem; }
+  @media (min-width: 640px) {
+    .px-btn { height: 2.9rem; font-size: 0.9rem; }
+    .px-btn--lg { height: 3.2rem; font-size: 0.95rem; padding: 0 1.6rem; }
+  }
+  .px-btn--block { width: 100%; }
 
-/* =========================================================
-   STICKER CARDS — thick soft border + solid offset shadow
-========================================================= */
-.px-card {
-  background: #fff;
-  border: 2px solid var(--px-line);
-  border-radius: 28px;
-  box-shadow: 0 6px 0 rgba(15,23,42,0.06);
-}
-.px-card--lift {
-  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease, border-color 0.25s ease;
-}
-.px-card--lift:hover {
-  transform: translateY(-6px) rotate(-0.4deg);
-  box-shadow: 0 12px 0 rgba(15,23,42,0.07);
-}
+  /* ---------- Cards ---------- */
+  .px-card {
+    background: #fff;
+    border: 1px solid var(--px-line);
+    border-radius: 18px;
+    box-shadow: var(--px-shadow);
+  }
+  .px-card--lift { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+  .px-card--lift:hover { transform: translateY(-3px); box-shadow: var(--px-shadow-lg); }
 
-/* Small tilted label that sits above headings */
-.px-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  font-family: var(--px-font-display);
-  font-weight: 600;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transform: rotate(-2deg);
-  border: 2px dashed currentColor;
-}
+  /* ---------- Eyebrow label ---------- */
+  .px-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    font-family: var(--px-font-body);
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-/* Hand-drawn underline that sits under a highlighted word */
-.px-scribble { position: relative; display: inline-block; white-space: nowrap; }
-.px-scribble > svg {
-  position: absolute;
-  left: -2%;
-  bottom: -0.28em;
-  width: 104%;
-  height: 0.42em;
-  overflow: visible;
-  pointer-events: none;
-}
+  /* ---------- Highlighted word ---------- */
+  .px-scribble { position: relative; white-space: nowrap; }
 
-/* Pearl — glossy bubble used as decoration everywhere */
-.px-pearl {
-  position: absolute;
-  border-radius: 999px;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0 12%, rgba(255,255,255,0) 34%),
-    radial-gradient(circle at 50% 50%, var(--pearl, #0EA5E9) 0%, color-mix(in srgb, var(--pearl, #0EA5E9) 72%, #000) 100%);
-  box-shadow: inset -4px -6px 10px rgba(0,0,0,0.12), 0 8px 18px rgba(15,23,42,0.10);
+  /* ---------- Pearl decoration (small, subtle) ---------- */
+  .px-pearl {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+    opacity: 0.85;
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0 12%, rgba(255,255,255,0) 36%),
+      radial-gradient(circle at 50% 50%, var(--pearl, #0EA5E9) 0%, color-mix(in srgb, var(--pearl, #0EA5E9) 75%, #000) 100%);
+    box-shadow: inset -2px -3px 6px rgba(0,0,0,0.1);
+  }
+
+  /* ---------- Soft dotted texture ---------- */
+  .px-dots {
+    background-image: radial-gradient(rgba(15,23,42,0.07) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
 }
 
-/* Soft dotted paper texture */
-.px-dots {
-  background-image: radial-gradient(rgba(15,23,42,0.08) 1.3px, transparent 1.3px);
-  background-size: 22px 22px;
-}
-
-}
-
-/* Floating animation for stickers */
 @keyframes px-float {
-  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
-  50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
-.px-float { animation: px-float 4.5s ease-in-out infinite; }
-.px-float--slow { animation-duration: 6.5s; }
-
-@keyframes px-spin { to { transform: rotate(360deg); } }
-.px-spin-slow { animation: px-spin 28s linear infinite; }
-
-@keyframes px-wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-.px-wiggle { animation: px-wiggle 2.8s ease-in-out infinite; }
+.px-float { animation: px-float 5s ease-in-out infinite; }
+.px-float--slow { animation-duration: 7s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .px-float, .px-spin-slow, .px-wiggle, .marquee-inner { animation: none !important; }
+  .px-float, .marquee-inner { animation: none !important; }
   html { scroll-behavior: auto; }
 }
 
@@ -243,22 +218,18 @@ body {
 }
 
 /* =========================================================
-   DASHBOARD BRAND SKIN
-   Dashboards use inline styles; this layer gives them the
-   PearlX type, rounded inputs and friendlier controls.
+   DASHBOARD SKIN
 ========================================================= */
-.px-dash {
-  font-family: var(--px-font-body);
-}
+.px-dash { font-family: var(--px-font-body); }
 .px-dash h1, .px-dash h2, .px-dash h3 {
   font-family: var(--px-font-display);
-  letter-spacing: -0.005em;
+  letter-spacing: -0.01em;
 }
 .px-dash input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
 .px-dash select,
 .px-dash textarea {
   font-family: var(--px-font-body);
-  border-radius: 14px;
+  border-radius: 12px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .px-dash input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):focus,
@@ -270,30 +241,24 @@ body {
 }
 .px-dash button { font-family: var(--px-font-body); }
 
-/* Booking modal — brand headings */
-.px-modal h2,
-.px-modal h3 {
-  font-family: var(--px-font-display);
-  font-weight: 600 !important;
-  letter-spacing: -0.005em !important;
-}
-
-/* Dashboard headings & big numbers use the rounded display face */
 .px-dash [style*="font-weight: 800"],
 .px-dash [style*="font-weight: 900"] {
   font-family: var(--px-font-display);
-  font-weight: 600 !important;
-  letter-spacing: 0 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
 }
 
-/* Gradient action buttons get the chunky press-down feel */
 .px-dash button[style*="linear-gradient"],
 .px-dash a[style*="linear-gradient"] {
-  box-shadow: 0 4px 0 rgba(15, 23, 42, 0.2) !important;
+  box-shadow: 0 6px 16px -8px rgba(16, 185, 129, 0.6) !important;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .px-dash button[style*="linear-gradient"]:hover:not(:disabled) { transform: translateY(-1px); }
-.px-dash button[style*="linear-gradient"]:active:not(:disabled) {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.2) !important;
+
+/* Booking modal headings */
+.px-modal h2,
+.px-modal h3 {
+  font-family: var(--px-font-display);
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
 }

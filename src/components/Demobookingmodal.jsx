@@ -350,7 +350,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                 className="px-modal relative overflow-hidden rounded-[2rem] bg-white flex flex-col"
                 style={{
                   border: "3px solid #fff",
-                  boxShadow: `0 10px 0 ${COLORS.emerald}, 0 30px 70px rgba(0,0,0,0.3)`,
+                  boxShadow: `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28), 0 30px 70px rgba(0,0,0,0.3)`,
                   maxHeight: "min(740px, calc(100vh - 32px))",
                 }}
               >
@@ -373,8 +373,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                         style={{
                           background: COLORS.emerald,
                           color: COLORS.white,
-                          transform: "rotate(-6deg)",
-                          boxShadow: `0 4px 0 ${edgeOf(COLORS.emerald)}`,
+                          boxShadow: `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)`,
                         }}
                       >
                         <Sparkles className="w-5 h-5" />
@@ -404,7 +403,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                       style={{
                         borderColor: COLORS.border,
                         color: COLORS.ink,
-                        boxShadow: "0 3px 0 rgba(15,23,42,0.08)",
+                        boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)",
                       }}
                     >
                       <X className="w-4.5 h-4.5" />
@@ -464,7 +463,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                       ? COLORS.emerald
                                       : COLORS.textMuted,
                                   border: `2px solid ${active || done ? COLORS.emerald : COLORS.border}`,
-                                  boxShadow: active ? `0 2px 0 ${edgeOf(COLORS.emerald)}` : "none",
+                                  boxShadow: active ? `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)` : "none",
                                 }}
                               >
                                 <Icon className="w-3.5 h-3.5" />
@@ -487,7 +486,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                       className="py-10 sm:py-14 text-center"
                     >
                       <motion.div
-                        animate={{ y: [0, -7, 0], rotate: [0, 3, 0] }}
+                        animate={{ y: [0, -7, 0] }}
                         transition={{ duration: 1.2, repeat: 1 }}
                         className="w-20 h-20 rounded-[1.7rem] mx-auto flex items-center justify-center"
                         style={{
@@ -576,8 +575,8 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                     className="min-h-[80px] rounded-3xl border-2 px-4 py-3 text-left transition-all"
                                     style={{
                                       boxShadow: selected
-                                        ? `0 4px 0 ${edgeOf(COLORS.emerald)}`
-                                        : "0 3px 0 rgba(15,23,42,0.04)",
+                                        ? `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)`
+                                        : "0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)",
                                       transform: selected ? "translateY(-2px)" : "none",
                                       borderColor: selected
                                         ? COLORS.emerald
@@ -590,7 +589,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                         : COLORS.ink,
                                     }}
                                   >
-                                    <div className="text-lg font-semibold" style={{ fontFamily: FONTS.display }}>
+                                    <div className="text-lg font-bold" style={{ fontFamily: FONTS.display }}>
                                       {program.label}
                                     </div>
                                     <div
@@ -850,7 +849,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                       }}
                                       className="rounded-2xl border-2 px-4 py-3 text-left text-sm font-extrabold transition-all"
                                       style={{
-                                        boxShadow: selected ? `0 3px 0 ${edgeOf(COLORS.emerald)}` : "none",
+                                        boxShadow: selected ? `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)` : "none",
                                         borderColor: selected ? COLORS.emerald : COLORS.border,
                                         background: selected ? COLORS.emeraldLight : COLORS.white,
                                         color: selected ? COLORS.emerald : COLORS.textSecondary,
@@ -883,7 +882,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                           onClick={() => updateField("preferredDate", date.value)}
                                           className="rounded-2xl border-2 p-3 text-left transition-all"
                                           style={{
-                                            boxShadow: selected ? `0 3px 0 ${edgeOf(COLORS.indigo)}` : "none",
+                                            boxShadow: selected ? `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)` : "none",
                                             borderColor: selected ? COLORS.indigo : COLORS.border,
                                             background: selected ? COLORS.indigoLight : COLORS.white,
                                           }}
@@ -924,7 +923,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                           onClick={() => updateField("preferredTime", time)}
                                           className="py-3 rounded-full border-2 text-xs font-extrabold transition-all"
                                           style={{
-                                            boxShadow: selected ? `0 3px 0 ${edgeOf(COLORS.indigo)}` : "none",
+                                            boxShadow: selected ? `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)` : "none",
                                             borderColor: selected ? COLORS.indigo : COLORS.border,
                                             background: selected ? COLORS.indigo : COLORS.white,
                                             color: selected ? COLORS.white : COLORS.ink,
@@ -997,7 +996,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           style={{
                             borderColor: COLORS.border,
                             color: COLORS.ink,
-                            boxShadow: "0 4px 0 rgba(15,23,42,0.08)",
+                            boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)",
                           }}
                         >
                           <ChevronLeft className="w-5 h-5" />

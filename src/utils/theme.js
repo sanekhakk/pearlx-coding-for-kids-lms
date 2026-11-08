@@ -97,8 +97,8 @@ export const DARK = {
 // Same palette as above, plus the "deep" edge colours used for the chunky
 // press-down buttons and sticker shadows, and the brand fonts.
 export const FONTS = {
-  display: "'Fredoka', 'Nunito', system-ui, sans-serif",
-  body: "'Nunito', system-ui, sans-serif",
+  display: "'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
+  body: "'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
 };
 
 export const BRAND = {

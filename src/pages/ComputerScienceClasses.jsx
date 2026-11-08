@@ -3,7 +3,7 @@ import {
   Trophy, Zap, Star, BookOpen, Users, Sprout, Bird, Medal, Code2, Gamepad2, Smartphone, Globe,
   Award, Cpu, Rocket, Layers, Map,
 } from "lucide-react";
-import { COLORS, FONTS } from "../utils/theme";
+import { COLORS } from "../utils/theme";
 import ProgramPage from "../components/ui/ProgramPage";
 import { SectionHeader, Scribble } from "../components/ui/Brand";
 import lp1 from "../assets/kids/LP1.webp";
@@ -117,28 +117,28 @@ const JOURNEY = [
 ];
 
 const Journey = () => (
-  <section className="py-16 sm:py-20">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6">
+  <section className="py-10 sm:py-16">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <SectionHeader
         eyebrow="Step by step"
         eyebrowIcon={Map}
         color={COLORS.indigo}
-        title={<>The Pearlx <Scribble color={COLORS.gold} textColor={COLORS.indigo}>coding journey</Scribble></>}
-        className="mb-10"
+        title={<>The Pearlx <Scribble color={COLORS.indigo}>coding journey</Scribble></>}
+        className="mb-5 sm:mb-8"
       />
-      <div className="flex lg:grid lg:grid-cols-5 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 lg:mx-0 lg:px-0">
+      <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
         {JOURNEY.map((s, i) => (
           <motion.figure
             key={s.alt}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            whileHover={{ y: -8, rotate: 0 }}
-            className="snap-start shrink-0 w-[72%] sm:w-[42%] lg:w-auto rounded-[1.75rem] overflow-hidden bg-white p-2"
-            style={{ border: `3px solid ${s.color}`, boxShadow: `0 7px 0 ${s.color}55`, rotate: i % 2 ? 1.2 : -1.2 }}
+            transition={{ delay: i * 0.05 }}
+            className="rounded-xl sm:rounded-2xl overflow-hidden bg-white"
+            style={{ border: "1px solid #E2E8F0", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 8px 20px -12px rgba(15,23,42,0.18)" }}
           >
-            <img src={s.img} alt={s.alt} className="w-full aspect-square object-cover rounded-[1.25rem]" loading="lazy" />
+            <img src={s.img} alt={s.alt} className="w-full aspect-square object-cover" loading="lazy" />
+            <div className="h-1" style={{ background: s.color }} />
           </motion.figure>
         ))}
       </div>

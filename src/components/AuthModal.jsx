@@ -72,8 +72,8 @@ const AuthModal = () => {
 
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none">
             <motion.div
-              initial={{ scale: 0.9, y: 24, opacity: 0, rotate: -1 }}
-              animate={{ scale: 1, y: 0, opacity: 1, rotate: 0 }}
+              initial={{ scale: 0.9, y: 24, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.94, y: 20, opacity: 0 }}
               transition={{ type: "spring", damping: 22, stiffness: 300 }}
               className="relative w-full max-w-md pointer-events-auto"
@@ -84,7 +84,7 @@ const AuthModal = () => {
             >
               <div
                 className="relative rounded-[2rem] overflow-hidden bg-white"
-                style={{ border: "3px solid #fff", boxShadow: `0 10px 0 ${COLORS.emerald}, 0 30px 70px rgba(0,0,0,0.3)` }}
+                style={{ border: "3px solid #fff", boxShadow: `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28), 0 30px 70px rgba(0,0,0,0.3)` }}
               >
                 {/* Header band */}
                 <div className="relative overflow-hidden px-8 pt-8 pb-14 text-center" style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)" }}>
@@ -101,14 +101,14 @@ const AuthModal = () => {
 
                   <div
                     className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white mb-4"
-                    style={{ transform: "rotate(-6deg)", boxShadow: "0 5px 0 rgba(0,0,0,0.15)" }}
+                    style={{ boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)" }}
                   >
                     {resetMode
                       ? <Lock className="w-8 h-8" style={{ color: COLORS.cyan }} />
                       : <GraduationCap className="w-8 h-8" style={{ color: COLORS.emerald }} />
                     }
                   </div>
-                  <h2 id="pearlx-auth-title" className="relative text-3xl font-semibold text-white" style={{ fontFamily: FONTS.display }}>
+                  <h2 id="pearlx-auth-title" className="relative text-3xl font-bold text-white" style={{ fontFamily: FONTS.display }}>
                     {resetMode ? "Reset Password" : "Welcome back"}
                   </h2>
                   <p className="relative mt-1 text-[15px] font-bold text-white/90">

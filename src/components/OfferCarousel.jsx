@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
-import { COLORS, FONTS, edgeOf } from "../utils/theme";
+import { COLORS } from "../utils/theme";
 
 const WHATSAPP_LINK = "https://wa.link/2sqe3g";
 const AUTO_PLAY_MS = 6500;
@@ -31,7 +31,7 @@ const OFFERS = [
 ];
 
 // Total height of this bar (progress line + bar). NavBar sits just below it.
-export const OFFER_BAR_HEIGHT = 52;
+export const OFFER_BAR_HEIGHT = 44;
 
 export default function OfferCarousel() {
   const [active, setActive] = useState(0);
@@ -77,33 +77,18 @@ export default function OfferCarousel() {
       aria-label="Current offers"
     >
       <div className="relative overflow-hidden" style={{ background: COLORS.navDark, height: OFFER_BAR_HEIGHT }}>
-        {/* tiny pearl confetti */}
-        <div aria-hidden="true" className="absolute inset-0 pointer-events-none opacity-60">
-          {[
-            ["8%", 10, COLORS.cyan], ["22%", 6, COLORS.gold], ["47%", 8, COLORS.emerald],
-            ["68%", 5, COLORS.indigo], ["83%", 9, COLORS.cyan], ["95%", 6, COLORS.gold],
-          ].map(([left, s, c], i) => (
-            <span key={i} className="absolute rounded-full" style={{ left, top: i % 2 ? 8 : 34, width: s, height: s, background: c, opacity: 0.45 }} />
-          ))}
-        </div>
-
         <div className="relative mx-auto flex h-full w-full max-w-[1400px] items-center px-3 sm:px-5 lg:px-8">
           {/* Ticket-style offer mark */}
           <motion.div
             key={`mark-${offer.id}`}
-            initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
-            animate={{ opacity: 1, scale: 1, rotate: -3 }}
-            transition={{ type: "spring", stiffness: 380, damping: 18 }}
-            className="relative mr-3 flex h-[32px] shrink-0 items-center gap-1.5 rounded-xl px-3"
-            style={{
-              background: offer.accent,
-              color: onAccent,
-              boxShadow: `0 3px 0 ${edgeOf(offer.accent)}`,
-              fontFamily: FONTS.display,
-            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25 }}
+            className="relative mr-2.5 flex h-[26px] shrink-0 items-center gap-1 rounded-md px-2"
+            style={{ background: offer.accent, color: onAccent }}
           >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span className="text-[12px] sm:text-[13px] font-semibold whitespace-nowrap">{offer.mark}</span>
+            <Sparkles className="h-3 w-3" />
+            <span className="text-[11px] sm:text-xs font-extrabold whitespace-nowrap">{offer.mark}</span>
           </motion.div>
 
           {/* Message — one compact line */}
@@ -117,18 +102,17 @@ export default function OfferCarousel() {
               className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
             >
               <span
-                className="hidden md:inline rounded-full px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em] uppercase whitespace-nowrap"
-                style={{ color: offer.accent, border: `1.5px dashed ${offer.accent}80` }}
+                className="hidden md:inline text-[10px] font-bold tracking-[0.12em] uppercase whitespace-nowrap"
+                style={{ color: offer.accent }}
               >
                 {offer.kicker}
               </span>
               <span
-                className="text-white text-[14px] sm:text-[15px] lg:text-[16px] font-semibold whitespace-nowrap truncate"
-                style={{ fontFamily: FONTS.display }}
+                className="text-white text-[13px] sm:text-sm font-bold whitespace-nowrap truncate"
               >
                 {offer.title}
               </span>
-              <span className="hidden sm:inline text-[12px] lg:text-[13px] font-bold truncate" style={{ color: COLORS.silver }}>
+              <span className="hidden sm:inline text-xs lg:text-[13px] font-medium truncate" style={{ color: COLORS.silver }}>
                 {offer.detail}
               </span>
             </motion.div>
@@ -138,8 +122,8 @@ export default function OfferCarousel() {
           <button
             type="button"
             onClick={handleAction}
-            className="px-btn px-btn--sm ml-3 hidden sm:inline-flex !py-2 !text-[13px]"
-            style={{ "--btn-bg": offer.accent, "--btn-edge": edgeOf(offer.accent), "--btn-fg": onAccent }}
+            className="px-btn px-btn--sm ml-3 hidden sm:inline-flex !h-8 !text-xs"
+            style={{ "--btn-bg": offer.accent, "--btn-fg": onAccent }}
           >
             {offer.icon === "whatsapp" && <MessageCircle className="h-4 w-4" />}
             {offer.action}
@@ -151,10 +135,10 @@ export default function OfferCarousel() {
             type="button"
             onClick={handleAction}
             aria-label={offer.action}
-            className="ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:hidden"
-            style={{ background: offer.accent, color: onAccent, boxShadow: `0 3px 0 ${edgeOf(offer.accent)}` }}
+            className="ml-2 flex h-7 shrink-0 items-center gap-1 rounded-md px-2 text-[11px] font-bold sm:hidden"
+            style={{ background: offer.accent, color: onAccent }}
           >
-            {offer.icon === "whatsapp" ? <MessageCircle className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+            {offer.icon === "whatsapp" ? <MessageCircle className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
           </button>
 
           {/* Pearl dots carousel control */}
@@ -167,8 +151,8 @@ export default function OfferCarousel() {
                 onClick={() => go(index)}
                 className="rounded-full transition-all duration-300"
                 style={{
-                  width: index === active ? 22 : 9,
-                  height: 9,
+                  width: index === active ? 18 : 7,
+                  height: 7,
                   background: index === active ? offer.accent : "rgba(255,255,255,0.25)",
                 }}
               />
@@ -177,7 +161,7 @@ export default function OfferCarousel() {
         </div>
 
         {/* progress line along the bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-[3px]" style={{ background: "rgba(255,255,255,0.06)" }}>
+        <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ background: "rgba(255,255,255,0.06)" }}>
           <motion.div
             key={`${offer.id}-${active}-${paused}`}
             className="h-full rounded-r-full"

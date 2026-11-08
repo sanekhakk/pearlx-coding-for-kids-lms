@@ -111,7 +111,7 @@ const Avatar = ({ url, name, size = 44, fontSize, radius }) => {
 
 const SideNavItem = ({ tab, active, onClick }) => (
   <motion.button onClick={onClick} whileTap={{ scale: 0.97, y: 2 }}
-    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 4px 0 #047857" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
+    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 6px 16px -8px rgba(16,185,129,0.7)" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
     <div style={{ width: 34, height: 34, borderRadius: "50%", background: active ? "rgba(255,255,255,0.25)" : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       <tab.icon style={{ width: 16, height: 16, color: active ? "#fff" : C.textMuted }} />
     </div>

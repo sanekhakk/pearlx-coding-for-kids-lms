@@ -7,10 +7,10 @@ import {
   CheckCircle2, Award, ArrowRight, Wallet, Gift, Play,
   Sparkles, UserRound, CalendarDays, Star, MessageCircle, Check,
 } from "lucide-react";
-import { COLORS, FONTS, edgeOf } from "../utils/theme";
+import { COLORS, FONTS } from "../utils/theme";
 import { getWhatsAppLink } from "../utils/whatsapp";
 import kidImage from "../assets/kids/RP2.webp";
-import { HeroStage, Sticker, SectionHeader, Scribble, FaqList, CtaPanel, ColorBtn, Wave, IconBubble, PearlScatter } from "../components/ui/Brand";
+import { HeroStage, Sticker, SectionHeader, Scribble, FaqList, CtaPanel, IconBubble, PearlScatter, ChipRow, display, glow } from "../components/ui/Brand";
 
 const CLASS_BANDS = [
   {
@@ -122,31 +122,25 @@ const FAQS = [
 const onColor = (c) => (c === COLORS.gold ? COLORS.navDark : COLORS.white);
 const ink = (c) => (c === COLORS.gold ? COLORS.goldDeep : c);
 
-const SubjectChip = ({ name, Icon, color, i }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay: i * 0.035 }}
-    className="flex items-center gap-3 rounded-2xl bg-white px-3 py-3"
-    style={{ border: `2px solid ${color}30`, boxShadow: `0 3px 0 ${color}20` }}
-  >
-    <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}18`, color }}>
-      <Icon className="w-[18px] h-[18px]" strokeWidth={2.4} />
+const SubjectChip = ({ name, Icon, color }) => (
+  <div className="flex items-center gap-2 rounded-lg bg-white px-2 py-1.5 sm:px-3 sm:py-2.5" style={{ border: "1px solid #E2E8F0" }}>
+    <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-md flex items-center justify-center shrink-0" style={{ background: `${color}18`, color: ink(color) }}>
+      <Icon className="w-3 h-3 sm:w-4 sm:h-4" strokeWidth={2.4} />
     </span>
-    <span className="text-sm font-extrabold leading-tight" style={{ color: COLORS.ink }}>{name}</span>
-  </motion.div>
+    <span className="text-[11px] sm:text-sm font-semibold leading-tight" style={{ color: COLORS.ink }}>{name}</span>
+  </div>
 );
 
 /* The "study desk" card that floats on the hero art */
 const StudyDesk = () => (
   <div
-    className="absolute z-20 left-[-2%] sm:left-[-6%] bottom-[6%] w-[60%] sm:w-[56%] rounded-[1.6rem] bg-white p-3.5 px-float px-float--slow"
-    style={{ "--r": "-3deg", border: "2px solid rgba(15,23,42,0.08)", boxShadow: "0 7px 0 rgba(15,23,42,0.08)" }}
+    className="absolute z-20 left-[-2%] sm:left-[-6%] bottom-[6%] w-[60%] sm:w-[56%] rounded-[1.6rem] bg-white p-3.5"
+    style={{ border: "2px solid rgba(15,23,42,0.08)", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)" }}
   >
     <div className="flex items-center justify-between">
       <div>
         <div className="text-[9px] font-extrabold tracking-widest" style={{ color: COLORS.textMuted }}>TODAY'S STUDY DESK</div>
-        <div className="text-sm font-semibold" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>Let's get this one.</div>
+        <div className="text-sm font-bold" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>Let's get this one.</div>
       </div>
       <span className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: COLORS.emeraldLight, color: COLORS.emerald }}>
         <BookOpen className="w-4 h-4" />
@@ -157,7 +151,7 @@ const StudyDesk = () => (
         <span style={{ color: COLORS.cyan }}>MATHS</span>
         <span style={{ color: COLORS.silver }}>PRACTICE 04</span>
       </div>
-      <div className="text-xl font-semibold text-white mt-1" style={{ fontFamily: FONTS.display }}>3x + 7 = 22</div>
+      <div className="text-xl font-bold text-white mt-1" style={{ fontFamily: FONTS.display }}>3x + 7 = 22</div>
       <div className="text-[10px] font-bold" style={{ color: COLORS.silver }}>Find x</div>
     </div>
     <div className="mt-2 grid grid-cols-3 gap-1.5">
@@ -168,7 +162,7 @@ const StudyDesk = () => (
           style={{
             background: i === 1 ? COLORS.emerald : COLORS.bgSecondary,
             color: i === 1 ? "#fff" : COLORS.textSecondary,
-            boxShadow: i === 1 ? `0 2px 0 ${edgeOf(COLORS.emerald)}` : "none",
+            boxShadow: i === 1 ? `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)` : "none",
           }}
         >
           {answer}
@@ -195,112 +189,90 @@ const AcademicTuition = ({ openDemoModal }) => {
   return (
     <main className="min-h-screen overflow-hidden bg-white" style={{ color: COLORS.ink }}>
       {/* HERO */}
-      <section className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #F0F9FF 0%, #ECFDF5 100%)" }}>
-        <div aria-hidden="true" className="absolute inset-0 px-dots opacity-70" />
-        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-40 sm:pt-44 lg:pt-40 pb-4">
-          <div className="grid lg:grid-cols-[1fr_0.95fr] gap-10 lg:gap-12 items-center lg:min-h-[600px]">
+      <section className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 100%)" }}>
+        <div aria-hidden="true" className="absolute inset-0 px-dots opacity-60" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-[124px] sm:pt-[132px] lg:pt-[140px] pb-8 sm:pb-14">
+          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-6 lg:gap-12 items-center">
             <div className="text-center lg:text-left">
               <motion.h1
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-[3rem] sm:text-7xl lg:text-[5.2rem] font-semibold leading-[1]"
-                style={{ fontFamily: FONTS.display, color: COLORS.ink }}
+                className="text-[2rem] sm:text-5xl lg:text-[3.6rem] font-extrabold leading-[1.08] tracking-tight"
+                style={{ ...display, color: COLORS.ink }}
               >
                 School work,
                 <br />
                 <Scribble color={COLORS.gold} textColor={COLORS.cyan}>made simpler.</Scribble>
               </motion.h1>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.12 }}
-                className="max-w-lg mx-auto lg:mx-0 mt-7 text-lg sm:text-xl font-semibold leading-relaxed"
-                style={{ color: COLORS.textSecondary }}
-              >
+              <p className="max-w-lg mx-auto lg:mx-0 mt-3 sm:mt-5 text-[15px] sm:text-lg font-medium leading-relaxed" style={{ color: COLORS.textSecondary }}>
                 Live, personalised tuition aligned to your child's school
                 curriculum — with the right teacher and the right pace.
-              </motion.p>
+              </p>
 
-              <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3.5 mt-8">
-                <button onClick={() => openDemoModal?.("academic_hero")} className="px-btn px-btn--grad px-btn--lg">
-                  <Play className="w-4 h-4 fill-current" />
+              <div className="flex flex-row justify-center lg:justify-start gap-2.5 mt-5 sm:mt-7">
+                <button onClick={() => openDemoModal?.("academic_hero")} className="px-btn px-btn--grad px-btn--lg flex-1 sm:flex-none !px-3 sm:!px-6">
+                  <Play className="w-3.5 h-3.5 fill-current" />
                   Book a Free Class
-                  <ArrowRight className="w-5 h-5" />
                 </button>
-                <a href="#subjects" className="px-btn px-btn--white px-btn--lg">
+                <a href="#subjects" className="px-btn px-btn--white px-btn--lg flex-1 sm:flex-none !px-3 sm:!px-6">
                   Explore subjects
                 </a>
               </div>
 
-              <div className="flex flex-wrap justify-center lg:justify-start gap-2.5 mt-8">
-                {[
+              <ChipRow
+                className="mt-4 sm:mt-6"
+                items={[
                   [UserRound, "1:1 / 2–3 students", COLORS.emerald],
                   [Target, "Board aligned", COLORS.cyan],
                   [CalendarDays, "Flexible slots", COLORS.goldDeep],
-                ].map(([Icon, label, color], i) => (
-                  <span
-                    key={label}
-                    className="inline-flex items-center gap-2 rounded-full bg-white pl-1.5 pr-4 py-1.5 text-[15px] font-semibold"
-                    style={{ fontFamily: FONTS.display, border: `2px solid ${color}40`, boxShadow: `0 4px 0 ${color}30`, transform: `rotate(${[-2, 1.5, -1][i]}deg)` }}
-                  >
-                    <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: `${color}1f`, color }}>
-                      <Icon className="w-4 h-4" strokeWidth={2.5} />
-                    </span>
-                    {label}
-                  </span>
-                ))}
-              </div>
+                ]}
+              />
             </div>
 
-            <motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.55 }}>
+            <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.5 }}>
               <HeroStage image={kidImage} alt="Pearlx student smiling" color={COLORS.cyan} second={COLORS.gold}>
-                <Sticker className="top-[8%] right-[0%]" rotate={5}>
-                  <div className="text-[11px] font-extrabold tracking-widest" style={{ color: COLORS.cyan }}>ONE STEP AT A TIME</div>
+                <Sticker className="top-[8%] right-0">
+                  <div className="text-[9px] sm:text-[11px] font-bold tracking-widest" style={{ color: COLORS.cyan }}>ONE STEP AT A TIME</div>
                 </Sticker>
-                <Sticker className="top-[34%] left-[0%]" rotate={-7} delay={1} style={{ background: COLORS.gold, borderColor: COLORS.gold, boxShadow: `0 5px 0 ${edgeOf(COLORS.gold)}` }}>
-                  <div className="text-sm font-semibold" style={{ fontFamily: FONTS.display, color: COLORS.navDark }}>NICE WORK! ⭐</div>
+                <Sticker className="top-[34%] left-0" style={{ background: COLORS.gold, borderColor: COLORS.gold }}>
+                  <div className="text-xs sm:text-sm font-bold" style={{ color: COLORS.navDark }}>NICE WORK! ⭐</div>
                 </Sticker>
-                
               </HeroStage>
             </motion.div>
           </div>
         </div>
-        <Wave fill="#FFFFFF" className="relative z-10 -mb-px" />
       </section>
 
       {/* CLASS BAND + PRICING */}
-      <section className="relative py-14 sm:py-20">
+      <section className="relative py-10 sm:py-16">
         <PearlScatter variant="b" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-          <SectionHeader eyebrow="SIMPLE PRICING" eyebrowIcon={Wallet} color={COLORS.goldDeep} title="Pick the right starting point." className="mb-9" />
+          <SectionHeader eyebrow="SIMPLE PRICING" eyebrowIcon={Wallet} color={COLORS.goldDeep} title="Pick the right starting point." className="mb-5 sm:mb-8" />
 
-          {/* class band picker */}
-          <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+          {/* class band picker — all three always visible */}
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 rounded-2xl max-w-3xl mx-auto" style={{ background: "#F1F5F9", border: "1px solid #E2E8F0" }}>
             {CLASS_BANDS.map((band) => {
               const selected = activeBand === band.id;
               return (
                 <button
                   key={band.id}
                   onClick={() => setActiveBand(band.id)}
-                  className="text-left rounded-3xl p-3.5 sm:p-5 transition-all duration-200"
+                  aria-pressed={selected}
+                  className="flex flex-col sm:flex-row items-center sm:justify-center gap-1 sm:gap-2.5 rounded-xl px-1.5 py-2 sm:px-3 sm:py-2.5 transition-all"
                   style={{
-                    background: selected ? band.color : "#fff",
-                    color: selected ? onColor(band.color) : COLORS.ink,
-                    border: `2px solid ${selected ? band.color : COLORS.border}`,
-                    boxShadow: selected ? `0 6px 0 ${edgeOf(band.color)}` : "0 4px 0 rgba(15,23,42,0.05)",
-                    transform: selected ? "translateY(-3px)" : "none",
+                    background: selected ? "#fff" : "transparent",
+                    boxShadow: selected ? glow(band.color, "40") : "none",
+                    border: `1px solid ${selected ? `${band.color}66` : "transparent"}`,
                   }}
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider" style={{ opacity: selected ? 0.9 : 0.6 }}>
-                      {band.short}
-                    </span>
-                    <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center" style={{ background: selected ? "rgba(255,255,255,0.22)" : band.light, color: selected ? "inherit" : band.color }}>
-                      <band.Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </span>
-                  </div>
-                  <div className="text-lg sm:text-2xl font-semibold mt-2" style={{ fontFamily: FONTS.display }}>{band.label}</div>
+                  <span className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: selected ? band.color : band.light, color: selected ? (band.color === COLORS.gold ? COLORS.navDark : "#fff") : ink(band.color) }}>
+                    <band.Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </span>
+                  <span className="text-center sm:text-left leading-tight">
+                    <span className="block text-[12px] sm:text-[15px] font-bold" style={{ color: selected ? COLORS.ink : COLORS.textSecondary }}>{band.label}</span>
+                    <span className="block text-[10px] sm:text-xs font-semibold mt-0.5" style={{ color: COLORS.textMuted }}>{band.short}</span>
+                  </span>
                 </button>
               );
             })}
@@ -309,56 +281,55 @@ const AcademicTuition = ({ openDemoModal }) => {
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="mt-6 grid lg:grid-cols-[0.75fr_1.25fr] rounded-[2.25rem] overflow-hidden bg-white"
-              style={{ border: `3px solid ${active.color}`, boxShadow: `0 9px 0 ${edgeOf(active.color)}` }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22 }}
+              className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] rounded-2xl sm:rounded-3xl overflow-hidden bg-white"
+              style={{ border: `1px solid ${active.color}55`, boxShadow: glow(active.color, "30") }}
             >
               {/* fee */}
-              <div className="relative p-6 sm:p-8 flex flex-col overflow-hidden" style={{ background: active.color, color: onColor(active.color) }}>
-                <span aria-hidden="true" className="absolute -right-14 -bottom-14 w-48 h-48 rounded-full bg-white/15" />
-                <span className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center" style={{ color: active.color, transform: "rotate(-6deg)" }}>
-                  <active.Icon className="w-7 h-7" />
-                </span>
-                <div className="mt-5 text-xs font-extrabold uppercase tracking-[0.16em] opacity-85">{active.short}</div>
-                <div className="text-2xl sm:text-3xl font-semibold mt-1" style={{ fontFamily: FONTS.display }}>{active.focus}</div>
-                <div className="mt-6 flex items-end gap-2">
-                  <span className="text-6xl font-semibold leading-none" style={{ fontFamily: FONTS.display }}>{active.fee}</span>
-                  <span className="text-sm font-bold opacity-85 pb-1.5">{active.note}</span>
+              <div className="relative p-4 sm:p-7 flex flex-col overflow-hidden" style={{ background: `linear-gradient(160deg, ${active.color}14, ${active.color}2e)` }}>
+                <div className="flex items-center gap-2.5">
+                  <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center" style={{ background: active.color, color: active.color === COLORS.gold ? COLORS.navDark : "#fff" }}>
+                    <active.Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </span>
+                  <div>
+                    <div className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.14em]" style={{ color: ink(active.color) }}>{active.short}</div>
+                    <div className="text-base sm:text-xl font-extrabold leading-tight">{active.focus}</div>
+                  </div>
                 </div>
-                <button
-                  onClick={() => openDemoModal?.(`academic-${active.id}`)}
-                  className="px-btn mt-8 relative"
-                  style={{ "--btn-bg": "#fff", "--btn-fg": COLORS.ink, "--btn-edge": "rgba(0,0,0,0.2)" }}
-                >
+                <div className="mt-4 sm:mt-6 flex items-end gap-2">
+                  <span className="text-4xl sm:text-5xl font-extrabold leading-none tracking-tight">{active.fee}</span>
+                  <span className="text-xs sm:text-sm font-semibold pb-1" style={{ color: COLORS.textMuted }}>{active.note}</span>
+                </div>
+                <button onClick={() => openDemoModal?.(`academic-${active.id}`)} className="px-btn px-btn--grad mt-4 sm:mt-6 w-full sm:w-fit">
                   Try a free class
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
 
               {/* subjects */}
-              <div id="subjects" className="scroll-mt-40 p-6 sm:p-8">
-                <div className="flex items-center justify-between mb-5">
+              <div id="subjects" className="scroll-mt-32 p-4 sm:p-7">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <div>
-                    <div className="text-[11px] font-extrabold tracking-[0.16em]" style={{ color: ink(active.color) }}>SUBJECTS</div>
-                    <div className="text-2xl font-semibold" style={{ fontFamily: FONTS.display }}>What can we work on?</div>
+                    <div className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em]" style={{ color: ink(active.color) }}>SUBJECTS</div>
+                    <div className="text-base sm:text-xl font-extrabold">What can we work on?</div>
                   </div>
-                  <span className="hidden sm:flex px-3 py-1.5 rounded-full text-sm font-extrabold" style={{ background: active.light, color: active.color }}>
+                  <span className="px-2.5 py-1 rounded-full text-xs font-bold" style={{ background: active.light, color: ink(active.color) }}>
                     {active.subjects.length}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {active.subjects.map(([name, Icon], i) => (
-                    <SubjectChip key={name} name={name} Icon={Icon} color={active.color} i={i} />
+                <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+                  {active.subjects.map(([name, Icon]) => (
+                    <SubjectChip key={name} name={name} Icon={Icon} color={active.color} />
                   ))}
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          <div className="mt-6 mx-auto w-fit flex items-center gap-2.5 rounded-full px-5 py-3 text-sm font-extrabold" style={{ background: COLORS.goldLight, color: COLORS.goldDeep, border: `2px dashed ${COLORS.gold}80` }}>
+          <div className="mt-4 mx-auto w-fit flex items-center gap-2 rounded-full px-3.5 py-2 text-xs sm:text-sm font-bold" style={{ background: COLORS.goldLight, color: COLORS.goldDeep }}>
             <Gift className="w-4 h-4" />
             Bundle sessions and save up to 20%
           </div>
@@ -366,56 +337,40 @@ const AcademicTuition = ({ openDemoModal }) => {
       </section>
 
       {/* BOARDS */}
-      <section className="relative py-16 sm:py-20" style={{ background: COLORS.bgSecondary }}>
-        <Wave fill="#FFFFFF" flip className="absolute top-0 left-0 right-0" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-4">
-          <SectionHeader eyebrow="BOARD ALIGNED" eyebrowIcon={GraduationCap} color={COLORS.cyan} title="The syllabus comes with you." className="mb-10" />
-          <div className="flex flex-wrap justify-center gap-4">
-            {BOARDS.map(([name, sub, color], i) => (
-              <motion.div
-                key={name}
-                initial={{ opacity: 0, y: 14, rotate: 0 }}
-                whileInView={{ opacity: 1, y: 0, rotate: i % 2 ? 2 : -2 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06, type: "spring", stiffness: 200 }}
-                whileHover={{ y: -6, rotate: 0 }}
-                className="w-[44%] sm:w-[30%] lg:w-[18%] rounded-[1.75rem] bg-white p-5 text-center"
-                style={{ border: `3px solid ${color}`, boxShadow: `0 6px 0 ${edgeOf(color)}` }}
-              >
-                <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center text-white text-base font-semibold" style={{ background: color, fontFamily: FONTS.display }}>
-                  <Check className="w-6 h-6" strokeWidth={3} />
+      <section className="relative py-10 sm:py-16" style={{ background: COLORS.bgSecondary }}>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+          <SectionHeader eyebrow="BOARD ALIGNED" eyebrowIcon={GraduationCap} color={COLORS.cyan} title="The syllabus comes with you." className="mb-5 sm:mb-8" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
+            {BOARDS.map(([name, sub, color]) => (
+              <div key={name} className="px-card flex items-center gap-2.5 p-3 sm:p-4">
+                <span className="w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0 text-white" style={{ background: color }}>
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={3} />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-sm sm:text-lg font-extrabold leading-tight">{name}</div>
+                  <div className="text-[10px] sm:text-xs font-medium leading-snug" style={{ color: COLORS.textMuted }}>{sub}</div>
                 </div>
-                <div className="text-2xl font-semibold mt-3" style={{ fontFamily: FONTS.display }}>{name}</div>
-                <div className="text-xs font-bold mt-1" style={{ color: COLORS.textMuted }}>{sub}</div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* SUPPORT */}
-      <section className="relative py-16 sm:py-20" style={{ background: COLORS.bgSecondary }}>
+      <section className="relative pb-10 sm:pb-16" style={{ background: COLORS.bgSecondary }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <SectionHeader eyebrow="THE PEARLX WAY" eyebrowIcon={Sparkles} color={COLORS.emerald} title="Support that actually helps." className="mb-10" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <SectionHeader eyebrow="THE PEARLX WAY" eyebrowIcon={Sparkles} color={COLORS.emerald} title="Support that actually helps." className="mb-5 sm:mb-8" />
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
             {SUPPORT.map(([Icon, title, sub], index) => {
               const color = [COLORS.emerald, COLORS.cyan, COLORS.goldDeep, COLORS.indigo][index % 4];
               return (
-                <motion.div
-                  key={title}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className="px-card px-card--lift flex items-center gap-4 p-5"
-                  style={{ borderColor: `${color}30`, boxShadow: `0 6px 0 ${color}25` }}
-                >
-                  <IconBubble icon={Icon} color={color} size={54} iconSize={25} rotate={index % 2 ? 5 : -5} />
+                <div key={title} className="px-card flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4 p-3.5 sm:p-5">
+                  <IconBubble icon={Icon} color={color} size={36} iconSize={18} />
                   <div>
-                    <div className="text-lg font-semibold" style={{ fontFamily: FONTS.display }}>{title}</div>
-                    <div className="text-sm font-bold mt-0.5" style={{ color: COLORS.textMuted }}>{sub}</div>
+                    <div className="text-sm sm:text-base font-bold leading-snug">{title}</div>
+                    <div className="text-xs sm:text-sm font-medium mt-0.5" style={{ color: COLORS.textMuted }}>{sub}</div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -423,9 +378,9 @@ const AcademicTuition = ({ openDemoModal }) => {
       </section>
 
       {/* FAQ */}
-      <section className="relative py-16 sm:py-20">
+      <section className="relative py-10 sm:py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <SectionHeader eyebrow="QUICK ANSWERS" eyebrowIcon={Star} color={COLORS.indigo} title="A few things parents ask." className="mb-9" />
+          <SectionHeader eyebrow="QUICK ANSWERS" eyebrowIcon={Star} color={COLORS.indigo} title="A few things parents ask." className="mb-5 sm:mb-8" />
           <FaqList items={FAQS} color={COLORS.indigo} />
         </div>
       </section>
@@ -439,16 +394,16 @@ const AcademicTuition = ({ openDemoModal }) => {
       >
         <button onClick={() => openDemoModal?.("academic_cta")} className="px-btn px-btn--grad px-btn--lg">
           Book a Free Class
-          <ArrowRight className="w-5 h-5" />
+          <ArrowRight className="w-4 h-4" />
         </button>
         <a
           href={getWhatsAppLink("Hi! I'd like to know more about Pearlx Academic Tuition.")}
           target="_blank"
           rel="noopener noreferrer"
           className="px-btn px-btn--lg"
-          style={{ "--btn-bg": "rgba(255,255,255,0.1)", "--btn-edge": "rgba(255,255,255,0.15)", border: "2px solid rgba(255,255,255,0.2)" }}
+          style={{ "--btn-bg": "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}
         >
-          <MessageCircle className="w-5 h-5" />
+          <MessageCircle className="w-4 h-4" />
           Ask us
         </a>
       </CtaPanel>

@@ -24,8 +24,8 @@ import {
 } from "react-icons/si";
 
 import { getWhatsAppLink } from "../utils/whatsapp";
-import { COLORS, FONTS, edgeOf } from "../utils/theme";
-import { SectionHeader, Scribble, PearlScatter, Wave } from "./ui/Brand";
+import { COLORS } from "../utils/theme";
+import { SectionHeader, Scribble, glow } from "./ui/Brand";
 
 /* =========================================================
    COURSE BANNERS
@@ -306,35 +306,23 @@ I'd like to know more about the course and available timings.`;
   };
 
   return (
-    <section
-      id="curriculum"
-      className="relative overflow-hidden"
-      style={{ background: COLORS.bgSecondary }}
-    >
-      <Wave fill="#FFFFFF" flip className="absolute top-0 left-0 right-0 z-[1]" />
-      <div aria-hidden="true" className="absolute inset-0 px-dots opacity-60" />
-      <PearlScatter variant="a" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-20 sm:pt-24 pb-16 sm:pb-24">
+    <section id="curriculum" className="relative" style={{ background: COLORS.bgSecondary }}>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-20">
         <SectionHeader
           eyebrow="✦ Pearlx Learning"
           color={COLORS.cyan}
           title={
             <>
-              Choose what
-              <br />
-              <Scribble color={COLORS.emerald} textColor={COLORS.emerald}>you want to learn.</Scribble>
+              Choose what <Scribble color={COLORS.emerald}>you want to learn.</Scribble>
             </>
           }
           sub="Explore courses, choose your level and find the package that works for you."
-          className="mb-10 sm:mb-12"
+          className="mb-7 sm:mb-10"
         />
 
-        {/* ---------- STEP 1 · COURSE SHELF ---------- */}
-        <StepLabel n={1} text="Courses" hint="Swipe to explore →" />
-        <div
-          className="flex lg:grid lg:grid-cols-6 gap-2.5 sm:gap-3 overflow-x-auto lg:overflow-visible pb-3 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0"
-        >
+        {/* ---------- STEP 1 · ALL COURSES VISIBLE ---------- */}
+        <StepLabel n={1} text="Courses" right={`${COURSES.length} options`} />
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-1.5 sm:gap-2.5">
           {COURSES.map((item) => {
             const ItemIcon = item.icon;
             const selected = item.id === activeCourse;
@@ -342,23 +330,24 @@ I'd like to know more about the course and available timings.`;
               <button
                 key={item.id}
                 onClick={() => setActiveCourse(item.id)}
-                className="snap-start shrink-0 flex lg:flex-col items-center lg:items-start gap-2.5 rounded-3xl px-3.5 py-3 lg:p-4 text-left transition-all duration-200"
+                aria-pressed={selected}
+                className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2.5 rounded-xl px-1.5 py-2 sm:px-3 sm:py-2.5 text-center sm:text-left transition-all duration-200"
                 style={{
-                  background: selected ? COLORS.white : "rgba(255,255,255,0.75)",
-                  border: `2px solid ${selected ? item.iconColor : COLORS.border}`,
-                  boxShadow: selected ? `0 5px 0 ${item.iconColor}55` : "0 3px 0 rgba(15,23,42,0.04)",
-                  transform: selected ? "translateY(-3px)" : "none",
+                  background: COLORS.white,
+                  border: `1px solid ${selected ? item.iconColor : COLORS.border}`,
+                  boxShadow: selected ? glow(item.iconColor, "40") : "none",
+                  outline: selected ? `1px solid ${item.iconColor}` : "none",
                 }}
               >
                 <span
-                  className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl flex items-center justify-center shrink-0"
+                  className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0"
                   style={{ background: `${item.iconColor}18` }}
                 >
-                  <ItemIcon className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: item.iconColor }} />
+                  <ItemIcon className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5" style={{ color: item.iconColor }} />
                 </span>
                 <span
-                  className="text-[15px] font-semibold whitespace-nowrap lg:whitespace-normal leading-tight"
-                  style={{ fontFamily: FONTS.display, color: selected ? COLORS.ink : COLORS.textSecondary }}
+                  className="text-[11px] sm:text-sm font-semibold leading-tight"
+                  style={{ color: selected ? COLORS.ink : COLORS.textSecondary }}
                 >
                   {item.name}
                 </span>
@@ -387,19 +376,15 @@ I'd like to know more about the course and available timings.`;
 };
 
 /* ---------- small numbered step label ---------- */
-const StepLabel = ({ n, text, hint, right, color = COLORS.cyan }) => (
-  <div className="flex items-center justify-between mb-3">
-    <div className="flex items-center gap-2.5">
-      <span
-        className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold text-white"
-        style={{ background: color, fontFamily: FONTS.display, boxShadow: `0 3px 0 ${edgeOf(color)}` }}
-      >
+const StepLabel = ({ n, text, right, color = COLORS.cyan }) => (
+  <div className="flex items-center justify-between mb-2.5">
+    <div className="flex items-center gap-2">
+      <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style={{ background: color }}>
         {n}
       </span>
-      <span className="text-lg font-semibold" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>{text}</span>
+      <span className="text-sm sm:text-base font-bold" style={{ color: COLORS.ink }}>{text}</span>
     </div>
-    {hint && <span className="text-xs font-bold lg:hidden" style={{ color: COLORS.textMuted }}>{hint}</span>}
-    {right && <span className="text-xs font-bold" style={{ color: COLORS.textMuted }}>{right}</span>}
+    {right && <span className="text-[11px] sm:text-xs font-semibold" style={{ color: COLORS.textMuted }}>{right}</span>}
   </div>
 );
 
@@ -423,83 +408,78 @@ const CourseDetails = ({
   return (
     <motion.div
       key={course.id}
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28 }}
-      className="relative mt-5 bg-white rounded-[2.25rem] overflow-hidden"
-      style={{ border: `2px solid ${course.iconColor}40`, boxShadow: `0 8px 0 ${course.iconColor}30` }}
+      transition={{ duration: 0.25 }}
+      className="relative mt-4 sm:mt-6 bg-white rounded-2xl sm:rounded-3xl overflow-hidden"
+      style={{ border: "1px solid #E2E8F0", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 16px 40px -20px rgba(15,23,42,0.2)" }}
     >
-      <div className="grid lg:grid-cols-[1.05fr_1fr]">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         {/* LEFT · banner + overview */}
-        <div className="p-4 sm:p-6 lg:p-7" style={{ background: `${course.iconColor}0d` }}>
-          <div className="relative w-full aspect-[3/1] rounded-[1.5rem] overflow-hidden bg-white" style={{ border: "2px solid rgba(15,23,42,0.06)" }}>
+        <div className="p-3.5 sm:p-6 lg:border-r" style={{ borderColor: "#E2E8F0" }}>
+          <div className="relative w-full aspect-[3/1] rounded-xl overflow-hidden bg-slate-50">
             <img src={course.banner} alt={`${course.name} course`} className="w-full h-full object-cover block" />
           </div>
 
-          <div className="mt-5 flex items-start gap-3">
-            <span className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shrink-0" style={{ border: `2px solid ${course.iconColor}35`, transform: "rotate(-5deg)" }}>
-              <CourseIcon className="w-6 h-6" style={{ color: course.iconColor }} />
+          <div className="mt-3.5 sm:mt-5 flex items-center gap-3">
+            <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${course.iconColor}14` }}>
+              <CourseIcon className="w-4.5 h-4.5 sm:w-5 sm:h-5" style={{ color: course.iconColor }} />
             </span>
             <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-extrabold uppercase tracking-[0.14em]" style={{ color: course.iconColor === "#F7DF1E" ? "#A16207" : course.iconColor }}>
+              <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em]" style={{ color: COLORS.textMuted }}>
                 Course Overview
               </div>
-              <h3 className="text-2xl sm:text-3xl font-semibold leading-tight" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>
+              <h3 className="text-lg sm:text-2xl font-extrabold leading-tight tracking-tight" style={{ color: COLORS.ink }}>
                 {course.name}
               </h3>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0">
               {[["prev", ChevronLeft, "Previous course"], ["next", ChevronRight, "Next course"]].map(([dir, Ico, label]) => (
                 <button
                   key={dir}
                   onClick={() => changeCourse(dir)}
                   aria-label={label}
-                  className="w-10 h-10 rounded-full bg-white flex items-center justify-center transition-transform hover:-translate-y-0.5 active:translate-y-0.5"
-                  style={{ border: "2px solid rgba(15,23,42,0.1)", boxShadow: "0 3px 0 rgba(15,23,42,0.08)", color: COLORS.ink }}
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white flex items-center justify-center hover:bg-slate-50"
+                  style={{ border: "1px solid #E2E8F0", color: COLORS.ink }}
                 >
-                  <Ico className="w-5 h-5" strokeWidth={2.6} />
+                  <Ico className="w-4 h-4" strokeWidth={2.4} />
                 </button>
               ))}
             </div>
           </div>
 
-          <p className="mt-4 text-base sm:text-lg font-semibold leading-relaxed" style={{ color: COLORS.textSecondary }}>
+          <p className="mt-3 text-[13px] sm:text-base font-medium leading-relaxed" style={{ color: COLORS.textSecondary }}>
             {course.description}
           </p>
         </div>
 
         {/* RIGHT · plan builder */}
-        <div className="p-4 sm:p-6 lg:p-7 flex flex-col gap-6">
+        <div className="p-3.5 sm:p-6 flex flex-col gap-4 sm:gap-5 border-t lg:border-t-0" style={{ borderColor: "#E2E8F0" }}>
           {/* Level */}
           <div>
             <StepLabel n={2} text="Level" color={COLORS.emerald} right="Choose level" />
-            <div className="grid grid-cols-3 gap-2.5">
-              {LEVELS.map((item, i) => {
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+              {LEVELS.map((item) => {
                 const selected = activeLevel === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => setActiveLevel(item.id)}
-                    className="relative rounded-3xl px-3 py-3.5 text-left transition-all duration-200"
+                    aria-pressed={selected}
+                    className="relative rounded-xl px-2 py-2 sm:px-3 sm:py-2.5 text-left transition-all duration-200"
                     style={{
-                      background: selected ? COLORS.emerald : COLORS.bgSecondary,
-                      color: selected ? COLORS.white : COLORS.ink,
-                      border: `2px solid ${selected ? COLORS.emerald : COLORS.border}`,
-                      boxShadow: selected ? `0 4px 0 ${edgeOf(COLORS.emerald)}` : "none",
+                      background: selected ? COLORS.emeraldLight : COLORS.white,
+                      border: `1px solid ${selected ? COLORS.emerald : COLORS.border}`,
+                      outline: selected ? `1px solid ${COLORS.emerald}` : "none",
                     }}
                   >
-                    <span className="flex gap-0.5 mb-2" aria-hidden="true">
-                      {[0, 1, 2].map((s) => (
-                        <span key={s} className="w-2 h-2 rounded-full" style={{ background: s <= i ? (selected ? "#fff" : COLORS.emerald) : (selected ? "rgba(255,255,255,0.35)" : COLORS.borderMed) }} />
-                      ))}
-                    </span>
                     {selected && (
-                      <span className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-white flex items-center justify-center" style={{ color: COLORS.emerald }}>
-                        <Check className="w-3 h-3" strokeWidth={3.5} />
+                      <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full hidden sm:flex items-center justify-center text-white" style={{ background: COLORS.emerald }}>
+                        <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
                       </span>
                     )}
-                    <div className="text-[15px] font-semibold" style={{ fontFamily: FONTS.display }}>{item.name}</div>
-                    <div className="text-[11px] font-bold mt-0.5 leading-snug" style={{ opacity: selected ? 0.9 : 0.6 }}>{item.description}</div>
+                    <div className="text-[13px] sm:text-sm font-bold" style={{ color: COLORS.ink }}>{item.name}</div>
+                    <div className="text-[10px] sm:text-[11px] font-medium mt-0.5 leading-snug" style={{ color: COLORS.textMuted }}>{item.description}</div>
                   </button>
                 );
               })}
@@ -509,61 +489,57 @@ const CourseDetails = ({
           {/* Classes */}
           <div>
             <StepLabel n={3} text="Classes" color={COLORS.indigo} right={`${formatPrice(pricePerClass)} / class`} />
-            <div className="grid grid-cols-4 gap-2.5">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
               {CLASS_PACKAGES.map((count) => {
                 const selected = classCount === count;
                 return (
                   <button
                     key={count}
                     onClick={() => setClassCount(count)}
-                    className="relative rounded-3xl py-3 text-center transition-all duration-200"
+                    aria-pressed={selected}
+                    className="relative rounded-xl py-2 sm:py-2.5 text-center transition-all duration-200"
                     style={{
-                      background: selected ? COLORS.indigo : COLORS.bgSecondary,
-                      color: selected ? COLORS.white : COLORS.ink,
-                      border: `2px solid ${selected ? COLORS.indigo : COLORS.border}`,
-                      boxShadow: selected ? `0 4px 0 ${edgeOf(COLORS.indigo)}` : "none",
+                      background: selected ? COLORS.indigoLight : COLORS.white,
+                      border: `1px solid ${selected ? COLORS.indigo : COLORS.border}`,
+                      outline: selected ? `1px solid ${COLORS.indigo}` : "none",
                     }}
                   >
                     {count === 30 && (
-                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-extrabold whitespace-nowrap" style={{ background: COLORS.gold, color: COLORS.navDark }}>
+                      <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 py-px rounded-full text-[8px] sm:text-[9px] font-bold whitespace-nowrap" style={{ background: COLORS.gold, color: COLORS.navDark }}>
                         POPULAR
                       </span>
                     )}
-                    <div className="text-2xl font-semibold leading-none" style={{ fontFamily: FONTS.display }}>{count}</div>
-                    <div className="text-[11px] font-bold mt-1" style={{ opacity: 0.75 }}>classes</div>
+                    <div className="text-base sm:text-xl font-extrabold leading-none" style={{ color: COLORS.ink }}>{count}</div>
+                    <div className="text-[10px] sm:text-[11px] font-medium mt-0.5" style={{ color: COLORS.textMuted }}>classes</div>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Price ticket */}
-          <div className="relative rounded-[1.75rem] p-5 mt-auto" style={{ background: COLORS.navDark }}>
-            {/* ticket notches */}
-            <span aria-hidden="true" className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white" />
-            <span aria-hidden="true" className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white" />
-
-            <div className="text-[11px] font-extrabold uppercase tracking-[0.16em]" style={{ color: COLORS.silver }}>Price Details</div>
-            <div className="mt-3 grid grid-cols-3 gap-3 pb-4 border-b-2 border-dashed" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
+          {/* Price summary */}
+          <div className="rounded-2xl p-3.5 sm:p-5 mt-auto" style={{ background: COLORS.navDark }}>
+            <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: COLORS.silver }}>Price Details</div>
+            <div className="mt-2 grid grid-cols-3 gap-2 pb-3 border-b" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
               {[
                 ["Selected level", level.name],
                 ["Classes", classCount],
                 ["Per class", formatPrice(pricePerClass)],
               ].map(([k, v]) => (
                 <div key={k}>
-                  <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: COLORS.silver }}>{k}</div>
-                  <div className="text-base sm:text-lg font-semibold text-white mt-0.5" style={{ fontFamily: FONTS.display }}>{v}</div>
+                  <div className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider" style={{ color: COLORS.silver }}>{k}</div>
+                  <div className="text-[13px] sm:text-base font-bold text-white mt-0.5">{v}</div>
                 </div>
               ))}
             </div>
-            <div className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="text-[10px] font-extrabold uppercase tracking-[0.16em]" style={{ color: COLORS.silver }}>Total price</div>
-                <div className="text-4xl font-semibold leading-none mt-1" style={{ fontFamily: FONTS.display, color: COLORS.emerald }}>
+                <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: COLORS.silver }}>Total price</div>
+                <div className="text-2xl sm:text-3xl font-extrabold leading-none mt-1" style={{ color: COLORS.emerald }}>
                   {formatPrice(totalPrice)}
                 </div>
               </div>
-              <button onClick={handleEnquiry} className="px-btn px-btn--grad px-btn--sm">
+              <button onClick={handleEnquiry} className="px-btn px-btn--grad px-btn--sm w-full sm:w-auto">
                 Enquire about this course
                 <ArrowRight className="w-4 h-4" />
               </button>

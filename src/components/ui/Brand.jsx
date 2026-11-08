@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
-import { COLORS, BRAND, FONTS, edgeOf } from "../../utils/theme";
+import { ChevronDown } from "lucide-react";
+import { COLORS, BRAND, FONTS } from "../../utils/theme";
 
 /* =========================================================
-   PEARLX BRAND KIT
-   Shared building blocks so every page speaks the same
-   visual language: pearls, scribbles, chunky buttons,
-   sticker cards and wavy section edges.
+   PEARLX BRAND KIT — professional, parent-friendly
+   Clean cards, clear labels, compact on phones.
+   The kids' touch comes from colour, illustrations and
+   the small "pearl" accents — not from oversized type.
 ========================================================= */
 
 export const display = { fontFamily: FONTS.display };
 
-/* ---------- Pearl (glossy decorative bubble) ---------- */
-export const Pearl = ({ size = 24, color = COLORS.cyan, className = "", style = {}, float = false, delay = 0 }) => (
+const onColor = (c) => (c === COLORS.gold ? COLORS.navDark : "#fff");
+// Readable text version of a brand colour (gold is too light for text).
+export const textTone = (c) => (c === COLORS.gold ? COLORS.goldDeep : c);
+// Soft coloured shadow for selected / featured items.
+export const glow = (c, strength = "33") => `0 1px 2px rgba(15,23,42,0.05), 0 10px 24px -12px ${c}${strength}`;
+
+/* ---------- Pearl (small decorative bubble) ---------- */
+export const Pearl = ({ size = 16, color = COLORS.cyan, className = "", style = {}, float = false, delay = 0 }) => (
   <span
     aria-hidden="true"
     className={`px-pearl ${float ? "px-float" : ""} ${className}`}
@@ -22,50 +28,44 @@ export const Pearl = ({ size = 24, color = COLORS.cyan, className = "", style = 
   />
 );
 
-/* A ready-made scatter of pearls for section backgrounds */
 export const PearlScatter = ({ variant = "a" }) => {
   const sets = {
     a: [
-      { size: 22, color: COLORS.gold, style: { top: "12%", left: "4%" } },
-      { size: 14, color: COLORS.emerald, style: { top: "62%", left: "7%" } },
-      { size: 30, color: COLORS.cyan, style: { top: "18%", right: "5%" } },
-      { size: 12, color: COLORS.indigo, style: { bottom: "14%", right: "10%" } },
+      { size: 12, color: COLORS.gold, style: { top: "14%", left: "4%" } },
+      { size: 16, color: COLORS.cyan, style: { top: "20%", right: "5%" } },
     ],
     b: [
-      { size: 16, color: COLORS.indigo, style: { top: "10%", right: "8%" } },
-      { size: 26, color: COLORS.emerald, style: { bottom: "12%", left: "5%" } },
-      { size: 12, color: COLORS.gold, style: { top: "40%", left: "2%" } },
+      { size: 12, color: COLORS.indigo, style: { top: "12%", right: "8%" } },
+      { size: 14, color: COLORS.emerald, style: { bottom: "12%", left: "4%" } },
     ],
   };
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden sm:block">
-      {sets[variant].map((p, i) => (
-        <Pearl key={i} {...p} float delay={i * 0.6} />
-      ))}
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden lg:block">
+      {sets[variant].map((p, i) => <Pearl key={i} {...p} />)}
     </div>
   );
 };
 
-/* ---------- Scribble underline for a highlighted word ---------- */
+/* ---------- Highlighted word (soft marker underline) ---------- */
 export const Scribble = ({ children, color = COLORS.emerald, textColor }) => (
-  <span className="px-scribble" style={{ color: textColor || color }}>
+  <span
+    className="px-scribble"
+    style={{
+      color: textColor || textTone(color),
+      backgroundImage: `linear-gradient(${color}2e, ${color}2e)`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "100% 0.3em",
+      backgroundPosition: "0 88%",
+      paddingInline: "0.04em",
+    }}
+  >
     {children}
-    <svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true">
-      <path
-        d="M3 14 C 40 4, 70 4, 100 11 S 165 18, 197 6"
-        fill="none"
-        stroke={color}
-        strokeWidth="6"
-        strokeLinecap="round"
-        opacity="0.55"
-      />
-    </svg>
   </span>
 );
 
-/* ---------- Eyebrow sticker label ---------- */
+/* ---------- Eyebrow label ---------- */
 export const Eyebrow = ({ children, color = COLORS.emerald, icon: Icon, className = "" }) => (
-  <span className={`px-eyebrow ${className}`} style={{ color, background: `${color}12` }}>
+  <span className={`px-eyebrow ${className}`} style={{ color: textTone(color), background: `${color}14` }}>
     {Icon && <Icon className="w-3.5 h-3.5" />}
     {children}
   </span>
@@ -73,16 +73,16 @@ export const Eyebrow = ({ children, color = COLORS.emerald, icon: Icon, classNam
 
 /* ---------- Section header ---------- */
 export const SectionHeader = ({ eyebrow, eyebrowIcon, color = COLORS.emerald, title, sub, align = "center", className = "" }) => (
-  <div className={`${align === "center" ? "text-center mx-auto" : ""} max-w-3xl ${className}`}>
+  <div className={`${align === "center" ? "text-center mx-auto" : ""} max-w-2xl ${className}`}>
     {eyebrow && <Eyebrow color={color} icon={eyebrowIcon}>{eyebrow}</Eyebrow>}
     <h2
-      className="mt-4 text-[2.15rem] sm:text-5xl font-semibold leading-[1.05]"
+      className="mt-3 text-[1.55rem] sm:text-4xl lg:text-[2.6rem] font-extrabold leading-[1.15] tracking-tight text-balance"
       style={{ ...display, color: COLORS.ink }}
     >
       {title}
     </h2>
     {sub && (
-      <p className={`mt-4 text-base sm:text-lg font-semibold leading-relaxed ${align === "center" ? "mx-auto" : ""} max-w-xl`}
+      <p className={`mt-2.5 sm:mt-3 text-sm sm:text-base font-medium leading-relaxed ${align === "center" ? "mx-auto" : ""} max-w-xl`}
         style={{ color: COLORS.textMuted }}>
         {sub}
       </p>
@@ -90,7 +90,7 @@ export const SectionHeader = ({ eyebrow, eyebrowIcon, color = COLORS.emerald, ti
   </div>
 );
 
-/* ---------- Chunky press-down button ---------- */
+/* ---------- Buttons ---------- */
 export const Btn = ({ variant = "grad", size, block, to, href, className = "", children, ...rest }) => {
   const cls = `px-btn px-btn--${variant} ${size ? `px-btn--${size}` : ""} ${block ? "px-btn--block" : ""} ${className}`;
   if (to) return <Link to={to} className={cls} {...rest}>{children}</Link>;
@@ -98,91 +98,74 @@ export const Btn = ({ variant = "grad", size, block, to, href, className = "", c
   return <button type="button" className={cls} {...rest}>{children}</button>;
 };
 
-/* Accent-coloured chunky button for any palette colour */
 export const ColorBtn = ({ color, className = "", style = {}, children, href, ...rest }) => {
-  const s = { "--btn-bg": color, "--btn-edge": edgeOf(color), "--btn-fg": color === COLORS.gold ? COLORS.navDark : "#fff", ...style };
+  const s = { "--btn-bg": color, "--btn-fg": onColor(color), ...style };
   if (href) return <a href={href} className={`px-btn ${className}`} style={s} {...rest}>{children}</a>;
   return <button type="button" className={`px-btn ${className}`} style={s} {...rest}>{children}</button>;
 };
 
-/* ---------- Wavy section edge ---------- */
-export const Wave = ({ fill = "#fff", flip = false, className = "" }) => (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 1440 70"
-    preserveAspectRatio="none"
-    className={`block w-full h-[38px] sm:h-[60px] ${className}`}
-    style={{ transform: flip ? "rotate(180deg)" : undefined }}
-  >
-    <path
-      d="M0 40 C 180 75, 360 5, 540 30 S 900 70, 1080 34 S 1350 8, 1440 38 L1440 70 L0 70 Z"
-      fill={fill}
-    />
-  </svg>
-);
+/* Kept for compatibility — sections now use clean straight edges. */
+export const Wave = () => null;
 
-/* ---------- Icon bubble ---------- */
-export const IconBubble = ({ icon: Icon, color, size = 48, iconSize = 22, rotate = -4 }) => (
+/* ---------- Icon tile ---------- */
+export const IconBubble = ({ icon: Icon, color, size = 44, iconSize = 20 }) => (
   <span
     className="inline-flex items-center justify-center shrink-0"
-    style={{
-      width: size, height: size, borderRadius: size * 0.36,
-      background: `${color}18`, color, transform: `rotate(${rotate}deg)`,
-      border: `2px solid ${color}30`,
-    }}
+    style={{ width: size, height: size, borderRadius: Math.round(size * 0.3), background: `${color}14`, color: textTone(color) }}
   >
-    <Icon style={{ width: iconSize, height: iconSize }} strokeWidth={2.4} />
+    <Icon style={{ width: iconSize, height: iconSize }} strokeWidth={2.2} />
   </span>
 );
 
-/* ---------- Floating sticker (small card on hero art) ---------- */
-export const Sticker = ({ children, className = "", style = {}, rotate = -4, delay = 0 }) => (
+/* ---------- Small info card on hero art ---------- */
+export const Sticker = ({ children, className = "", style = {} }) => (
   <div
-    className={`absolute z-20 px-float rounded-2xl bg-white px-3.5 py-2.5 ${className}`}
-    style={{
-      "--r": `${rotate}deg`,
-      animationDelay: `${delay}s`,
-      border: "2px solid rgba(15,23,42,0.08)",
-      boxShadow: "0 5px 0 rgba(15,23,42,0.08)",
-      ...style,
-    }}
+    className={`absolute z-20 rounded-xl bg-white px-2.5 py-1.5 sm:px-3.5 sm:py-2.5 ${className}`}
+    style={{ border: "1px solid #E2E8F0", boxShadow: "0 10px 30px -12px rgba(15,23,42,0.25)", ...style }}
   >
     {children}
   </div>
 );
 
-/* ---------- Hero art: kid cut-out on a pearl stage ---------- */
+/* ---------- Hero art: kid illustration on a soft circle ---------- */
 export const HeroStage = ({ image, alt, color = COLORS.cyan, second = COLORS.emerald, children, imgClass = "", fade = true, mask }) => (
-  <div className="relative mx-auto w-full max-w-[540px] aspect-square">
-    {/* rotating dashed orbit */}
+  <div className="relative mx-auto w-full max-w-[250px] sm:max-w-[400px] lg:max-w-[500px] aspect-square">
     <div
       aria-hidden="true"
-      className="absolute inset-[2%] rounded-full border-[3px] border-dashed px-spin-slow"
-      style={{ borderColor: `${color}40` }}
+      className="absolute inset-[8%] rounded-full"
+      style={{ background: `radial-gradient(circle at 30% 25%, #ffffff 0 8%, ${color}1f 45%, ${second}29 100%)` }}
     />
-    {/* main pearl */}
-    <div
-      aria-hidden="true"
-      className="absolute inset-[11%] rounded-full"
-      style={{
-        background: `radial-gradient(circle at 30% 25%, #ffffff 0 10%, ${color}22 42%, ${second}30 100%)`,
-        border: `3px solid ${color}25`,
-      }}
-    />
-    <Pearl size={34} color={COLORS.gold} style={{ top: "9%", left: "14%" }} float />
-    <Pearl size={20} color={second} style={{ bottom: "16%", right: "6%" }} float delay={1.2} />
-    <Pearl size={14} color={COLORS.indigo} style={{ top: "30%", right: "3%" }} float delay={0.6} />
+    <Pearl size={14} color={COLORS.gold} style={{ top: "10%", left: "16%" }} />
+    <Pearl size={10} color={second} style={{ bottom: "18%", right: "8%" }} />
     <img
       src={image}
       alt={alt}
-      className={`absolute inset-x-0 bottom-0 mx-auto h-[96%] w-auto max-w-full object-contain z-10 ${imgClass}`}
+      className={`absolute inset-x-0 bottom-0 mx-auto h-[94%] w-auto max-w-full object-contain z-10 ${imgClass}`}
       style={{
-        filter: "drop-shadow(0 22px 26px rgba(15,23,42,0.18))",
+        filter: "drop-shadow(0 16px 20px rgba(15,23,42,0.14))",
         ...(mask ? { WebkitMaskImage: mask, maskImage: mask } : {}),
-        ...(fade && !mask ? { WebkitMaskImage: "linear-gradient(to bottom, #000 82%, transparent 100%)", maskImage: "linear-gradient(to bottom, #000 82%, transparent 100%)" } : {}),
+        ...(fade && !mask ? { WebkitMaskImage: "linear-gradient(to bottom, #000 84%, transparent 100%)", maskImage: "linear-gradient(to bottom, #000 84%, transparent 100%)" } : {}),
       }}
     />
     {children}
+  </div>
+);
+
+/* ---------- Trust chips under hero buttons ---------- */
+export const ChipRow = ({ items, className = "" }) => (
+  <div className={`flex flex-wrap justify-center lg:justify-start gap-1.5 sm:gap-2 ${className}`}>
+    {items.map(([Icon, label, color]) => (
+      <span
+        key={label}
+        className="inline-flex items-center gap-1.5 rounded-full bg-white pl-1 pr-2.5 py-1 sm:pl-1.5 sm:pr-3.5 sm:py-1.5 text-xs sm:text-sm font-semibold"
+        style={{ color: COLORS.textSecondary, border: "1px solid #E2E8F0" }}
+      >
+        <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center" style={{ background: `${color}18`, color: textTone(color) }}>
+          <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" strokeWidth={2.5} />
+        </span>
+        {label}
+      </span>
+    ))}
   </div>
 );
 
@@ -190,36 +173,26 @@ export const HeroStage = ({ image, alt, color = COLORS.cyan, second = COLORS.eme
 export const FaqList = ({ items, color = COLORS.emerald }) => {
   const [open, setOpen] = useState(0);
   return (
-    <div className="space-y-3">
+    <div className="space-y-2 sm:space-y-3">
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
-          <motion.div
+          <div
             key={item.q}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.04 }}
-            className="rounded-3xl bg-white overflow-hidden"
-            style={{
-              border: `2px solid ${isOpen ? `${color}55` : "rgba(15,23,42,0.09)"}`,
-              boxShadow: `0 5px 0 ${isOpen ? `${color}30` : "rgba(15,23,42,0.05)"}`,
-              transition: "border-color .2s, box-shadow .2s",
-            }}
+            className="rounded-2xl bg-white overflow-hidden transition-colors"
+            style={{ border: `1px solid ${isOpen ? `${color}55` : "#E2E8F0"}`, boxShadow: isOpen ? glow(color, "26") : "none" }}
           >
             <button
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
-              className="w-full flex items-center justify-between gap-4 px-5 py-4 sm:px-6 sm:py-5 text-left"
+              className="w-full flex items-center justify-between gap-3 px-4 py-3.5 sm:px-5 sm:py-4 text-left"
             >
-              <span className="text-base sm:text-lg font-semibold" style={{ ...display, color: COLORS.ink }}>
-                {item.q}
-              </span>
+              <span className="text-sm sm:text-base font-bold" style={{ color: COLORS.ink }}>{item.q}</span>
               <span
-                className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300"
-                style={{ background: isOpen ? color : `${color}15`, color: isOpen ? "#fff" : color, transform: isOpen ? "rotate(45deg)" : "none" }}
+                className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300"
+                style={{ background: isOpen ? `${color}18` : "#F1F5F9", color: isOpen ? textTone(color) : COLORS.textMuted, transform: isOpen ? "rotate(180deg)" : "none" }}
               >
-                <Plus className="w-5 h-5" strokeWidth={3} />
+                <ChevronDown className="w-4 h-4" strokeWidth={2.5} />
               </span>
             </button>
             <AnimatePresence initial={false}>
@@ -228,47 +201,45 @@ export const FaqList = ({ items, color = COLORS.emerald }) => {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.22 }}
+                  transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <p className="px-5 sm:px-6 pb-5 text-sm sm:text-base font-semibold leading-relaxed" style={{ color: COLORS.textSecondary }}>
+                  <p className="px-4 sm:px-5 pb-4 text-[13px] sm:text-[15px] font-medium leading-relaxed" style={{ color: COLORS.textSecondary }}>
                     {item.a}
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         );
       })}
     </div>
   );
 };
 
-/* ---------- Big closing call-to-action panel ---------- */
+/* ---------- Closing call-to-action panel ---------- */
 export const CtaPanel = ({ title, sub, image, color = COLORS.emerald, children }) => (
-  <section className="px-4 sm:px-6 py-16 sm:py-20">
+  <section className="px-4 sm:px-6 py-10 sm:py-16">
     <div
-      className="relative max-w-6xl mx-auto overflow-hidden rounded-[2.5rem] px-6 py-10 sm:px-12 sm:py-14"
-      style={{ background: COLORS.navDark, boxShadow: `0 10px 0 ${color}` }}
+      className="relative max-w-6xl mx-auto overflow-hidden rounded-3xl px-5 py-8 sm:px-12 sm:py-12"
+      style={{ background: COLORS.navDark }}
     >
-      <div aria-hidden="true" className="absolute inset-0 opacity-[0.07] px-dots" style={{ filter: "invert(1)" }} />
-      <Pearl size={60} color={COLORS.cyan} className="hidden sm:block" style={{ top: -18, right: "30%" }} />
-      <Pearl size={26} color={COLORS.gold} className="hidden sm:block" style={{ bottom: 30, left: "42%" }} float />
-      <Pearl size={16} color={COLORS.emerald} style={{ top: 40, left: 30 }} float delay={1} />
-      <div className={`relative grid items-center gap-8 ${image ? "lg:grid-cols-[1.2fr_0.8fr]" : ""}`}>
+      <div aria-hidden="true" className="absolute -right-24 -top-24 w-72 h-72 rounded-full" style={{ background: `${color}26` }} />
+      <div aria-hidden="true" className="absolute -left-16 -bottom-20 w-56 h-56 rounded-full" style={{ background: `${COLORS.cyan}1a` }} />
+      <div className={`relative grid items-center gap-6 ${image ? "lg:grid-cols-[1.3fr_0.7fr]" : ""}`}>
         <div className={image ? "text-center lg:text-left" : "text-center"}>
-          <h2 className="text-3xl sm:text-5xl font-semibold leading-[1.08] text-white" style={display}>
+          <h2 className="text-[1.45rem] sm:text-4xl font-extrabold leading-tight tracking-tight text-white text-balance" style={display}>
             {title}
           </h2>
-          {sub && <p className="mt-4 text-base sm:text-lg font-semibold text-slate-300">{sub}</p>}
-          <div className={`mt-8 flex flex-col sm:flex-row gap-3 ${image ? "justify-center lg:justify-start" : "justify-center"}`}>
+          {sub && <p className="mt-2 sm:mt-3 text-sm sm:text-base font-medium text-slate-300">{sub}</p>}
+          <div className={`mt-5 sm:mt-7 flex flex-row flex-wrap gap-2.5 ${image ? "justify-center lg:justify-start" : "justify-center"}`}>
             {children}
           </div>
         </div>
         {image && (
-          <div className="relative hidden lg:block h-[300px]">
-            <div className="absolute inset-x-8 bottom-0 top-6 rounded-full" style={{ background: `radial-gradient(circle, ${color}55, transparent 70%)` }} />
-            <img src={image} alt="" className="absolute bottom-[-56px] left-1/2 -translate-x-1/2 h-[360px] w-auto object-contain" />
+          <div className="relative hidden lg:block h-[240px]">
+            <div className="absolute inset-x-10 bottom-0 top-8 rounded-full" style={{ background: `radial-gradient(circle, ${color}40, transparent 70%)` }} />
+            <img src={image} alt="" className="absolute bottom-[-48px] left-1/2 -translate-x-1/2 h-[300px] w-auto object-contain" />
           </div>
         )}
       </div>
@@ -276,30 +247,52 @@ export const CtaPanel = ({ title, sub, image, color = COLORS.emerald, children }
   </section>
 );
 
-/* ---------- Level tab (used by Coding & Maths) ---------- */
-export const LevelTab = ({ selected, color, Icon, name, short, onClick }) => (
-  <button
-    onClick={onClick}
-    className="shrink-0 snap-start flex items-center gap-3 rounded-full pl-2 pr-5 py-2 transition-all duration-200"
-    style={{
-      background: selected ? color : "#fff",
-      color: selected ? (color === COLORS.gold ? COLORS.navDark : "#fff") : COLORS.ink,
-      border: `2px solid ${selected ? color : "rgba(15,23,42,0.1)"}`,
-      boxShadow: selected ? `0 5px 0 ${edgeOf(color)}` : "0 4px 0 rgba(15,23,42,0.05)",
-      transform: selected ? "translateY(-2px)" : "none",
-    }}
-  >
-    <span
-      className="w-10 h-10 rounded-full flex items-center justify-center"
-      style={{ background: selected ? "rgba(255,255,255,0.25)" : `${color}18`, color: selected ? "inherit" : color }}
+/* ---------- Level selector: all options always visible ---------- */
+export const LevelSelector = ({ levels, active, onChange, label = "Choose a level" }) => (
+  <div>
+    <div className="text-center text-xs sm:text-sm font-semibold mb-2.5" style={{ color: COLORS.textMuted }}>
+      {label} <span className="hidden sm:inline">— tap to compare all {levels.length}</span>
+    </div>
+    <div
+      role="tablist"
+      className="grid gap-1.5 sm:gap-2 p-1.5 rounded-2xl max-w-3xl mx-auto"
+      style={{ gridTemplateColumns: `repeat(${levels.length}, minmax(0, 1fr))`, background: "#F1F5F9", border: "1px solid #E2E8F0" }}
     >
-      <Icon className="w-5 h-5" strokeWidth={2.4} />
-    </span>
-    <span className="text-left">
-      <span className="block text-base font-semibold leading-tight" style={display}>{name}</span>
-      <span className="block text-[11px] font-bold opacity-75">{short}</span>
-    </span>
-  </button>
+      {levels.map((item, index) => {
+        const selected = active === index;
+        const Icon = item.LevelIcon;
+        return (
+          <button
+            key={item.id}
+            role="tab"
+            aria-selected={selected}
+            onClick={() => onChange(index)}
+            className="flex flex-col sm:flex-row items-center sm:justify-center gap-1 sm:gap-2.5 rounded-xl px-1.5 py-2 sm:px-3 sm:py-2.5 transition-all duration-200"
+            style={{
+              background: selected ? "#fff" : "transparent",
+              boxShadow: selected ? glow(item.color, "40") : "none",
+              border: `1px solid ${selected ? `${item.color}66` : "transparent"}`,
+            }}
+          >
+            <span
+              className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0"
+              style={{ background: selected ? item.color : `${item.color}18`, color: selected ? onColor(item.color) : textTone(item.color) }}
+            >
+              {Icon && <Icon className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5" strokeWidth={2.4} />}
+            </span>
+            <span className="text-center sm:text-left leading-tight">
+              <span className="block text-[12px] sm:text-[15px] font-bold" style={{ color: selected ? COLORS.ink : COLORS.textSecondary }}>
+                {item.name}
+              </span>
+              <span className="block text-[10px] sm:text-xs font-semibold mt-0.5" style={{ color: COLORS.textMuted }}>
+                {item.short}
+              </span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
 );
 
 export { BRAND, COLORS };

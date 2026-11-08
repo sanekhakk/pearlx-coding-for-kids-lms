@@ -126,12 +126,12 @@ const DemoInterestPopup = ({ onBookDemo, delay = 5000 }) => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="pearlx-demo-popup-title"
-            initial={{ opacity: 0, y: 30, scale: 0.9, rotate: -2 }}
-            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
             className="relative w-full max-w-[660px] overflow-hidden rounded-[2.25rem] bg-white"
-            style={{ border: "3px solid #fff", boxShadow: `0 10px 0 ${COLORS.emerald}, 0 30px 70px rgba(0,0,0,0.3)`, fontFamily: FONTS.body }}
+            style={{ border: "3px solid #fff", boxShadow: `0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28), 0 30px 70px rgba(0,0,0,0.3)`, fontFamily: FONTS.body }}
           >
             {/* Close */}
             <button
@@ -139,7 +139,7 @@ const DemoInterestPopup = ({ onBookDemo, delay = 5000 }) => {
               aria-label="Close"
               onClick={close}
               className="absolute top-3.5 right-3.5 z-10 w-10 h-10 rounded-full bg-white flex items-center justify-center"
-              style={{ color: COLORS.ink, border: `2px solid ${COLORS.border}`, boxShadow: "0 3px 0 rgba(15,23,42,0.08)" }}
+              style={{ color: COLORS.ink, border: `2px solid ${COLORS.border}`, boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 24px -14px rgba(15,23,42,0.28)" }}
             >
               <X size={18} strokeWidth={2.8} />
             </button>
@@ -157,7 +157,7 @@ const DemoInterestPopup = ({ onBookDemo, delay = 5000 }) => {
 
                 <h2
                   id="pearlx-demo-popup-title"
-                  className="mt-4 text-[2.4rem] leading-[1] font-semibold"
+                  className="mt-3 text-[1.9rem] sm:text-[2.2rem] leading-[1.05] font-extrabold tracking-tight"
                   style={{ fontFamily: FONTS.display, color: COLORS.ink }}
                 >
                   Let them

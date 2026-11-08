@@ -347,7 +347,7 @@ const ClassCard = ({ cls, type, permanentClassLink, timezone, nextLesson }) => {
 
 const SideNavItem = ({ tab, active, onClick }) => (
   <motion.button onClick={onClick} whileTap={{ scale: 0.97, y: 2 }}
-    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 4px 0 #047857" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
+    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 6px 16px -8px rgba(16,185,129,0.7)" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
     <div style={{ width: 34, height: 34, borderRadius: "50%", background: active ? "rgba(255,255,255,0.25)" : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       <tab.icon style={{ width: 16, height: 16, color: active ? "#fff" : C.textMuted }} />
     </div>
@@ -844,7 +844,7 @@ export default function StudentDashboard() {
               {activeTab === "overview" && (
                 <motion.div key="ov" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                   {/* Banner */}
-                  <div style={{ borderRadius: 24, padding: isMobile ? "20px 20px" : "26px 30px", marginBottom: 26, background: C.gradPrimary, position: "relative", overflow: "hidden", boxShadow: "0 6px 0 #047857" }}>
+                  <div style={{ borderRadius: 24, padding: isMobile ? "20px 20px" : "26px 30px", marginBottom: 26, background: C.gradPrimary, position: "relative", overflow: "hidden", boxShadow: "0 12px 30px -16px rgba(16,185,129,0.8)" }}>
                     <div className="px-dots" style={{ position: "absolute", inset: 0, opacity: 0.35, filter: "invert(1)" }} />
                     <div style={{ position: "absolute", right: -20, top: -20, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.12)" }} />
                     <div style={{ position: "absolute", right: 30, bottom: -40, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
