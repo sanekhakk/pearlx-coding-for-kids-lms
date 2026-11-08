@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
-import { X, Loader2, Mail, Lock, AlertCircle, CheckCircle2, GraduationCap } from "lucide-react";
+import { X, Loader2, Mail, Lock, AlertCircle, CheckCircle2, GraduationCap, ArrowRight } from "lucide-react";
+import { COLORS, FONTS, BRAND } from "../utils/theme";
+import { Pearl } from "./ui/Brand";
 
 const AuthModal = () => {
   const { showLoginModal, modalRole, closeLoginModal, loginUser, sendPasswordReset } = useAuth();
@@ -51,88 +53,75 @@ const AuthModal = () => {
     ? "Access your teaching dashboard"
     : "Continue your learning journey";
 
+  const inputCls =
+    "w-full pl-12 pr-4 py-3.5 rounded-2xl text-[15px] font-semibold bg-slate-50 text-slate-900 placeholder-slate-400 outline-none transition-all border-2 border-slate-200 focus:border-sky-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]";
+
   return (
     <AnimatePresence>
       {showLoginModal && (
         <>
-          {/* Overlay — NO backdropFilter blur, just opacity */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-[9998]"
-            style={{ background: "rgba(10, 15, 30, 0.78)" }}
+            style={{ background: "rgba(11, 17, 32, 0.72)" }}
             onClick={closeLoginModal}
           />
 
-          
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none">
             <motion.div
-              initial={{ scale: 0.94, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
+              initial={{ scale: 0.9, y: 24, opacity: 0, rotate: -1 }}
+              animate={{ scale: 1, y: 0, opacity: 1, rotate: 0 }}
               exit={{ scale: 0.94, y: 20, opacity: 0 }}
-              transition={{ type: "spring", damping: 28, stiffness: 320 }}
+              transition={{ type: "spring", damping: 22, stiffness: 300 }}
               className="relative w-full max-w-md pointer-events-auto"
               onClick={e => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="pearlx-auth-title"
             >
               <div
-                className="relative rounded-3xl overflow-hidden bg-white border border-slate-100"
-                style={{ boxShadow: "0 24px 64px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.08)" }}
+                className="relative rounded-[2rem] overflow-hidden bg-white"
+                style={{ border: "3px solid #fff", boxShadow: `0 10px 0 ${COLORS.emerald}, 0 30px 70px rgba(0,0,0,0.3)` }}
               >
-                {/* Top accent bar */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-1 z-10"
-                  style={{ background: "linear-gradient(90deg, #0EA5E9, #10B981)" }}
-                />
+                {/* Header band */}
+                <div className="relative overflow-hidden px-8 pt-8 pb-14 text-center" style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)" }}>
+                  <div aria-hidden="true" className="absolute inset-0 px-dots opacity-40" style={{ filter: "invert(1)" }} />
+                  <Pearl size={26} color={COLORS.gold} style={{ top: 18, left: 26 }} float />
 
-                
-                <div
-                  className="absolute top-0 right-0 w-56 h-56 rounded-full pointer-events-none"
-                  style={{
-                    background: "radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%)",
-                    transform: "translate(30%, -30%)",
-                  }}
-                />
-                <div
-                  className="absolute bottom-0 left-0 w-56 h-56 rounded-full pointer-events-none"
-                  style={{
-                    background: "radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)",
-                    transform: "translate(-30%, 30%)",
-                  }}
-                />
-
-                <div className="p-8 relative z-10">
-                  {/* Close Button */}
                   <button
                     onClick={closeLoginModal}
-                    className="absolute top-6 right-6 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                    aria-label="Close"
+                    className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center bg-white/20 text-white hover:bg-white/30 transition-colors"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-5 h-5" strokeWidth={2.6} />
                   </button>
 
-                  {/* Header */}
-                  <div className="text-center mb-8">
-                    <div
-                      className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
-                      style={{
-                        background: "linear-gradient(135deg, #e0f9f4, #e0f2fe)",
-                        border: "1px solid rgba(16,185,129,0.2)",
-                      }}
-                    >
-                      {resetMode
-                        ? <Lock className="w-7 h-7 text-cyan-600" />
-                        : <GraduationCap className="w-7 h-7 text-emerald-600" />
-                      }
-                    </div>
-                    <h2 className="text-2xl font-extrabold mb-1.5 text-slate-900 tracking-tight">
-                      {resetMode ? "Reset Password" : "Welcome back"}
-                    </h2>
-                    <p className="text-sm font-medium text-slate-500">
-                      {resetMode ? "Enter your email to receive a reset link" : subtitle}
-                    </p>
+                  <div
+                    className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white mb-4"
+                    style={{ transform: "rotate(-6deg)", boxShadow: "0 5px 0 rgba(0,0,0,0.15)" }}
+                  >
+                    {resetMode
+                      ? <Lock className="w-8 h-8" style={{ color: COLORS.cyan }} />
+                      : <GraduationCap className="w-8 h-8" style={{ color: COLORS.emerald }} />
+                    }
                   </div>
+                  <h2 id="pearlx-auth-title" className="relative text-3xl font-semibold text-white" style={{ fontFamily: FONTS.display }}>
+                    {resetMode ? "Reset Password" : "Welcome back"}
+                  </h2>
+                  <p className="relative mt-1 text-[15px] font-bold text-white/90">
+                    {resetMode ? "Enter your email to receive a reset link" : subtitle}
+                  </p>
+                </div>
 
+                {/* wave into body */}
+                <svg aria-hidden="true" viewBox="0 0 400 30" preserveAspectRatio="none" className="block w-full h-[30px] -mt-[30px] relative">
+                  <path d="M0 18 C 80 34, 150 2, 220 14 S 340 30, 400 10 L400 30 L0 30 Z" fill="#fff" />
+                </svg>
+
+                <div className="px-7 sm:px-8 pb-8 pt-3 relative">
                   {/* Status Messages */}
                   <AnimatePresence>
                     {error && (
@@ -142,10 +131,10 @@ const AuthModal = () => {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.18 }}
-                        className="flex items-start gap-3 p-4 mb-5 rounded-2xl bg-red-50 border border-red-100 overflow-hidden"
+                        className="flex items-start gap-3 p-4 mb-5 rounded-2xl bg-red-50 border-2 border-red-100 overflow-hidden"
                       >
                         <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-500 mt-0.5" />
-                        <p className="text-sm font-semibold text-red-700">{error}</p>
+                        <p className="text-sm font-bold text-red-700">{error}</p>
                       </motion.div>
                     )}
                     {success && (
@@ -155,80 +144,71 @@ const AuthModal = () => {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.18 }}
-                        className="flex items-start gap-3 p-4 mb-5 rounded-2xl bg-emerald-50 border border-emerald-100 overflow-hidden"
+                        className="flex items-start gap-3 p-4 mb-5 rounded-2xl bg-emerald-50 border-2 border-emerald-100 overflow-hidden"
                       >
                         <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-500 mt-0.5" />
-                        <p className="text-sm font-semibold text-emerald-700">{success}</p>
+                        <p className="text-sm font-bold text-emerald-700">{success}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  {/* Form */}
                   <form onSubmit={resetMode ? handleReset : handleLogin} className="space-y-5">
-                    {/* Email */}
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-slate-700">
-                        Email address
-                      </label>
+                      <label className="block text-sm font-extrabold mb-2 text-slate-700">Email address</label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <span className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: COLORS.cyanLight }}>
+                          <Mail className="w-4 h-4" style={{ color: COLORS.cyan }} />
+                        </span>
                         <input
                           type="email"
                           required
                           value={email}
                           onChange={e => setEmail(e.target.value)}
                           placeholder="you@example.com"
-                          className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm font-medium bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 outline-none transition-colors focus:bg-white focus:border-cyan-500"
+                          className={inputCls}
                         />
                       </div>
                     </div>
 
-                    {/* Password */}
                     {!resetMode && (
                       <div>
-                        <label className="block text-sm font-bold mb-2 text-slate-700">
-                          Password
-                        </label>
+                        <label className="block text-sm font-extrabold mb-2 text-slate-700">Password</label>
                         <div className="relative">
-                          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: COLORS.emeraldLight }}>
+                            <Lock className="w-4 h-4" style={{ color: COLORS.emerald }} />
+                          </span>
                           <input
                             type="password"
                             required
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="••••••••"
-                            className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm font-medium bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 outline-none transition-colors focus:bg-white focus:border-cyan-500"
+                            className={inputCls}
                           />
                         </div>
                       </div>
                     )}
 
-                    {/* Submit */}
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full py-4 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 disabled:opacity-70 transition-opacity"
-                      style={{
-                        background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)",
-                        boxShadow: "0 6px 20px rgba(16,185,129,0.28)",
-                      }}
-                    >
+                    <button type="submit" disabled={loading} className="px-btn px-btn--grad px-btn--block px-btn--lg">
                       {loading
                         ? <Loader2 className="w-5 h-5 animate-spin" />
-                        : resetMode ? "Send Reset Link" : "Log In"
+                        : <>{resetMode ? "Send Reset Link" : "Log In"} <ArrowRight className="w-5 h-5" /></>
                       }
                     </button>
                   </form>
 
-                  {/* Footer */}
                   <div className="mt-6 text-center">
                     <button
                       onClick={() => { setResetMode(!resetMode); setError(null); setSuccess(null); }}
-                      className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors"
+                      className="text-sm font-extrabold text-slate-500 hover:text-sky-600 transition-colors"
                     >
                       {resetMode ? "← Back to login" : "Forgot your password?"}
                     </button>
                   </div>
+
+                  <p className="mt-5 text-center text-xs font-bold" style={{ color: COLORS.emerald, fontFamily: FONTS.display }}>
+                    {BRAND.tagline}
+                  </p>
                 </div>
               </div>
             </motion.div>

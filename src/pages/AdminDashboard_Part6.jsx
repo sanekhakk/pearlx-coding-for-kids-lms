@@ -11,13 +11,13 @@ import { downloadReceiptAsPdf } from "../utils/downloadReceiptPdf";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   amber: "#F59E0B", amberLight: "#FFFBEB",
   red: "#EF4444", redLight: "#FEF2F2",
   indigo: "#6366F1", indigoLight: "#EEF2FF",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
   shadowModal: "0 24px 64px rgba(15,23,42,0.18)",
   gradEmerald: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
 };
@@ -34,7 +34,7 @@ function formatCurrency(amount) {
 }
 
 const MiniStat = ({ icon: Icon, label, value, light, iconColor }) => (
-  <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 18px", boxShadow: C.shadowCard }}>
+  <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, padding: "16px 18px", boxShadow: C.shadowCard }}>
     <div style={{ width: 36, height: 36, borderRadius: 10, background: light, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
       <Icon style={{ width: 18, height: 18, color: iconColor }} />
     </div>
@@ -46,7 +46,7 @@ const MiniStat = ({ icon: Icon, label, value, light, iconColor }) => (
 const ReceiptRow = ({ receipt, onToggleStatus, isUpdating, onView }) => {
   const isPaid = receipt.status === "paid";
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", borderRadius: 14, background: C.card, border: `1px solid ${C.border}`, boxShadow: C.shadowCard, flexWrap: "wrap" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", borderRadius: 14, background: C.card, border: `2px solid ${C.border}`, boxShadow: C.shadowCard, flexWrap: "wrap" }}>
       <div style={{ width: 40, height: 40, borderRadius: 12, background: isPaid ? C.emeraldLight : C.amberLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
         <ReceiptIcon style={{ width: 18, height: 18, color: isPaid ? C.emerald : C.amber }} />
       </div>
@@ -174,20 +174,20 @@ export function PaymentHistory() {
         <MiniStat icon={Clock} label="Unpaid" value={formatCurrency(totalUnpaid)} light={C.amberLight} iconColor={C.amber} />
       </div>
 
-      <div style={{ background: C.card, borderRadius: 16, padding: "14px 16px", border: `1px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16, display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ background: C.card, borderRadius: 16, padding: "14px 16px", border: `2px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16, display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
         <div style={{ position: "relative", flex: 1, minWidth: 220 }}>
           <Search style={{ width: 15, height: 15, color: C.textMuted, position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by student name, ID, or receipt ID..."
-            style={{ width: "100%", paddingLeft: 36, paddingRight: 12, paddingTop: 9, paddingBottom: 9, borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }} />
+            style={{ width: "100%", paddingLeft: 36, paddingRight: 12, paddingTop: 9, paddingBottom: 9, borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }} />
         </div>
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-          style={{ padding: "9px 12px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit" }}>
+          style={{ padding: "9px 12px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit" }}>
           <option value="all">All Status</option>
           <option value="paid">Paid</option>
           <option value="unpaid">Unpaid</option>
         </select>
         <button onClick={loadReceipts} title="Refresh"
-          style={{ padding: 9, borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, cursor: "pointer", display: "flex" }}>
+          style={{ padding: 9, borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, cursor: "pointer", display: "flex" }}>
           <RefreshCw style={{ width: 15, height: 15, color: C.textMuted }} />
         </button>
       </div>
@@ -202,7 +202,7 @@ export function PaymentHistory() {
           <p style={{ fontSize: 13, color: C.red }}>{error}</p>
         </div>
       ) : filtered.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "60px", borderRadius: 16, background: C.card, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: "60px", borderRadius: 16, background: C.card, border: `2px solid ${C.border}` }}>
           <ReceiptIcon style={{ width: 40, height: 40, margin: "0 auto 12px", color: C.textMuted, opacity: 0.4 }} />
           <p style={{ fontSize: 15, fontWeight: 700, color: C.textMuted }}>{search || statusFilter !== "all" ? "No receipts match your filters" : "No receipts generated yet"}</p>
         </div>
@@ -223,7 +223,7 @@ export function PaymentHistory() {
               onClick={e => e.stopPropagation()}
               style={{ background: C.card, borderRadius: 20, boxShadow: C.shadowModal, width: "100%", maxWidth: 800, maxHeight: "90vh", overflowY: "auto" }}>
 
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 24px", borderBottom: `1px solid ${C.border}`, position: "sticky", top: 0, background: C.card, zIndex: 1 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 24px", borderBottom: `2px solid ${C.border}`, position: "sticky", top: 0, background: C.card, zIndex: 1 }}>
                 <h2 style={{ fontSize: 16, fontWeight: 800, color: C.textPrimary }}>{selected.receiptId}</h2>
                 <button onClick={() => setSelected(null)} style={{ background: "none", border: "none", cursor: "pointer" }}>
                   <X style={{ width: 20, height: 20, color: C.textMuted }} />
@@ -231,7 +231,7 @@ export function PaymentHistory() {
               </div>
 
               <div style={{ padding: 24 }}>
-                <div style={{ border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", marginBottom: 18, background: "#F8FAFC" }}>
+                <div style={{ border: `2px solid ${C.border}`, borderRadius: 14, overflow: "hidden", marginBottom: 18, background: "#F8FAFC" }}>
                   <div style={{ transform: "scale(0.92)", transformOrigin: "top center", padding: "16px 0" }}>
                     <ReceiptDocument ref={receiptRef} receipt={selected} />
                   </div>

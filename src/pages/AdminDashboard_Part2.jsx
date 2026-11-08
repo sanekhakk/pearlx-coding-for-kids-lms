@@ -7,7 +7,7 @@ import { DEFAULT_AVATARS, resolveAvatarUrl } from "../utils/defaultAvatars";
 import RoleAvatar from "../components/RoleAvatar";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
@@ -17,7 +17,7 @@ const C = {
   violet: "#8B5CF6", violetLight: "#F5F3FF",
   gradPrimary: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)",
   gradEmerald: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
 };
 
 // Categories that follow the shared coding/math Module/Lesson curriculum
@@ -32,7 +32,7 @@ const TUTOR_TYPE_OPTIONS = [
 ];
 
 const fieldStyle = {
-  width: "100%", padding: "10px 14px", borderRadius: 12, border: `1px solid ${C.border}`,
+  width: "100%", padding: "10px 14px", borderRadius: 12, border: `2px solid ${C.border}`,
   background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none",
   fontFamily: "inherit", boxSizing: "border-box", transition: "border-color 0.15s",
 };
@@ -71,7 +71,7 @@ const SelectInput = ({ label, name, value, onChange, options, required }) => (
 
 const TutorTypeCheckboxes = ({ selectedTypes, onChange }) => (
   <LabeledInput label="Tutor Category" required>
-    <div style={{ display: "flex", flexDirection: "column", gap: 8, padding: "12px 14px", borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 8, padding: "12px 14px", borderRadius: 12, border: `2px solid ${C.border}`, background: C.bg }}>
       {TUTOR_TYPE_OPTIONS.map(opt => {
         const checked = selectedTypes.includes(opt.value);
         const Icon = opt.icon;
@@ -205,15 +205,15 @@ const StatusBanner = ({ status }) => {
 };
 
 const Panel = ({ children, title, subtitle, onClose }) => (
-  <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
-    <div style={{ padding: "20px 24px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+  <div style={{ background: C.card, borderRadius: 20, border: `2px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
+    <div style={{ padding: "20px 24px", borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <div>
         <h2 style={{ fontSize: 17, fontWeight: 800, color: C.textPrimary }}>{title}</h2>
         {subtitle && <p style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{subtitle}</p>}
       </div>
       {onClose && (
         <motion.button onClick={onClose} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-          style={{ width: 32, height: 32, borderRadius: 8, background: C.bg, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+          style={{ width: 32, height: 32, borderRadius: 8, background: C.bg, border: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <X style={{ width: 15, height: 15, color: C.textMuted }} />
         </motion.button>
       )}
@@ -224,7 +224,7 @@ const Panel = ({ children, title, subtitle, onClose }) => (
 
 const AssignmentRow = ({ assignment, onRemove, index }) => (
   <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
-    style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
+    style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 12, background: C.bg, border: `2px solid ${C.border}` }}>
     <div>
       <span style={{ fontWeight: 700, fontSize: 13, color: C.textPrimary }}>{assignment.subject}</span>
       <span style={{ fontSize: 12, color: C.cyan, marginLeft: 10 }}>· {assignment.tutorName}</span>
@@ -249,7 +249,7 @@ const AssignmentRow = ({ assignment, onRemove, index }) => (
 const AvatarPreview = ({ avatarId, size = 72 }) => {
   const url = resolveAvatarUrl(avatarId);
   return (
-    <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", flexShrink: 0, background: C.bg, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", flexShrink: 0, background: C.bg, border: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
       {url ? (
         <img src={url} alt="avatar preview" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       ) : (
@@ -286,7 +286,7 @@ const AvatarPicker = ({ value, onChange }) => (
 // circular preview plus the picker gallery. Nothing here ever accepts a
 // file from the admin's own device.
 const AvatarField = ({ value, onChange, label = "Default Avatar" }) => (
-  <div style={{ gridColumn: "1 / -1", display: "flex", gap: 16, alignItems: "flex-start", padding: 16, borderRadius: 14, background: C.bg, border: `1px solid ${C.border}` }}>
+  <div style={{ gridColumn: "1 / -1", display: "flex", gap: 16, alignItems: "flex-start", padding: 16, borderRadius: 14, background: C.bg, border: `2px solid ${C.border}` }}>
     <AvatarPreview avatarId={value} size={72} />
     <div style={{ flex: 1, minWidth: 0 }}>
       <label style={{ fontSize: 12, fontWeight: 700, color: C.textSecondary, display: "block", marginBottom: 8 }}>{label}</label>
@@ -297,7 +297,7 @@ const AvatarField = ({ value, onChange, label = "Default Avatar" }) => (
 
 // Tutors (and admins) don't get a picker — they always show the role icon.
 const RoleIconNote = ({ role }) => (
-  <div style={{ gridColumn: "1 / -1", display: "flex", gap: 14, alignItems: "center", padding: 16, borderRadius: 14, background: C.bg, border: `1px solid ${C.border}` }}>
+  <div style={{ gridColumn: "1 / -1", display: "flex", gap: 14, alignItems: "center", padding: 16, borderRadius: 14, background: C.bg, border: `2px solid ${C.border}` }}>
     <RoleAvatar role={role} size={56} />
     <div>
       <p style={{ fontSize: 12, fontWeight: 700, color: C.textSecondary }}>Profile Icon</p>
@@ -407,7 +407,7 @@ export function RegistrationPanel({ form, regRole, regStatus, regLoading, handle
       onClose={() => { setActiveView("list"); setRegStatus(null); }}>
 
       {/* Role toggle */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 20, padding: 4, background: C.bg, borderRadius: 14, border: `1px solid ${C.border}` }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 20, padding: 4, background: C.bg, borderRadius: 14, border: `2px solid ${C.border}` }}>
         {["student", "tutor"].map(r => (
           <button key={r} type="button" onClick={() => { setRegRole(r); setForm(initialFormState); setAssignedSubjects([]); setStudentCourse(""); setStudentCategory(""); setTutorTypes([]); setSelectedPhoto(DEFAULT_AVATARS[0]?.id || ""); }}
             style={{ flex: 1, padding: "10px", borderRadius: 12, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer",

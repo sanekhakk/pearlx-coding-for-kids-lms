@@ -21,7 +21,7 @@ import PearlxLogo from "../assets/flat_logo.webp";
 
 // Design Tokens (same as Tutor/Student)
 const C = {
-  bg: "#F4F6FB",
+  bg: "#F2F8FC",
   sidebar: "#FFFFFF",
   card: "#FFFFFF",
   border: "#E5E9F2",
@@ -47,8 +47,8 @@ const C = {
   gradRed: "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)",
   gradAmber: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
   gradViolet: "linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
-  shadowHover: "0 8px 24px rgba(15,23,42,0.1)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
+  shadowHover: "0 7px 0 rgba(14,165,233,0.16), 0 14px 28px rgba(15,23,42,0.08)",
 };
 
 // Export C so sub-components can import it
@@ -65,14 +65,14 @@ const roleBadge = (role) => {
 
 // Sidebar nav item 
 const SideNavItem = ({ tab, active, onClick }) => (
-  <motion.button onClick={onClick} whileTap={{ scale: 0.97 }}
-    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 12, border: `1px solid ${active ? C.emerald + "30" : "transparent"}`, background: active ? C.emeraldLight : "transparent", cursor: "pointer", transition: "all 0.15s" }}>
-    <div style={{ width: 34, height: 34, borderRadius: 10, background: active ? C.emerald : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+  <motion.button onClick={onClick} whileTap={{ scale: 0.97, y: 2 }}
+    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 4px 0 #047857" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
+    <div style={{ width: 34, height: 34, borderRadius: "50%", background: active ? "rgba(255,255,255,0.25)" : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       <tab.icon style={{ width: 16, height: 16, color: active ? "#fff" : C.textMuted }} />
     </div>
-    <span style={{ fontSize: 13, fontWeight: 600, color: active ? C.textPrimary : C.textSecondary, flex: 1, textAlign: "left" }}>{tab.label}</span>
+    <span style={{ fontSize: 14, fontWeight: 700, color: active ? "#fff" : C.textSecondary, flex: 1, textAlign: "left" }}>{tab.label}</span>
     {tab.count !== undefined && (
-      <span style={{ background: active ? C.emerald : C.border, color: active ? "#fff" : C.textMuted, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20 }}>{tab.count}</span>
+      <span style={{ background: active ? "#fff" : C.border, color: active ? C.emerald : C.textMuted, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20 }}>{tab.count}</span>
     )}
   </motion.button>
 );
@@ -80,7 +80,7 @@ const SideNavItem = ({ tab, active, onClick }) => (
 // Stat Card
 const StatCard = ({ icon: Icon, label, value, light, iconColor, onClick }) => (
   <motion.div whileHover={{ y: -2, boxShadow: C.shadowHover }} onClick={onClick}
-    style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard, cursor: onClick ? "pointer" : "default" }}>
+    style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard, cursor: onClick ? "pointer" : "default" }}>
     <div style={{ width: 40, height: 40, borderRadius: 12, background: light, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
       <Icon style={{ width: 20, height: 20, color: iconColor }} />
     </div>
@@ -120,9 +120,9 @@ function UserList({ users, isLoadingUsers, userError, setActiveView, adminDelete
   };
 
   return (
-    <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
+    <div style={{ background: C.card, borderRadius: 20, border: `2px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
       {/* Stats row */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 1, borderBottom: `1px solid ${C.border}`, background: C.border }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 1, borderBottom: `2px solid ${C.border}`, background: C.border }}>
         {[
           { label: "All Users", value: stats.all,     color: C.indigo,  bg: C.indigoLight },
           { label: "Students",  value: stats.student, color: C.cyan,    bg: C.cyanLight },
@@ -137,15 +137,15 @@ function UserList({ users, isLoadingUsers, userError, setActiveView, adminDelete
       </div>
 
       {/* Toolbar */}
-      <div style={{ display: "flex", gap: 10, padding: "16px 20px", borderBottom: `1px solid ${C.border}`, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 10, padding: "16px 20px", borderBottom: `2px solid ${C.border}`, flexWrap: "wrap" }}>
         <div style={{ flex: 1, minWidth: 200, position: "relative" }}>
           <Search style={{ width: 15, height: 15, color: C.textMuted, position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search users..."
-            style={{ width: "100%", paddingLeft: 36, paddingRight: 12, paddingTop: 9, paddingBottom: 9, borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
+            style={{ width: "100%", paddingLeft: 36, paddingRight: 12, paddingTop: 9, paddingBottom: 9, borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
             onFocus={e => e.target.style.borderColor = C.emerald} onBlur={e => e.target.style.borderColor = C.border} />
         </div>
         <select value={filterRole} onChange={e => setFilter(e.target.value)}
-          style={{ padding: "9px 14px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit" }}>
+          style={{ padding: "9px 14px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit" }}>
           <option value="all">All Roles</option>
           <option value="student">Students</option>
           <option value="tutor">Tutors</option>
@@ -171,7 +171,7 @@ function UserList({ users, isLoadingUsers, userError, setActiveView, adminDelete
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+              <tr style={{ borderBottom: `2px solid ${C.border}` }}>
                 {["Role", "Name / ID", "Email", "Details", "Actions"].map(h => (
                   <th key={h} style={{ padding: "12px 18px", textAlign: "left", fontSize: 11, fontWeight: 700, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.06em" }}>{h}</th>
                 ))}
@@ -185,7 +185,7 @@ function UserList({ users, isLoadingUsers, userError, setActiveView, adminDelete
                 const isSelf = (u.uid || u.id) === currentAdminUid;
                 return (
                   <motion.tr key={u.uid || u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    style={{ borderBottom: `1px solid ${C.border}`, transition: "background 0.1s" }}
+                    style={{ borderBottom: `2px solid ${C.border}`, transition: "background 0.1s" }}
                     onMouseEnter={e => e.currentTarget.style.background = C.bg}
                     onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                     <td style={{ padding: "14px 18px" }}>
@@ -266,7 +266,7 @@ function OverviewTab({ users, classes, setActiveView }) {
       {/* Two cols */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
         {/* Recent Users */}
-        <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+        <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
             <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, display: "flex", alignItems: "center", gap: 6 }}>
               <Users style={{ width: 15, height: 15, color: C.indigo }} />Recent Users
@@ -292,7 +292,7 @@ function OverviewTab({ users, classes, setActiveView }) {
 
         {/* Quick Actions */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+          <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
             <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, marginBottom: 14 }}>Quick Actions</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {[
@@ -312,7 +312,7 @@ function OverviewTab({ users, classes, setActiveView }) {
           </div>
 
           {/* Class summary */}
-          <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+          <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
             <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, marginBottom: 14 }}>Class Breakdown</h3>
             {[
               { label: "Completed", value: completedClasses.length, total: classes.length, color: C.emerald, bg: C.emeraldLight },
@@ -413,7 +413,7 @@ export default function AdminDashboard() {
   if (role !== "admin") {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: C.bg }}>
-        <div style={{ textAlign: "center", padding: 40, borderRadius: 24, background: C.card, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: 40, borderRadius: 24, background: C.card, border: `2px solid ${C.border}` }}>
           <ShieldCheck style={{ width: 48, height: 48, margin: "0 auto 12px", color: C.red }} />
           <h2 style={{ fontSize: 20, fontWeight: 800, color: C.textPrimary, marginBottom: 6 }}>Access Denied</h2>
           <p style={{ fontSize: 14, color: C.textMuted }}>This panel is for admins only.</p>
@@ -423,17 +423,17 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="px-dash" style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'Nunito', system-ui, sans-serif" }}>
 
       {/* ── SIDEBAR ── */}
-      <div style={{ width: 256, minWidth: 256, height: "100vh", background: C.sidebar, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0 }}>
+      <div style={{ width: 256, minWidth: 256, height: "100vh", background: C.sidebar, borderRight: `2px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0 }}>
         {/* Logo */}
-        <div style={{ padding: "20px 20px 16px", borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ padding: "20px 20px 16px", borderBottom: `2px solid ${C.border}` }}>
           <img src={PearlxLogo} alt="Pearlx" style={{ height: 40, width: "auto", objectFit: "contain" }} />
         </div>
 
         {/* Admin info */}
-        <div style={{ padding: "16px 14px", borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ padding: "16px 14px", borderBottom: `2px solid ${C.border}` }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
             <RoleAvatar role="admin" size={42} radius={13} />
             <div style={{ minWidth: 0 }}>
@@ -467,7 +467,7 @@ export default function AdminDashboard() {
         </nav>
 
         {/* Logout */}
-        <div style={{ padding: "12px 10px", borderTop: `1px solid ${C.border}` }}>
+        <div style={{ padding: "12px 10px", borderTop: `2px solid ${C.border}` }}>
           <motion.button onClick={logout} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
             style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderRadius: 12, border: `1px solid ${C.red}20`, background: C.redLight, color: C.red, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
             <LogOut style={{ width: 16, height: 16 }} /> Logout
@@ -478,7 +478,7 @@ export default function AdminDashboard() {
       {/* ── MAIN ── */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
         {/* Topbar */}
-        <div style={{ height: 62, background: "rgba(244,246,251,0.96)", borderBottom: `1px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", flexShrink: 0 }}>
+        <div style={{ height: 62, background: "rgba(242,248,252,0.96)", borderBottom: `2px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", flexShrink: 0 }}>
           <div>
             <h1 style={{ fontSize: 17, fontWeight: 800, color: C.textPrimary }}>
               {tabs.find(t => t.id === activeView)?.label || (activeView === "edit" ? "Edit User" : "Admin Portal")}

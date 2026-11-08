@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Sparkles, X } from "lucide-react";
-import { COLORS, GRADIENTS, SHADOWS } from "../utils/theme";
+import { COLORS, FONTS, edgeOf } from "../utils/theme";
+import { Pearl, Scribble } from "./ui/Brand";
 
 const KID_IMAGE = "/assets/kids/demo-popup.webp";
 
@@ -118,343 +119,103 @@ const DemoInterestPopup = ({ onBookDemo, delay = 5000 }) => {
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) close();
           }}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 2147483647,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "16px",
-            background: "rgba(15, 23, 42, 0.48)",
-            isolation: "isolate",
-          }}
+          className="fixed inset-0 flex items-center justify-center p-4"
+          style={{ zIndex: 2147483647, background: "rgba(11, 17, 32, 0.5)", isolation: "isolate" }}
         >
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-labelledby="pearlx-demo-popup-title"
-            className="pearlx-demo-popup-card"
-            initial={{ opacity: 0, y: 18, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 14, scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 420, damping: 30 }}
-            style={{
-              position: "relative",
-              width: "min(640px, calc(100vw - 40px))",
-              minHeight: "340px",
-              overflow: "hidden",
-              borderRadius: "30px",
-              border: `2px solid ${COLORS.white}`,
-              background: COLORS.white,
-              boxShadow: SHADOWS.lg,
-            }}
+            initial={{ opacity: 0, y: 30, scale: 0.9, rotate: -2 }}
+            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+            exit={{ opacity: 0, y: 14, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            className="relative w-full max-w-[660px] overflow-hidden rounded-[2.25rem] bg-white"
+            style={{ border: "3px solid #fff", boxShadow: `0 10px 0 ${COLORS.emerald}, 0 30px 70px rgba(0,0,0,0.3)`, fontFamily: FONTS.body }}
           >
-            {/* Tiny playful decorations */}
-            <div
-              style={{
-                position: "absolute",
-                width: "100px",
-                height: "100px",
-                right: "-45px",
-                top: "-45px",
-                borderRadius: "999px",
-                background: COLORS.cyanLight,
-                pointerEvents: "none",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                width: "70px",
-                height: "70px",
-                left: "-35px",
-                bottom: "-35px",
-                borderRadius: "999px",
-                background: COLORS.emeraldLight,
-                pointerEvents: "none",
-              }}
-            />
-
             {/* Close */}
             <button
               type="button"
               aria-label="Close"
               onClick={close}
-              style={{
-                position: "absolute",
-                top: "12px",
-                right: "12px",
-                zIndex: 5,
-                width: "30px",
-                height: "30px",
-                borderRadius: "999px",
-                border: `1px solid ${COLORS.border}`,
-                background: COLORS.white,
-                color: COLORS.textSecondary,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                boxShadow: SHADOWS.sm,
-              }}
+              className="absolute top-3.5 right-3.5 z-10 w-10 h-10 rounded-full bg-white flex items-center justify-center"
+              style={{ color: COLORS.ink, border: `2px solid ${COLORS.border}`, boxShadow: "0 3px 0 rgba(15,23,42,0.08)" }}
             >
-              <X size={15} strokeWidth={2.5} />
+              <X size={18} strokeWidth={2.8} />
             </button>
 
-            <div
-              style={{
-                position: "relative",
-                display: "grid",
-                gridTemplateColumns: "1.05fr 0.95fr",
-                minHeight: "340px",
-              }}
-            >
-              {/* LEFT: compact message */}
-              <div
-                style={{
-                  position: "relative",
-                  zIndex: 2,
-                  padding: "34px 12px 30px 36px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    width: "fit-content",
-                    padding: "5px 9px",
-                    borderRadius: "999px",
-                    background: COLORS.emeraldLight,
-                    color: COLORS.emerald,
-                    fontSize: "9px",
-                    lineHeight: 1,
-                    fontWeight: 900,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    marginBottom: "10px",
-                  }}
+            <div className="grid sm:grid-cols-[1.05fr_0.95fr]">
+              {/* LEFT: message */}
+              <div className="relative z-[2] px-7 pt-8 pb-7 sm:pl-9 sm:pr-4 sm:py-10 flex flex-col justify-center order-2 sm:order-1">
+                <Pearl size={16} color={COLORS.gold} style={{ top: 22, right: 24 }} float />
+                <span
+                  className="px-eyebrow w-fit"
+                  style={{ color: COLORS.emerald, background: COLORS.emeraldLight }}
                 >
-                  
-                  Free Demo
-                </div>
+                  <Sparkles size={13} /> Free Demo
+                </span>
 
                 <h2
                   id="pearlx-demo-popup-title"
-                  style={{
-                    margin: 0,
-                    maxWidth: "300px",
-                    color: COLORS.ink,
-                    fontSize: "36px",
-                    lineHeight: 0.98,
-                    fontWeight: 900,
-                    letterSpacing: "-0.045em",
-                  }}
+                  className="mt-4 text-[2.4rem] leading-[1] font-semibold"
+                  style={{ fontFamily: FONTS.display, color: COLORS.ink }}
                 >
                   Let them
                   <br />
-                  <span
-                    style={{
-                      background: GRADIENTS.textGlow,
-                      WebkitBackgroundClip: "text",
-                      backgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    try Pearlx.
-                  </span>
+                  <Scribble color={COLORS.gold} textColor={COLORS.emerald}>try Pearlx.</Scribble>
                 </h2>
 
-                <p
-                  style={{
-                    margin: "9px 0 0",
-                    maxWidth: "285px",
-                    color: COLORS.textSecondary,
-                    fontSize: "13px",
-                    lineHeight: 1.45,
-                    fontWeight: 600,
-                  }}
-                >
+                <p className="mt-4 text-[15px] font-bold leading-snug" style={{ color: COLORS.textSecondary }}>
                   One real class. No pressure.
                   <br />
                   Just see how they like it.
                 </p>
 
-                <div
-                  style={{
-                    marginTop: "17px",
-                    display: "grid",
-                    gap: "6px",
-                  }}
-                >
-                  {BENEFITS.map((benefit) => (
-                    <div
-                      key={benefit}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "7px",
-                        color: COLORS.textPrimary,
-                        fontSize: "10.5px",
-                        lineHeight: 1.2,
-                        fontWeight: 800,
-                      }}
-                    >
+                <div className="mt-5 grid gap-2">
+                  {BENEFITS.map((benefit, i) => (
+                    <div key={benefit} className="flex items-center gap-2.5 text-sm font-extrabold" style={{ color: COLORS.ink }}>
                       <span
-                        style={{
-                          width: "18px",
-                          height: "18px",
-                          flex: "0 0 18px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: "999px",
-                          background: COLORS.emeraldLight,
-                          color: COLORS.emerald,
-                        }}
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-white shrink-0"
+                        style={{ background: [COLORS.emerald, COLORS.cyan, COLORS.indigo][i % 3] }}
                       >
-                        <Check size={11} strokeWidth={3} />
+                        <Check size={13} strokeWidth={3.2} />
                       </span>
                       {benefit}
                     </div>
                   ))}
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "11px",
-                    marginTop: "20px",
-                  }}
-                >
-                  <motion.button
-                    type="button"
-                    onClick={handleBookDemo}
-                    whileHover={{ y: -2, scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      border: 0,
-                      borderRadius: "13px",
-                      padding: "11px 14px",
-                      background: GRADIENTS.primary,
-                      color: COLORS.white,
-                      fontSize: "11px",
-                      fontWeight: 900,
-                      cursor: "pointer",
-                      boxShadow: SHADOWS.hover,
-                    }}
-                  >
+                <div className="flex items-center gap-4 mt-7">
+                  <button type="button" onClick={handleBookDemo} className="px-btn px-btn--grad">
                     Book free demo
-                    <ArrowRight size={14} strokeWidth={2.8} />
-                  </motion.button>
-
-                  <button
-                    type="button"
-                    onClick={close}
-                    style={{
-                      border: 0,
-                      background: "transparent",
-                      padding: 0,
-                      color: COLORS.textMuted,
-                      fontSize: "10px",
-                      fontWeight: 800,
-                      cursor: "pointer",
-                    }}
-                  >
+                    <ArrowRight size={17} strokeWidth={2.8} />
+                  </button>
+                  <button type="button" onClick={close} className="text-sm font-extrabold hover:underline" style={{ color: COLORS.textMuted }}>
                     Maybe later
                   </button>
                 </div>
               </div>
 
-              {/* RIGHT: kid illustration — no separate image box */}
-              <div
-                style={{
-                  position: "relative",
-                  minWidth: 0,
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  justifyContent: "center",
-                  background: GRADIENTS.lightBg,
-                  clipPath: "ellipse(90% 82% at 100% 50%)",
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "33px",
-                    right: "30px",
-                    width: "9px",
-                    height: "9px",
-                    borderRadius: "50%",
-                    background: COLORS.gold,
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "63px",
-                    left: "25px",
-                    width: "7px",
-                    height: "7px",
-                    borderRadius: "50%",
-                    background: COLORS.emerald,
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "28px",
-                    left: "52px",
-                    width: "5px",
-                    height: "5px",
-                    borderRadius: "50%",
-                    background: COLORS.cyan,
-                  }}
-                />
-
+              {/* RIGHT: kid illustration in a pearl frame */}
+              <div className="relative order-1 sm:order-2 h-[210px] sm:h-auto overflow-hidden" style={{ background: "linear-gradient(160deg, #F0F9FF 0%, #ECFDF5 100%)" }}>
+                <div aria-hidden="true" className="absolute inset-0 px-dots opacity-60" />
                 <motion.img
                   src={KID_IMAGE}
                   alt="Child learning with Pearlx"
-                  initial={{ y: 8 }}
-                  animate={{ y: 0 }}
+                  initial={{ y: 10, scale: 1.04 }}
+                  animate={{ y: 0, scale: 1 }}
                   transition={{ type: "spring", stiffness: 160, damping: 18 }}
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    display: "block",
-                    width: "118%",
-                    height: "100%",
-                    minHeight: "340px",
-                    objectFit: "contain",
-                    objectPosition: "center bottom",
-                    alignSelf: "flex-end",
-                  }}
+                  className="absolute inset-0 w-full h-full object-cover object-top sm:object-contain sm:object-bottom"
                 />
+                {/* wavy edge between image and text */}
+                <svg aria-hidden="true" viewBox="0 0 30 400" preserveAspectRatio="none" className="hidden sm:block absolute left-0 top-0 h-full w-[30px]">
+                  <path d="M0 0 L18 0 C 30 60, 4 120, 16 200 S 30 330, 14 400 L0 400 Z" fill="#fff" />
+                </svg>
+                <svg aria-hidden="true" viewBox="0 0 400 30" preserveAspectRatio="none" className="sm:hidden absolute left-0 right-0 bottom-0 w-full h-[24px]">
+                  <path d="M0 30 L0 14 C 80 30, 160 0, 240 12 S 360 26, 400 10 L400 30 Z" fill="#fff" />
+                </svg>
               </div>
             </div>
-
-            {/* Mobile layout */}
-            <style>{`
-              @media (max-width: 560px) {
-                .pearlx-demo-popup-card {
-                  width: min(410px, calc(100vw - 24px)) !important;
-                  min-height: 270px !important;
-                }
-
-                .pearlx-demo-popup-card > div:last-of-type {
-                  min-height: 270px !important;
-                }
-              }
-            `}</style>
           </motion.div>
         </motion.div>
       )}

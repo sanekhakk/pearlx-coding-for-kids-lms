@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Play, CheckCircle2, Code2, Calculator, BookOpen } from "lucide-react";
+import { ArrowRight, Play, CheckCircle2, Code2, Calculator, BookOpen, Sparkles } from "lucide-react";
 import heroKid from "../assets/kids/heroKid.webp";
-
+import { COLORS, FONTS, edgeOf } from "../utils/theme";
+import { HeroStage, Sticker, Scribble, Wave, Pearl } from "./ui/Brand";
 
 const HeroSection = ({ openDemoModal }) => {
   const highlights = [
@@ -12,79 +13,68 @@ const HeroSection = ({ openDemoModal }) => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white pt-32 lg:pt-36">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 right-[-10%] w-[620px] h-[620px] rounded-full bg-cyan-100/50 blur-3xl" />
-        <div className="absolute top-[45%] left-[-15%] w-[520px] h-[520px] rounded-full bg-emerald-100/40 blur-3xl" />
-        <div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, #0F172A 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-      </div>
+    <section className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #F0F9FF 0%, #ECFDF5 100%)" }}>
+      <div aria-hidden="true" className="absolute inset-0 px-dots opacity-70" />
+      <Pearl size={18} color={COLORS.gold} style={{ top: "26%", left: "3%" }} float />
+      <Pearl size={12} color={COLORS.indigo} style={{ bottom: "22%", left: "44%" }} float delay={1.4} />
 
-      <div className="relative z-10 md:mx-30 px-5 sm:px-6 pt-10 md:pt-0">
-        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-8 lg:gap-12 items-center min-h-[calc(100vh-120px)] py-10 lg:py-14">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-40 sm:pt-44 lg:pt-40">
+        <div className="grid lg:grid-cols-[1.02fr_0.98fr] gap-6 lg:gap-10 items-center lg:min-h-[640px] pb-6">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
-            className="max-w-2xl"
+            transition={{ duration: 0.6 }}
+            className="text-center lg:text-left"
           >
-            {/* <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-xs font-bold text-emerald-700 mb-6">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live online classes for kids
-            </div> */}
-
-            <h1 className="text-[2.7rem] sm:text-5xl lg:text-[4.4rem] font-black leading-[0.98] tracking-[-0.045em] text-slate-950">
+            <h1
+              className="text-[2.75rem] sm:text-6xl lg:text-[4.6rem] font-semibold leading-[1.02]"
+              style={{ fontFamily: FONTS.display, color: COLORS.ink }}
+            >
               Help your child
-              <span className="block mt-2 bg-gradient-to-r from-sky-500 to-emerald-500 bg-clip-text text-transparent">
-                learn with confidence.
+              <span className="block mt-1">
+                learn with <Scribble color={COLORS.emerald} textColor={COLORS.cyan}>confidence.</Scribble>
               </span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-base sm:text-lg leading-7 text-slate-600">
+            <p className="mt-6 max-w-xl mx-auto lg:mx-0 text-lg sm:text-xl font-semibold leading-relaxed" style={{ color: COLORS.textSecondary }}>
               Coding, Maths and Academic Tuition designed around your child's
               age, level and learning pace.
             </p>
 
-            <div className="flex flex-wrap gap-2.5 mt-7">
-              {highlights.map(({ icon: Icon, label, color }) => (
-                <div
+            <div className="flex flex-wrap justify-center lg:justify-start gap-2.5 mt-7">
+              {highlights.map(({ icon: Icon, label, color }, i) => (
+                <motion.span
                   key={label}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.25 + i * 0.08, type: "spring", stiffness: 300 }}
+                  className="inline-flex items-center gap-2 rounded-full bg-white pl-1.5 pr-4 py-1.5 text-[15px] font-semibold"
+                  style={{ fontFamily: FONTS.display, color: COLORS.ink, border: `2px solid ${color}40`, boxShadow: `0 4px 0 ${color}30`, transform: `rotate(${[-2, 1.5, -1][i]}deg)` }}
                 >
-                  <Icon size={16} style={{ color }} />
+                  <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: `${color}1f`, color }}>
+                    <Icon size={17} strokeWidth={2.5} />
+                  </span>
                   {label}
-                </div>
+                </motion.span>
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              <button
-                onClick={() => openDemoModal("hero")}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5 hover:bg-slate-800"
-              >
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3.5 mt-9">
+              <button onClick={() => openDemoModal("hero")} className="px-btn px-btn--grad px-btn--lg">
+                <Sparkles size={18} />
                 Book a free trial
-                <ArrowRight size={17} />
+                <ArrowRight size={18} />
               </button>
-
-              <a
-                href="#programs"
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-              >
-                <Play size={16} />
+              <a href="#programs" className="px-btn px-btn--white px-btn--lg">
+                <Play size={17} className="fill-current" style={{ color: COLORS.emerald }} />
                 Explore programs
               </a>
             </div>
 
-            <div className="flex flex-wrap gap-x-6 gap-y-2 mt-7 text-xs font-semibold text-slate-500">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-2 mt-8 text-sm font-bold" style={{ color: COLORS.textSecondary }}>
               {["Personalised learning", "Small groups", "Parent updates"].map((item) => (
                 <span key={item} className="inline-flex items-center gap-1.5">
-                  <CheckCircle2 size={14} className="text-emerald-500" />
+                  <CheckCircle2 size={18} className="text-emerald-500" strokeWidth={2.6} />
                   {item}
                 </span>
               ))}
@@ -92,56 +82,26 @@ const HeroSection = ({ openDemoModal }) => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="relative flex items-center justify-center min-h-[420px] lg:min-h-[600px]"
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative"
           >
-            <div className="absolute w-[78%] aspect-square rounded-full bg-gradient-to-br from-sky-100 via-white to-emerald-100" />
-            <div className="absolute w-[88%] aspect-square rounded-full border border-slate-200/80" />
-            <div className="absolute w-[66%] aspect-square rounded-full border border-dashed border-emerald-200/80" />
-
-            <div className="relative z-10 w-full max-w-[500px]">
-              <img
-                src={heroKid}
-                alt="Child learning coding"
-                className="w-full h-auto object-contain drop-shadow-[0_28px_45px_rgba(15,23,42,0.16)]"
-              />
-            </div>
-
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-[8%] right-[2%] sm:right-[7%] rounded-2xl border border-white bg-white/95 backdrop-blur px-4 py-3 shadow-xl"
-            >
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Learning
-              </div>
-              <div className="text-sm font-extrabold text-slate-900">
-                At their own pace
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-              className="absolute bottom-[10%] left-[0%] sm:left-[4%] rounded-2xl border border-white bg-white/95 backdrop-blur px-4 py-3 shadow-xl"
-            >
-              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
-                Pearlx
-              </div>
-              <div className="text-sm font-extrabold text-slate-900">
-                Learn · Build · Grow
-              </div>
-            </motion.div>
+            <HeroStage image={heroKid} alt="Child learning coding" color={COLORS.cyan} second={COLORS.emerald}>
+              <Sticker className="top-[10%] right-[0%] sm:right-[2%]" rotate={4}>
+                <div className="text-[11px] font-extrabold uppercase tracking-wider" style={{ color: COLORS.cyan }}>Learning</div>
+                <div className="text-base font-semibold" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>At their own pace</div>
+              </Sticker>
+              <Sticker className="bottom-[12%] left-[0%]" rotate={-5} delay={1.2} style={{ background: COLORS.emerald, borderColor: COLORS.emerald, boxShadow: `0 5px 0 ${edgeOf(COLORS.emerald)}` }}>
+                <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-100">Pearlx</div>
+                <div className="text-base font-semibold text-white" style={{ fontFamily: FONTS.display }}>Learn · Build · Grow</div>
+              </Sticker>
+            </HeroStage>
           </motion.div>
         </div>
-
-        {/* <div className="border-t border-slate-100 py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
-          <span className="font-semibold">Built for curious minds. Trusted by parents.</span>
-          <span>Online • Interactive • Structured</span>
-        </div> */}
       </div>
+
+      <Wave fill="#FFFFFF" className="relative z-10 -mb-px" />
     </section>
   );
 };

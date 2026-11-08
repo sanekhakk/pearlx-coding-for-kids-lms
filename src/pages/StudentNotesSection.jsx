@@ -9,13 +9,13 @@ import { FileText, X, Calendar, User, Loader2, ChevronRight } from "lucide-react
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
   indigo: "#6366F1", indigoLight: "#EEF2FF",
   amber: "#F59E0B", amberLight: "#FFFBEB",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
   shadowModal: "0 24px 64px rgba(15,23,42,0.18)",
 };
 
@@ -29,7 +29,7 @@ function formatUploadDate(ts) {
 
 const NoteCard = ({ note, onClick }) => (
   <motion.button onClick={onClick} whileHover={{ y: -2, boxShadow: C.shadowCard }} whileTap={{ scale: 0.98 }}
-    style={{ textAlign: "left", width: "100%", background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16, cursor: "pointer" }}>
+    style={{ textAlign: "left", width: "100%", background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, padding: 16, cursor: "pointer" }}>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
       <div style={{ minWidth: 0 }}>
         <p style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, marginBottom: 4 }}>{note.topic}</p>
@@ -68,8 +68,8 @@ const markdownComponents = {
   ),
   code: (p) => <code style={{ background: C.bg, padding: "2px 6px", borderRadius: 4, fontSize: 13 }} {...p} />,
   table: (p) => <table style={{ width: "100%", borderCollapse: "collapse", margin: "12px 0", fontSize: 13 }} {...p} />,
-  th: (p) => <th style={{ border: `1px solid ${C.border}`, padding: 8, background: C.bg, textAlign: "left" }} {...p} />,
-  td: (p) => <td style={{ border: `1px solid ${C.border}`, padding: 8 }} {...p} />,
+  th: (p) => <th style={{ border: `2px solid ${C.border}`, padding: 8, background: C.bg, textAlign: "left" }} {...p} />,
+  td: (p) => <td style={{ border: `2px solid ${C.border}`, padding: 8 }} {...p} />,
 };
 
 export default function StudentNotesSection() {
@@ -114,7 +114,7 @@ export default function StudentNotesSection() {
 
   if (notes.length === 0) {
     return (
-      <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `1px solid ${C.border}` }}>
+      <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `2px solid ${C.border}` }}>
         <FileText style={{ width: 32, height: 32, color: C.textMuted, opacity: 0.5, margin: "0 auto 10px" }} />
         <p style={{ fontSize: 13, color: C.textMuted, fontWeight: 500 }}>No notes shared with you yet</p>
       </div>
@@ -158,7 +158,7 @@ export default function StudentNotesSection() {
                 )}
               </div>
 
-              <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
+              <div style={{ borderTop: `2px solid ${C.border}`, paddingTop: 16 }}>
                 <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                   {selected.content}
                 </ReactMarkdown>

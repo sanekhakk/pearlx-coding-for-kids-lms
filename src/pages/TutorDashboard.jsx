@@ -22,7 +22,7 @@ import PearlxLogo from "../assets/flat_logo.webp";
 import TutorNotesSection from "./TutorNotesSection";
 
 const C = {
-  bg: "#F4F6FB", sidebar: "#FFFFFF", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", sidebar: "#FFFFFF", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
@@ -36,8 +36,8 @@ const C = {
   gradRed: "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)",
   gradViolet: "linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)",
   gradAmber: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
-  shadowHover: "0 8px 24px rgba(15,23,42,0.1)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
+  shadowHover: "0 7px 0 rgba(14,165,233,0.16), 0 14px 28px rgba(15,23,42,0.08)",
   shadowModal: "0 24px 64px rgba(15,23,42,0.18)",
 };
 
@@ -69,7 +69,7 @@ const isClassDue = (cls) => {
 };
 
 const Empty = ({ icon: Icon, msg, color }) => (
-  <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `1px solid ${C.border}` }}>
+  <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `2px solid ${C.border}` }}>
     <div style={{ width: 52, height: 52, borderRadius: 14, background: color ? `${color}15` : "#F0F2F8", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
       <Icon style={{ width: 24, height: 24, color: color || C.textMuted, opacity: 0.5 }} />
     </div>
@@ -79,7 +79,7 @@ const Empty = ({ icon: Icon, msg, color }) => (
 
 const StatCard = ({ icon: Icon, label, value, light, iconColor, onClick, badge }) => (
   <motion.div whileHover={{ y: -2, boxShadow: C.shadowHover }} onClick={onClick}
-    style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px", boxShadow: C.shadowCard, cursor: onClick ? "pointer" : "default", position: "relative", overflow: "hidden" }}>
+    style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: "20px", boxShadow: C.shadowCard, cursor: onClick ? "pointer" : "default", position: "relative", overflow: "hidden" }}>
     {badge && <div style={{ position: "absolute", top: 12, right: 12, background: C.red, color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 20 }}>{badge}</div>}
     <div style={{ width: 40, height: 40, borderRadius: 12, background: light, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
       <Icon style={{ width: 20, height: 20, color: iconColor }} />
@@ -110,14 +110,14 @@ const Avatar = ({ url, name, size = 44, fontSize, radius }) => {
 };
 
 const SideNavItem = ({ tab, active, onClick }) => (
-  <motion.button onClick={onClick} whileTap={{ scale: 0.97 }}
-    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 12, border: `1px solid ${active ? C.emerald + "30" : "transparent"}`, background: active ? C.emeraldLight : "transparent", cursor: "pointer", transition: "all 0.15s" }}>
-    <div style={{ width: 34, height: 34, borderRadius: 10, background: active ? C.emerald : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+  <motion.button onClick={onClick} whileTap={{ scale: 0.97, y: 2 }}
+    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 4px 0 #047857" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
+    <div style={{ width: 34, height: 34, borderRadius: "50%", background: active ? "rgba(255,255,255,0.25)" : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       <tab.icon style={{ width: 16, height: 16, color: active ? "#fff" : C.textMuted }} />
     </div>
-    <span style={{ fontSize: 13, fontWeight: 600, color: active ? C.textPrimary : C.textSecondary, flex: 1, textAlign: "left" }}>{tab.label}</span>
+    <span style={{ fontSize: 14, fontWeight: 700, color: active ? "#fff" : C.textSecondary, flex: 1, textAlign: "left" }}>{tab.label}</span>
     {tab.count !== undefined && (
-      <span style={{ background: active ? C.emerald : C.border, color: active ? "#fff" : C.textMuted, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20 }}>{tab.count}</span>
+      <span style={{ background: active ? "#fff" : C.border, color: active ? C.emerald : C.textMuted, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20 }}>{tab.count}</span>
     )}
   </motion.button>
 );
@@ -298,13 +298,13 @@ const AttendanceModal = ({ classItem, onClose, markAttendance }) => {
                     <AlertTriangle style={{ width: 14, height: 14, flexShrink: 0 }} /> No curriculum found for this student's category. Ask admin to add curriculum data.
                   </div>
                 ) : (
-                  <div style={{ border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", maxHeight: 320, overflowY: "auto" }}>
+                  <div style={{ border: `2px solid ${C.border}`, borderRadius: 14, overflow: "hidden", maxHeight: 320, overflowY: "auto" }}>
                     {currModules.map((mod, mIdx) => {
                       const isOpen = expandedModules[mod.id];
                       const modOngoing   = (mod.lessons || []).filter(l => lessonStates[`M${mod.moduleNumber}:L${l.lessonNumber} ${l.title}`] === "ongoing").length;
                       const modCompleted = (mod.lessons || []).filter(l => lessonStates[`M${mod.moduleNumber}:L${l.lessonNumber} ${l.title}`] === "completed").length;
                       return (
-                        <div key={mod.id} style={{ borderBottom: mIdx < currModules.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                        <div key={mod.id} style={{ borderBottom: mIdx < currModules.length - 1 ? `2px solid ${C.border}` : "none" }}>
                           <div onClick={() => toggleModule(mod.id)}
                             style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", cursor: "pointer", background: isOpen ? C.bg : C.card, userSelect: "none" }}>
                             <MODULE_ICON style={{ width: 15, height: 15, color: C.textSecondary, flexShrink: 0 }} />
@@ -386,7 +386,7 @@ const AttendanceModal = ({ classItem, onClose, markAttendance }) => {
             </label>
             <textarea value={summary} onChange={e => setSummary(e.target.value)} rows={3}
               placeholder={status === "completed" ? "Any extra notes about today's class..." : "Reason for absence..."}
-              style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, resize: "none", outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
+              style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, resize: "none", outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
               onFocus={e => { e.target.style.borderColor = C.emerald; }} onBlur={e => { e.target.style.borderColor = C.border; }} />
 
             <button type="submit" disabled={loading}
@@ -515,7 +515,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
         style={{ background: C.card, borderRadius: 24, width: "100%", maxWidth: 560, maxHeight: "90vh", overflow: "hidden", boxShadow: C.shadowModal, display: "flex", flexDirection: "column" }}
         onClick={e => e.stopPropagation()}>
         <div style={{ height: 4, background: C.gradEmerald, flexShrink: 0 }} />
-        <div style={{ padding: "20px 24px 14px", borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
+        <div style={{ padding: "20px 24px 14px", borderBottom: `2px solid ${C.border}`, flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
             <div>
               <h3 style={{ fontSize: 15, fontWeight: 800, color: C.textPrimary, display: "flex", alignItems: "center", gap: 7 }}>
@@ -538,7 +538,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
                 {catInfo.label}
               </span>
             ) : (
-              <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.bg, color: C.textMuted, border: `1px solid ${C.border}`, flexShrink: 0 }}>
+              <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: C.bg, color: C.textMuted, border: `2px solid ${C.border}`, flexShrink: 0 }}>
                 No Category Set
               </span>
             )}
@@ -547,7 +547,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
 
         {/* Subject tabs */}
         {!isChapterBased && subjects.length > 1 && (
-          <div style={{ display: "flex", borderBottom: `1px solid ${C.border}`, flexShrink: 0, overflowX: "auto" }}>
+          <div style={{ display: "flex", borderBottom: `2px solid ${C.border}`, flexShrink: 0, overflowX: "auto" }}>
             {subjects.map(subj => (
               <button key={subj} onClick={() => setSelSubject(subj)}
                 style={{ padding: "10px 16px", border: "none", cursor: "pointer", fontWeight: selSubject === subj ? 700 : 500, fontSize: 13,
@@ -649,7 +649,7 @@ const ProgressUpdateModal = ({ student, onClose }) => {
               const modOngoing   = modLessons.filter(l => getLessonStatus(selSubject, `M${mod.moduleNumber}:L${l.lessonNumber} ${l.title}`) === "ongoing").length;
 
               return (
-                <div key={mod.id} style={{ borderBottom: `1px solid ${C.border}` }}>
+                <div key={mod.id} style={{ borderBottom: `2px solid ${C.border}` }}>
                   <div onClick={() => setExpandedMods(p => ({ ...p, [mod.id]: !p[mod.id] }))}
                     style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 24px", cursor: "pointer", background: isOpen ? C.bg : C.card, userSelect: "none" }}>
                     <MODULE_ICON style={{ width: 16, height: 16, color: C.textSecondary, flexShrink: 0 }} />
@@ -972,7 +972,7 @@ function TutorStudentCurriculumModules({ course, category, isMobile }) {
         const isOpen = !!expanded[mod.id];
         const lessons = (mod.lessons || []).slice().sort((a, b) => a.lessonNumber - b.lessonNumber);
         return (
-          <div key={mod.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden" }}>
+          <div key={mod.id} style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, overflow: "hidden" }}>
             {/* Module header — closed by default, click to drop down lessons */}
             <div onClick={() => setExpanded(p => ({ ...p, [mod.id]: !p[mod.id] }))}
               style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", cursor: "pointer", userSelect: "none" }}>
@@ -989,11 +989,11 @@ function TutorStudentCurriculumModules({ course, category, isMobile }) {
               {isOpen && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
                   {/* Each lesson: medium-size row — banner thumbnail on the left, lesson info on the right */}
-                  <div style={{ borderTop: `1px solid ${C.border}`, padding: 14, display: "flex", flexDirection: "column", gap: 12, background: C.bg }}>
+                  <div style={{ borderTop: `2px solid ${C.border}`, padding: 14, display: "flex", flexDirection: "column", gap: 12, background: C.bg }}>
                     {lessons.length === 0 ? (
                       <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", padding: "10px 0" }}>No lessons yet</p>
                     ) : lessons.map(lesson => (
-                      <div key={lesson.id} style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 10 : 16, borderRadius: 14, background: C.card, border: `1px solid ${C.border}`, padding: 12 }}>
+                      <div key={lesson.id} style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 10 : 16, borderRadius: 14, background: C.card, border: `2px solid ${C.border}`, padding: 12 }}>
                         {/* Medium-size banner thumbnail — full width on top for mobile, fixed width on the left for desktop */}
                         <div style={{ width: isMobile ? "100%" : 220, flexShrink: 0, borderRadius: 10, overflow: "hidden" }}>
                           <LessonBanner url={lesson.bannerImageUrl} alt={lesson.title} iconColor={col.text} bg={col.light} />
@@ -1088,7 +1088,7 @@ function TutorStudentDetailPage({ student, onBack, onOpenProgress, isMobile }) {
       </button>
 
       {/* Student header card */}
-      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 20, padding: 22, boxShadow: C.shadowCard, marginBottom: 22, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
+      <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 20, padding: 22, boxShadow: C.shadowCard, marginBottom: 22, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
         <Avatar url={student.photoURL} name={student.name} size={64} fontSize={26} />
         <div style={{ flex: 1, minWidth: 180 }}>
           <p style={{ fontWeight: 800, fontSize: 18, color: C.textPrimary }}>{student.name}</p>
@@ -1109,7 +1109,7 @@ function TutorStudentDetailPage({ student, onBack, onOpenProgress, isMobile }) {
           <p style={{ fontSize: 11, fontWeight: 700, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>Subjects</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {(student.assignments || []).map((a, i) => (
-              <span key={i} style={{ padding: "6px 14px", borderRadius: 20, background: C.bg, border: `1px solid ${C.border}`, fontSize: 12, fontWeight: 600, color: C.textSecondary }}>{a.subject}</span>
+              <span key={i} style={{ padding: "6px 14px", borderRadius: 20, background: C.bg, border: `2px solid ${C.border}`, fontSize: 12, fontWeight: 600, color: C.textSecondary }}>{a.subject}</span>
             ))}
           </div>
         </div>
@@ -1291,7 +1291,7 @@ export default function TutorDashboard() {
 
   const SidebarContent = () => (
     <>
-      <div style={{ padding: "20px 20px 16px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ padding: "20px 20px 16px", borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <img src={PearlxLogo} alt="Pearlx" style={{ height: 40, width: "auto", objectFit: "contain" }} />
         {isMobile && (
           <button onClick={() => setSidebarOpen(false)} style={{ background: C.bg, border: "none", borderRadius: "50%", width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
@@ -1299,7 +1299,7 @@ export default function TutorDashboard() {
           </button>
         )}
       </div>
-      <div style={{ padding: "16px 14px", borderBottom: `1px solid ${C.border}` }}>
+      <div style={{ padding: "16px 14px", borderBottom: `2px solid ${C.border}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
           <div style={{ width: 42, height: 42, borderRadius: 13, background: C.gradEmerald, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 17, flexShrink: 0 }}>
             {tutorData?.name?.charAt(0) || "T"}
@@ -1324,7 +1324,7 @@ export default function TutorDashboard() {
         <p style={{ fontSize: 10, fontWeight: 700, color: C.textMuted, letterSpacing: "0.08em", textTransform: "uppercase", padding: "4px 6px 8px" }}>MAIN MENU</p>
         {tabs.map(tab => <SideNavItem key={tab.id} tab={tab} active={activeTab === tab.id} onClick={() => handleTabChange(tab.id)} />)}
       </nav>
-      <div style={{ padding: "12px 10px", borderTop: `1px solid ${C.border}` }}>
+      <div style={{ padding: "12px 10px", borderTop: `2px solid ${C.border}` }}>
         <motion.button onClick={logout} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
           style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderRadius: 12, border: `1px solid ${C.red}20`, background: C.redLight, color: C.red, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
           <LogOut style={{ width: 16, height: 16 }} /> Logout
@@ -1334,7 +1334,7 @@ export default function TutorDashboard() {
   );
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="px-dash" style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'Nunito', system-ui, sans-serif" }}>
       <AnimatePresence>
         {isMobile && sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -1347,18 +1347,18 @@ export default function TutorDashboard() {
         style={{
           width: 256, minWidth: 256, height: "100dvh", overflowY: "auto", paddingBottom: 100,
           WebkitOverflowScrolling: "touch", overscrollBehavior: "contain",
-          background: C.sidebar, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0,
+          background: C.sidebar, borderRight: `2px solid ${C.border}`, display: "flex", flexDirection: "column", flexShrink: 0,
           position: isMobile ? "fixed" : "relative", zIndex: isMobile ? 1000 : "auto", top: 0, left: 0
         }}>
         <SidebarContent />
       </motion.div>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
-        <div style={{ height: 62, background: "rgba(244,246,251,0.96)", borderBottom: `1px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", flexShrink: 0, gap: 10, position: "relative", zIndex: 10, transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden" }}>
+        <div style={{ height: 62, background: "rgba(242,248,252,0.96)", borderBottom: `2px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", flexShrink: 0, gap: 10, position: "relative", zIndex: 10, transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
             {isMobile && (
               <button onClick={() => setSidebarOpen(true)}
-                style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}>
+                style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 10, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}>
                 <Menu style={{ width: 18, height: 18, color: C.textPrimary }} />
               </button>
             )}
@@ -1416,7 +1416,7 @@ export default function TutorDashboard() {
                   <StatCard icon={AlertCircle} label="Attendance Due" value={dueCount} light={dueCount > 0 ? C.redLight : C.bg} iconColor={dueCount > 0 ? C.red : C.textMuted} badge={dueCount > 0 ? "!" : null} onClick={dueCount > 0 ? () => handleTabChange("activeClasses") : null} />
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20 }}>
-                  <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+                  <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                       <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, display: "flex", alignItems: "center", gap: 6 }}><Calendar style={{ width: 15, height: 15, color: C.indigo }} />Upcoming Classes</h3>
                       <button onClick={() => handleTabChange("activeClasses")} style={{ fontSize: 12, color: C.indigo, fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>View all →</button>
@@ -1452,7 +1452,7 @@ export default function TutorDashboard() {
                         </div>
                       )}
                   </div>
-                  <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+                  <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                       <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, display: "flex", alignItems: "center", gap: 6 }}><Users style={{ width: 15, height: 15, color: C.emerald }} />My Students</h3>
                       <button onClick={() => handleTabChange("students")} style={{ fontSize: 12, color: C.emerald, fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>View all →</button>
@@ -1525,7 +1525,7 @@ export default function TutorDashboard() {
                           <motion.button key={s.uid} onClick={() => setSelectedStudentId(s.uid)}
                             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                             whileHover={{ y: -4, boxShadow: C.shadowHover }} whileTap={{ scale: 0.98 }}
-                            style={{ aspectRatio: "2 / 1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, background: C.card, border: `1px solid ${C.border}`, borderRadius: 20, padding: 20, cursor: "pointer", textAlign: "center", boxShadow: C.shadowCard, fontFamily: "inherit" }}>
+                            style={{ aspectRatio: "2 / 1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, background: C.card, border: `2px solid ${C.border}`, borderRadius: 20, padding: 20, cursor: "pointer", textAlign: "center", boxShadow: C.shadowCard, fontFamily: "inherit" }}>
                             <Avatar url={s.photoURL} name={s.name} size={150} fontSize={22} />
                             <p style={{ fontWeight: 800, fontSize: 20, color: C.textPrimary, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%" }}>{s.name}</p>
                             <p style={{ fontSize: 15, color: C.textMuted }}>Class {s.classLevel || s.grade || "\u2014"}</p>
@@ -1579,7 +1579,7 @@ export default function TutorDashboard() {
                     const catInfo = catLabel[s.category];
                     return (
                       <motion.div key={s.uid} whileHover={{ y: -3, boxShadow: C.shadowHover }}
-                        style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard }}>
+                        style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard }}>
                         {/* Student header */}
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                           <Avatar url={s.photoURL} name={s.name} size={38} fontSize={16} />

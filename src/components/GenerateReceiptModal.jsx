@@ -8,7 +8,7 @@ import { downloadReceiptAsPdf } from "../utils/downloadReceiptPdf";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   red: "#EF4444", redLight: "#FEF2F2",
@@ -17,7 +17,7 @@ const C = {
 };
 
 const inputStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 10, border: `1px solid ${C.border}`,
+  width: "100%", padding: "10px 12px", borderRadius: 10, border: `2px solid ${C.border}`,
   background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box",
 };
 
@@ -99,7 +99,7 @@ export default function GenerateReceiptModal({ student, onClose }) {
           style={{ background: C.card, borderRadius: 20, boxShadow: C.shadowModal, width: "100%", maxWidth: receipt ? 800 : 460, maxHeight: "90vh", overflowY: "auto" }}>
 
           {/* Header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: `1px solid ${C.border}`, position: "sticky", top: 0, background: C.card, zIndex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: `2px solid ${C.border}`, position: "sticky", top: 0, background: C.card, zIndex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: C.emeraldLight, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Receipt style={{ width: 18, height: 18, color: C.emerald }} />
@@ -157,7 +157,7 @@ export default function GenerateReceiptModal({ student, onClose }) {
               </div>
             ) : (
               <div>
-                <div style={{ border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", marginBottom: 18, background: "#F8FAFC" }}>
+                <div style={{ border: `2px solid ${C.border}`, borderRadius: 14, overflow: "hidden", marginBottom: 18, background: "#F8FAFC" }}>
                   <div style={{ transform: "scale(0.92)", transformOrigin: "top center", padding: "16px 0" }}>
                     <ReceiptDocument ref={receiptRef} receipt={receipt} />
                   </div>
@@ -177,7 +177,7 @@ export default function GenerateReceiptModal({ student, onClose }) {
                     {isDownloading ? "Preparing PDF..." : "Download PDF"}
                   </motion.button>
                   <button onClick={onClose}
-                    style={{ padding: "12px 20px", borderRadius: 12, border: `1px solid ${C.border}`, background: C.card, color: C.textSecondary, fontWeight: 600, fontSize: 14, cursor: "pointer" }}>
+                    style={{ padding: "12px 20px", borderRadius: 12, border: `2px solid ${C.border}`, background: C.card, color: C.textSecondary, fontWeight: 600, fontSize: 14, cursor: "pointer" }}>
                     Close
                   </button>
                 </div>

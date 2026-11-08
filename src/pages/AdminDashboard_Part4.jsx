@@ -11,7 +11,7 @@ import { convertTo12Hour } from "../utils/timeUtils";
 import GenerateReceiptModal from "../components/GenerateReceiptModal";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
@@ -25,8 +25,8 @@ const C = {
   gradIndigo: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
   gradAmber: "linear-gradient(135deg, #F59E0B 0%, #D97706 100%)",
   gradViolet: "linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
-  shadowHover: "0 8px 24px rgba(15,23,42,0.1)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
+  shadowHover: "0 7px 0 rgba(14,165,233,0.16), 0 14px 28px rgba(15,23,42,0.08)",
 };
 
 const statusCfg = {
@@ -39,7 +39,7 @@ const statusCfg = {
 // Stat Card 
 const MiniStatCard = ({ icon: Icon, label, value, grad, light, iconColor }) => (
   <motion.div whileHover={{ y: -2 }}
-    style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 18px", boxShadow: C.shadowCard }}>
+    style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, padding: "16px 18px", boxShadow: C.shadowCard }}>
     <div style={{ width: 36, height: 36, borderRadius: 10, background: light, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
       <Icon style={{ width: 18, height: 18, color: iconColor }} />
     </div>
@@ -115,7 +115,7 @@ const StudentCard = ({ student, classCount, onSelect }) => {
     <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
       whileHover={{ y: -4, boxShadow: C.shadowHover }}
       onClick={() => onSelect(student)}
-      style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 18, boxShadow: C.shadowCard, cursor: "pointer" }}>
+      style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: 18, boxShadow: C.shadowCard, cursor: "pointer" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 42, height: 42, borderRadius: 13, background: C.gradPrimary, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 17, flexShrink: 0 }}>
@@ -179,7 +179,7 @@ const StudentDetailView = ({ student, classes, onBack, onDeleteClass, isDeleting
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, marginBottom: 20, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <motion.button onClick={onBack} whileHover={{ scale: 1.05 }}
-            style={{ width: 38, height: 38, borderRadius: 11, border: `1px solid ${C.border}`, background: C.card, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+            style={{ width: 38, height: 38, borderRadius: 11, border: `2px solid ${C.border}`, background: C.card, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
             <ArrowLeft style={{ width: 16, height: 16, color: C.textMuted }} />
           </motion.button>
           <div>
@@ -208,7 +208,7 @@ const StudentDetailView = ({ student, classes, onBack, onDeleteClass, isDeleting
       </div>
 
       {/* Attendance bar */}
-      <div style={{ background: C.card, borderRadius: 16, padding: "16px 20px", border: `1px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16 }}>
+      <div style={{ background: C.card, borderRadius: 16, padding: "16px 20px", border: `2px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
           <span style={{ fontSize: 13, fontWeight: 700, color: C.textSecondary }}>Attendance Rate</span>
           <span style={{ fontSize: 13, fontWeight: 800, color: attendancePct >= 75 ? C.emerald : C.red }}>{attendancePct}%</span>
@@ -220,10 +220,10 @@ const StudentDetailView = ({ student, classes, onBack, onDeleteClass, isDeleting
       </div>
 
       {/* Filter */}
-      <div style={{ background: C.card, borderRadius: 16, padding: "14px 16px", border: `1px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>
+      <div style={{ background: C.card, borderRadius: 16, padding: "14px 16px", border: `2px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16, display: "flex", alignItems: "center", gap: 10 }}>
         <Filter style={{ width: 15, height: 15, color: C.textMuted, flexShrink: 0 }} />
         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
-          style={{ flex: 1, padding: "8px 12px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit" }}>
+          style={{ flex: 1, padding: "8px 12px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit" }}>
           <option value="all">All Status ({stats.total})</option>
           <option value="scheduled">Scheduled ({stats.scheduled})</option>
           <option value="completed">Completed ({stats.completed})</option>
@@ -234,7 +234,7 @@ const StudentDetailView = ({ student, classes, onBack, onDeleteClass, isDeleting
 
       {/* Classes grid */}
       {filtered.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "48px", borderRadius: 16, background: C.card, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: "48px", borderRadius: 16, background: C.card, border: `2px solid ${C.border}` }}>
           <Calendar style={{ width: 40, height: 40, margin: "0 auto 12px", color: C.textMuted, opacity: 0.4 }} />
           <p style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>No classes found</p>
           <p style={{ fontSize: 12, color: C.textMuted, marginTop: 4 }}>{filterStatus !== "all" ? "Try a different filter" : "No classes scheduled yet"}</p>
@@ -325,11 +325,11 @@ export function ClassesOverview({ setActiveView, adminDeleteClass }) {
           </div>
 
           {/* Search */}
-          <div style={{ background: C.card, borderRadius: 16, padding: "14px 16px", border: `1px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16 }}>
+          <div style={{ background: C.card, borderRadius: 16, padding: "14px 16px", border: `2px solid ${C.border}`, boxShadow: C.shadowCard, marginBottom: 16 }}>
             <div style={{ position: "relative", marginBottom: 8 }}>
               <Search style={{ width: 15, height: 15, color: C.textMuted, position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
               <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search students by name or ID..."
-                style={{ width: "100%", paddingLeft: 36, paddingRight: 12, paddingTop: 9, paddingBottom: 9, borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
+                style={{ width: "100%", paddingLeft: 36, paddingRight: 12, paddingTop: 9, paddingBottom: 9, borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
                 onFocus={e => e.target.style.borderColor = C.emerald} onBlur={e => e.target.style.borderColor = C.border} />
             </div>
             <p style={{ fontSize: 12, color: C.textMuted }}>Showing {filteredStudents.length} of {students.length} students · click to view class history</p>
@@ -346,7 +346,7 @@ export function ClassesOverview({ setActiveView, adminDeleteClass }) {
               <p style={{ fontSize: 13, color: C.red }}>{error}</p>
             </div>
           ) : filteredStudents.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "60px", borderRadius: 16, background: C.card, border: `1px solid ${C.border}` }}>
+            <div style={{ textAlign: "center", padding: "60px", borderRadius: 16, background: C.card, border: `2px solid ${C.border}` }}>
               <GraduationCap style={{ width: 40, height: 40, margin: "0 auto 12px", color: C.textMuted, opacity: 0.4 }} />
               <p style={{ fontSize: 15, fontWeight: 700, color: C.textMuted }}>{search ? "No students found" : "No students registered yet"}</p>
             </div>

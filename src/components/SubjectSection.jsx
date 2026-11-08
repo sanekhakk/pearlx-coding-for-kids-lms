@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Calculator,
   Brain,
-  Layers,
 } from "lucide-react";
 
 import {
@@ -25,7 +24,8 @@ import {
 } from "react-icons/si";
 
 import { getWhatsAppLink } from "../utils/whatsapp";
-import { COLORS, GRADIENTS, SHADOWS } from "../utils/theme";
+import { COLORS, FONTS, edgeOf } from "../utils/theme";
+import { SectionHeader, Scribble, PearlScatter, Wave } from "./ui/Brand";
 
 /* =========================================================
    COURSE BANNERS
@@ -271,695 +271,137 @@ const formatPrice = (price) =>
 ========================================================= */
 
 const SubjectSection = () => {
-  const [activeCourse, setActiveCourse] =
-    useState("python");
+  const [activeCourse, setActiveCourse] = useState("python");
+  const [activeLevel, setActiveLevel] = useState("intermediate");
+  const [classCount, setClassCount] = useState(30);
 
-  const [activeLevel, setActiveLevel] =
-    useState("intermediate");
-
-  const [classCount, setClassCount] =
-    useState(30);
-
-  const course =
-    COURSES.find(
-      (item) => item.id === activeCourse
-    ) || COURSES[0];
-
-  const level =
-    LEVELS.find(
-      (item) => item.id === activeLevel
-    ) || LEVELS[1];
-
+  const course = COURSES.find((item) => item.id === activeCourse) || COURSES[0];
+  const level = LEVELS.find((item) => item.id === activeLevel) || LEVELS[1];
   const CourseIcon = course.icon;
+  const pricePerClass = course.prices[activeLevel];
+  const totalPrice = pricePerClass * classCount;
 
-  const pricePerClass =
-    course.prices[activeLevel];
-
-  const totalPrice =
-    pricePerClass * classCount;
-
-  /* =======================================================
-     CHANGE COURSE
-  ======================================================= */
-
+  /* ---------- change course ---------- */
   const changeCourse = (direction) => {
-    const currentIndex =
-      COURSES.findIndex(
-        (item) => item.id === activeCourse
-      );
-
+    const currentIndex = COURSES.findIndex((item) => item.id === activeCourse);
     let nextIndex;
-
     if (direction === "next") {
       nextIndex = currentIndex + 1;
-
-      if (nextIndex >= COURSES.length) {
-        nextIndex = 0;
-      }
+      if (nextIndex >= COURSES.length) nextIndex = 0;
     } else {
       nextIndex = currentIndex - 1;
-
-      if (nextIndex < 0) {
-        nextIndex = COURSES.length - 1;
-      }
+      if (nextIndex < 0) nextIndex = COURSES.length - 1;
     }
-
-    setActiveCourse(
-      COURSES[nextIndex].id
-    );
+    setActiveCourse(COURSES[nextIndex].id);
   };
 
-  /* =======================================================
-     WHATSAPP
-  ======================================================= */
-
+  /* ---------- whatsapp ---------- */
   const handleEnquiry = () => {
     const message = `Hi! I'm interested in the ${course.name} course at Pearlx.
-
 Level: ${level.name}
 Classes: ${classCount}
 Price: ${formatPrice(totalPrice)}
-
 I'd like to know more about the course and available timings.`;
-
-    window.open(
-      getWhatsAppLink(message),
-      "_blank"
-    );
+    window.open(getWhatsAppLink(message), "_blank");
   };
 
   return (
     <section
       id="curriculum"
-      className="
-        relative
-        overflow-hidden
-        py-16
-        sm:py-20
-        lg:py-24
-      "
-      style={{
-        background: COLORS.bgSecondary,
-      }}
+      className="relative overflow-hidden"
+      style={{ background: COLORS.bgSecondary }}
     >
+      <Wave fill="#FFFFFF" flip className="absolute top-0 left-0 right-0 z-[1]" />
+      <div aria-hidden="true" className="absolute inset-0 px-dots opacity-60" />
+      <PearlScatter variant="a" />
 
-      {/* =====================================================
-          BACKGROUND
-      ====================================================== */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          pointer-events-none
-          overflow-hidden
-        "
-      >
-
-        <div
-          className="
-            absolute
-            -top-40
-            -left-32
-            w-80
-            h-80
-            rounded-full
-            blur-3xl
-            opacity-50
-          "
-          style={{
-            background: COLORS.cyanLight,
-          }}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-20 sm:pt-24 pb-16 sm:pb-24">
+        <SectionHeader
+          eyebrow="✦ Pearlx Learning"
+          color={COLORS.cyan}
+          title={
+            <>
+              Choose what
+              <br />
+              <Scribble color={COLORS.emerald} textColor={COLORS.emerald}>you want to learn.</Scribble>
+            </>
+          }
+          sub="Explore courses, choose your level and find the package that works for you."
+          className="mb-10 sm:mb-12"
         />
 
+        {/* ---------- STEP 1 · COURSE SHELF ---------- */}
+        <StepLabel n={1} text="Courses" hint="Swipe to explore →" />
         <div
-          className="
-            absolute
-            -bottom-40
-            -right-32
-            w-96
-            h-96
-            rounded-full
-            blur-3xl
-            opacity-50
-          "
-          style={{
-            background: COLORS.emeraldLight,
-          }}
-        />
-
-      </div>
-
-      {/* =====================================================
-          MAIN CONTAINER
-      ====================================================== */}
-
-      <div
-        className="
-          relative
-          z-10
-          w-full
-          px-4
-          sm:px-6
-          lg:px-10
-          xl:px-16
-        "
-      >
-
-        {/* ===================================================
-            HEADER
-        ==================================================== */}
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 18,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          className="
-            max-w-2xl
-            mx-auto
-            text-center
-            mb-8
-            sm:mb-10
-          "
+          className="flex lg:grid lg:grid-cols-6 gap-2.5 sm:gap-3 overflow-x-auto lg:overflow-visible pb-3 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0"
         >
-
-          <div
-            className="
-              inline-flex
-              items-center
-              gap-2
-              px-3
-              py-1.5
-              rounded-full
-              text-[9px]
-              font-black
-              uppercase
-              tracking-widest
-              mb-4
-            "
-            style={{
-              background:
-                COLORS.emeraldLight,
-              color:
-                COLORS.emerald,
-            }}
-          >
-            <span>✦</span>
-            Pearlx Learning
-          </div>
-
-          <h2
-            className="
-              font-black
-              tracking-tight
-              leading-[0.98]
-              text-4xl
-              sm:text-5xl
-              lg:text-6xl
-            "
-            style={{
-              color: COLORS.ink,
-              letterSpacing:
-                "-0.055em",
-            }}
-          >
-            Choose what
-            <br />
-
-            <span
-              style={{
-                background:
-                  GRADIENTS.textGlow,
-                WebkitBackgroundClip:
-                  "text",
-                WebkitTextFillColor:
-                  "transparent",
-                backgroundClip:
-                  "text",
-              }}
-            >
-              you want to learn.
-            </span>
-          </h2>
-
-          <p
-            className="
-              mt-4
-              text-sm
-              sm:text-base
-              leading-relaxed
-            "
-            style={{
-              color:
-                COLORS.textSecondary,
-            }}
-          >
-            Explore courses, choose your
-            level and find the package
-            that works for you.
-          </p>
-
-        </motion.div>
-
-        {/* ===================================================
-            MOBILE COURSE NAVIGATION
-        ==================================================== */}
-
-        <div
-          className="
-            lg:hidden
-            mb-5
-          "
-        >
-
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-              mb-2.5
-            "
-          >
-
-            <span
-              className="
-                text-xs
-                font-black
-              "
-              style={{
-                color:
-                  COLORS.ink,
-              }}
-            >
-              Courses
-            </span>
-
-            <span
-              className="
-                text-[9px]
-                font-bold
-              "
-              style={{
-                color:
-                  COLORS.textMuted,
-              }}
-            >
-              Swipe to explore →
-            </span>
-
-          </div>
-
-          <div
-            className="
-              flex
-              gap-2
-              overflow-x-auto
-              pb-2
-              snap-x
-              snap-mandatory
-              scrollbar-hide
-            "
-            style={{
-              scrollbarWidth:
-                "none",
-            }}
-          >
-
-            {COURSES.map((item) => {
-
-              const ItemIcon =
-                item.icon;
-
-              const selected =
-                item.id === activeCourse;
-
-              return (
-                <button
-                  key={item.id}
-                  onClick={() =>
-                    setActiveCourse(
-                      item.id
-                    )
-                  }
-                  className="
-                    snap-start
-                    shrink-0
-                    flex
-                    items-center
-                    gap-2
-                    px-3.5
-                    py-3
-                    rounded-xl
-                    border-2
-                    transition-all
-                    active:scale-95
-                  "
-                  style={{
-                    background:
-                      selected
-                        ? COLORS.white
-                        : "rgba(255,255,255,0.65)",
-
-                    borderColor:
-                      selected
-                        ? item.iconColor
-                        : COLORS.border,
-
-                    boxShadow:
-                      selected
-                        ? SHADOWS.sm
-                        : "none",
-                  }}
+          {COURSES.map((item) => {
+            const ItemIcon = item.icon;
+            const selected = item.id === activeCourse;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveCourse(item.id)}
+                className="snap-start shrink-0 flex lg:flex-col items-center lg:items-start gap-2.5 rounded-3xl px-3.5 py-3 lg:p-4 text-left transition-all duration-200"
+                style={{
+                  background: selected ? COLORS.white : "rgba(255,255,255,0.75)",
+                  border: `2px solid ${selected ? item.iconColor : COLORS.border}`,
+                  boxShadow: selected ? `0 5px 0 ${item.iconColor}55` : "0 3px 0 rgba(15,23,42,0.04)",
+                  transform: selected ? "translateY(-3px)" : "none",
+                }}
+              >
+                <span
+                  className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl flex items-center justify-center shrink-0"
+                  style={{ background: `${item.iconColor}18` }}
                 >
-
-                  <ItemIcon
-                    className="
-                      w-5.5
-                      h-5.5
-                    "
-                    style={{
-                      color:
-                        item.iconColor,
-                    }}
-                  />
-
-                  <span
-                    className="
-                      text-[11px]
-                      font-black
-                      whitespace-nowrap
-                    "
-                    style={{
-                      color:
-                        selected
-                          ? COLORS.ink
-                          : COLORS.textMuted,
-                    }}
-                  >
-                    {item.name}
-                  </span>
-
-                </button>
-              );
-            })}
-
-          </div>
-
+                  <ItemIcon className="w-5 h-5 lg:w-6 lg:h-6" style={{ color: item.iconColor }} />
+                </span>
+                <span
+                  className="text-[15px] font-semibold whitespace-nowrap lg:whitespace-normal leading-tight"
+                  style={{ fontFamily: FONTS.display, color: selected ? COLORS.ink : COLORS.textSecondary }}
+                >
+                  {item.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* ===================================================
-            DESKTOP EXPLORER
-        ==================================================== */}
-
-        <div
-          className="
-            hidden
-            lg:grid
-            lg:grid-cols-[320px_minmax(0,1fr)]
-            xl:grid-cols-[350px_minmax(0,1fr)]
-            gap-5
-            xl:gap-6
-            items-stretch
-          "
-        >
-
-          {/* =================================================
-              COURSE LIST
-          ================================================== */}
-
-          <div
-            className="
-              rounded-[2rem]
-              bg-white
-              border
-              p-3.5
-              h-full
-              flex
-              flex-col
-            "
-            style={{
-              borderColor:
-                COLORS.border,
-              boxShadow:
-                SHADOWS.card,
-            }}
-          >
-
-            <div
-              className="
-                px-3
-                pt-2
-                pb-4
-              "
-            >
-
-              <div
-                className="
-                  text-[9px]
-                  font-black
-                  uppercase
-                  tracking-widest
-                "
-                style={{
-                  color:
-                    COLORS.textMuted,
-                }}
-              >
-                Explore
-              </div>
-
-              <div
-                className="
-                  text-lg
-                  font-black
-                  mt-1
-                "
-                style={{
-                  color:
-                    COLORS.ink,
-                }}
-              >
-                Courses
-              </div>
-
-            </div>
-
-            {/* TWO COLUMN COURSE LIST */}
-
-            <div
-              className="
-                flex-1
-                min-h-0
-                grid
-                grid-cols-2
-                grid-rows-6
-                gap-2
-              "
-            >
-
-              {COURSES.map((item) => {
-
-                const ItemIcon =
-                  item.icon;
-
-                const selected =
-                  item.id === activeCourse;
-
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() =>
-                      setActiveCourse(
-                        item.id
-                      )
-                    }
-                    className="
-                      w-full
-                      h-full
-                      flex
-                      items-center
-                      gap-2.5
-                      px-3
-                      py-3
-                      rounded-xl
-                      text-left
-                      transition-all
-                      duration-200
-                    "
-                    style={{
-                      background:
-                        selected
-                          ? `${item.iconColor}10`
-                          : "transparent",
-
-                      color:
-                        selected
-                          ? COLORS.ink
-                          : COLORS.textSecondary,
-                    }}
-                  >
-
-                    {/* ICON */}
-
-                    <div
-                      className="
-                        w-9
-                        h-9
-                        rounded-xl
-                        flex
-                        items-center
-                        justify-center
-                        shrink-0
-                      "
-                      style={{
-                        background:
-                          selected
-                            ? `${item.iconColor}16`
-                            : COLORS.bgTertiary,
-                      }}
-                    >
-
-                      <ItemIcon
-                        className="
-                          w-[18px]
-                          h-[18px]
-                        "
-                        style={{
-                          color:
-                            item.iconColor,
-                        }}
-                      />
-
-                    </div>
-
-                    {/* NAME */}
-
-                    <span
-                      className="
-                        text-[11px]
-                        xl:text-xs
-                        font-bold
-                        leading-tight
-                        truncate
-                      "
-                      style={{
-                        color:
-                          selected
-                            ? COLORS.ink
-                            : COLORS.textSecondary,
-                      }}
-                    >
-                      {item.name}
-                    </span>
-
-                    {/* ACTIVE INDICATOR */}
-
-                    {selected && (
-                      <div
-                        className="
-                          ml-auto
-                          w-1.5
-                          h-1.5
-                          rounded-full
-                          shrink-0
-                        "
-                        style={{
-                          background:
-                            item.iconColor,
-                        }}
-                      />
-                    )}
-
-                  </button>
-                );
-              })}
-
-            </div>
-
-          </div>
-
-          {/* =================================================
-              COURSE DETAILS
-          ================================================== */}
-
-          <CourseDetails
-            course={course}
-            level={level}
-            activeLevel={activeLevel}
-            setActiveLevel={
-              setActiveLevel
-            }
-            classCount={classCount}
-            setClassCount={
-              setClassCount
-            }
-            pricePerClass={
-              pricePerClass
-            }
-            totalPrice={
-              totalPrice
-            }
-            CourseIcon={
-              CourseIcon
-            }
-            handleEnquiry={
-              handleEnquiry
-            }
-            changeCourse={
-              changeCourse
-            }
-          />
-
-        </div>
-
-        {/* ===================================================
-            MOBILE COURSE DETAILS
-        ==================================================== */}
-
-        <div className="lg:hidden">
-
-          <CourseDetails
-            course={course}
-            level={level}
-            activeLevel={activeLevel}
-            setActiveLevel={
-              setActiveLevel
-            }
-            classCount={classCount}
-            setClassCount={
-              setClassCount
-            }
-            pricePerClass={
-              pricePerClass
-            }
-            totalPrice={
-              totalPrice
-            }
-            CourseIcon={
-              CourseIcon
-            }
-            handleEnquiry={
-              handleEnquiry
-            }
-            changeCourse={
-              changeCourse
-            }
-          />
-
-        </div>
-
+        {/* ---------- COURSE DETAILS ---------- */}
+        <CourseDetails
+          course={course}
+          level={level}
+          activeLevel={activeLevel}
+          setActiveLevel={setActiveLevel}
+          classCount={classCount}
+          setClassCount={setClassCount}
+          pricePerClass={pricePerClass}
+          totalPrice={totalPrice}
+          CourseIcon={CourseIcon}
+          handleEnquiry={handleEnquiry}
+          changeCourse={changeCourse}
+        />
       </div>
     </section>
   );
 };
+
+/* ---------- small numbered step label ---------- */
+const StepLabel = ({ n, text, hint, right, color = COLORS.cyan }) => (
+  <div className="flex items-center justify-between mb-3">
+    <div className="flex items-center gap-2.5">
+      <span
+        className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold text-white"
+        style={{ background: color, fontFamily: FONTS.display, boxShadow: `0 3px 0 ${edgeOf(color)}` }}
+      >
+        {n}
+      </span>
+      <span className="text-lg font-semibold" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>{text}</span>
+    </div>
+    {hint && <span className="text-xs font-bold lg:hidden" style={{ color: COLORS.textMuted }}>{hint}</span>}
+    {right && <span className="text-xs font-bold" style={{ color: COLORS.textMuted }}>{right}</span>}
+  </div>
+);
 
 /* =========================================================
    COURSE DETAILS
@@ -981,263 +423,151 @@ const CourseDetails = ({
   return (
     <motion.div
       key={course.id}
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
-      className="relative bg-white rounded-[1.75rem] sm:rounded-[2rem] border-2 overflow-hidden"
-      style={{
-        borderColor: `${course.iconColor}30`,
-        boxShadow: SHADOWS.card,
-      }}
+      transition={{ duration: 0.28 }}
+      className="relative mt-5 bg-white rounded-[2.25rem] overflow-hidden"
+      style={{ border: `2px solid ${course.iconColor}40`, boxShadow: `0 8px 0 ${course.iconColor}30` }}
     >
-      <div className="p-4 sm:p-6 lg:p-7 xl:p-8">
-        {/* BANNER + DESCRIPTION */}
-        <div className="grid lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] gap-5 lg:gap-7 items-center mb-6">
-          {/* BANNER */}
-          <div className="relative w-full h-[170px] sm:h-[200px] lg:h-[220px] xl:h-[240px] rounded-2xl sm:rounded-[1.5rem] overflow-hidden flex items-center justify-center bg-slate-50">
-            <img
-              src={course.banner}
-              alt={`${course.name} course`}
-              className="w-full h-full object-contain block"
-            />
+      <div className="grid lg:grid-cols-[1.05fr_1fr]">
+        {/* LEFT · banner + overview */}
+        <div className="p-4 sm:p-6 lg:p-7" style={{ background: `${course.iconColor}0d` }}>
+          <div className="relative w-full aspect-[3/1] rounded-[1.5rem] overflow-hidden bg-white" style={{ border: "2px solid rgba(15,23,42,0.06)" }}>
+            <img src={course.banner} alt={`${course.name} course`} className="w-full h-full object-cover block" />
           </div>
 
-          {/* DESCRIPTION + NAVIGATION */}
-          <div className="min-w-0">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div
-                  className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest mb-1.5"
-                  style={{ color: course.iconColor }}
-                >
-                  Course Overview
-                </div>
-                <p
-                  className="text-sm sm:text-base leading-relaxed font-medium"
-                  style={{ color: COLORS.textSecondary }}
-                >
-                  {course.description}
-                </p>
+          <div className="mt-5 flex items-start gap-3">
+            <span className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shrink-0" style={{ border: `2px solid ${course.iconColor}35`, transform: "rotate(-5deg)" }}>
+              <CourseIcon className="w-6 h-6" style={{ color: course.iconColor }} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.14em]" style={{ color: course.iconColor === "#F7DF1E" ? "#A16207" : course.iconColor }}>
+                Course Overview
               </div>
-
-              <div className="flex items-center gap-1.5 shrink-0">
+              <h3 className="text-2xl sm:text-3xl font-semibold leading-tight" style={{ fontFamily: FONTS.display, color: COLORS.ink }}>
+                {course.name}
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              {[["prev", ChevronLeft, "Previous course"], ["next", ChevronRight, "Next course"]].map(([dir, Ico, label]) => (
                 <button
-                  onClick={() => changeCourse("prev")}
-                  aria-label="Previous course"
-                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-                  style={{ borderColor: COLORS.border, color: COLORS.textSecondary }}
+                  key={dir}
+                  onClick={() => changeCourse(dir)}
+                  aria-label={label}
+                  className="w-10 h-10 rounded-full bg-white flex items-center justify-center transition-transform hover:-translate-y-0.5 active:translate-y-0.5"
+                  style={{ border: "2px solid rgba(15,23,42,0.1)", boxShadow: "0 3px 0 rgba(15,23,42,0.08)", color: COLORS.ink }}
                 >
-                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <Ico className="w-5 h-5" strokeWidth={2.6} />
                 </button>
-
-                <button
-                  onClick={() => changeCourse("next")}
-                  aria-label="Next course"
-                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-                  style={{ borderColor: COLORS.border, color: COLORS.textSecondary }}
-                >
-                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </button>
-              </div>
+              ))}
             </div>
           </div>
+
+          <p className="mt-4 text-base sm:text-lg font-semibold leading-relaxed" style={{ color: COLORS.textSecondary }}>
+            {course.description}
+          </p>
         </div>
 
-        {/* OPTIONS + PRICE */}
-        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1fr_1.05fr] gap-4 sm:gap-5 lg:gap-6 items-stretch">
-          {/* LEVEL COLUMN */}
+        {/* RIGHT · plan builder */}
+        <div className="p-4 sm:p-6 lg:p-7 flex flex-col gap-6">
+          {/* Level */}
           <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <h4 className="text-xs sm:text-sm font-black" style={{ color: COLORS.ink }}>
-                Level
-              </h4>
-              <span className="text-[9px]" style={{ color: COLORS.textMuted }}>
-                Choose level
-              </span>
-            </div>
-
-            <div className="flex flex-col gap-2.5">
-              {LEVELS.map((item) => {
+            <StepLabel n={2} text="Level" color={COLORS.emerald} right="Choose level" />
+            <div className="grid grid-cols-3 gap-2.5">
+              {LEVELS.map((item, i) => {
                 const selected = activeLevel === item.id;
-
                 return (
                   <button
                     key={item.id}
                     onClick={() => setActiveLevel(item.id)}
-                    className="relative w-full min-h-[64px] sm:min-h-[70px] px-3.5 py-3 rounded-xl border-2 text-left transition-all duration-200"
+                    className="relative rounded-3xl px-3 py-3.5 text-left transition-all duration-200"
                     style={{
-                      background: selected ? COLORS.emeraldLight : COLORS.bgSecondary,
-                      borderColor: selected ? COLORS.emerald : COLORS.border,
+                      background: selected ? COLORS.emerald : COLORS.bgSecondary,
+                      color: selected ? COLORS.white : COLORS.ink,
+                      border: `2px solid ${selected ? COLORS.emerald : COLORS.border}`,
+                      boxShadow: selected ? `0 4px 0 ${edgeOf(COLORS.emerald)}` : "none",
                     }}
                   >
+                    <span className="flex gap-0.5 mb-2" aria-hidden="true">
+                      {[0, 1, 2].map((s) => (
+                        <span key={s} className="w-2 h-2 rounded-full" style={{ background: s <= i ? (selected ? "#fff" : COLORS.emerald) : (selected ? "rgba(255,255,255,0.35)" : COLORS.borderMed) }} />
+                      ))}
+                    </span>
                     {selected && (
-                      <span
-                        className="absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center"
-                        style={{ background: COLORS.emerald, color: COLORS.white }}
-                      >
-                        <Check className="w-2.5 h-2.5" />
+                      <span className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-white flex items-center justify-center" style={{ color: COLORS.emerald }}>
+                        <Check className="w-3 h-3" strokeWidth={3.5} />
                       </span>
                     )}
-
-                    <div
-                      className="text-[10px] sm:text-xs font-black pr-5"
-                      style={{ color: selected ? COLORS.emerald : COLORS.ink }}
-                    >
-                      {item.name}
-                    </div>
-
-                    <div
-                      className="text-[9px] mt-1 leading-tight"
-                      style={{ color: COLORS.textMuted }}
-                    >
-                      {item.description}
-                    </div>
+                    <div className="text-[15px] font-semibold" style={{ fontFamily: FONTS.display }}>{item.name}</div>
+                    <div className="text-[11px] font-bold mt-0.5 leading-snug" style={{ opacity: selected ? 0.9 : 0.6 }}>{item.description}</div>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* CLASSES COLUMN */}
+          {/* Classes */}
           <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <h4 className="text-xs sm:text-sm font-black" style={{ color: COLORS.ink }}>
-                Classes
-              </h4>
-              <span className="text-[9px]" style={{ color: COLORS.textMuted }}>
-                {formatPrice(pricePerClass)} / class
-              </span>
-            </div>
-
-            <div className="flex flex-col gap-2.5">
+            <StepLabel n={3} text="Classes" color={COLORS.indigo} right={`${formatPrice(pricePerClass)} / class`} />
+            <div className="grid grid-cols-4 gap-2.5">
               {CLASS_PACKAGES.map((count) => {
                 const selected = classCount === count;
-
                 return (
                   <button
                     key={count}
                     onClick={() => setClassCount(count)}
-                    className="relative w-full min-h-[46px] sm:min-h-[50px] px-4 rounded-xl border-2 text-left flex items-center justify-between transition-all duration-200 active:scale-[0.98]"
+                    className="relative rounded-3xl py-3 text-center transition-all duration-200"
                     style={{
-                      background: selected ? `${course.iconColor}10` : COLORS.bgSecondary,
-                      borderColor: selected ? course.iconColor : COLORS.border,
-                      color: selected ? course.iconColor : COLORS.ink,
+                      background: selected ? COLORS.indigo : COLORS.bgSecondary,
+                      color: selected ? COLORS.white : COLORS.ink,
+                      border: `2px solid ${selected ? COLORS.indigo : COLORS.border}`,
+                      boxShadow: selected ? `0 4px 0 ${edgeOf(COLORS.indigo)}` : "none",
                     }}
                   >
-                    <span className="text-xs sm:text-sm font-black">
-                      {count} classes
-                    </span>
-
                     {count === 30 && (
-                      <span
-                        className="px-2 py-0.5 rounded-full text-[7px] font-black"
-                        style={{ background: COLORS.gold, color: COLORS.white }}
-                      >
+                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[9px] font-extrabold whitespace-nowrap" style={{ background: COLORS.gold, color: COLORS.navDark }}>
                         POPULAR
                       </span>
                     )}
+                    <div className="text-2xl font-semibold leading-none" style={{ fontFamily: FONTS.display }}>{count}</div>
+                    <div className="text-[11px] font-bold mt-1" style={{ opacity: 0.75 }}>classes</div>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* PRICE + ENQUIRY COLUMN */}
-          <div
-            className="col-span-2 lg:col-span-1 rounded-2xl p-4 sm:p-5 flex flex-col justify-between"
-            style={{
-              background: `linear-gradient(145deg, ${COLORS.bgSecondary}, #FFFFFF)`,
-              border: `1px solid ${COLORS.border}`,
-            }}
-          >
-            <div>
-              <div
-                className="text-[9px] font-black uppercase tracking-widest"
-                style={{ color: COLORS.textMuted }}
-              >
-                Price Details
-              </div>
+          {/* Price ticket */}
+          <div className="relative rounded-[1.75rem] p-5 mt-auto" style={{ background: COLORS.navDark }}>
+            {/* ticket notches */}
+            <span aria-hidden="true" className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white" />
+            <span aria-hidden="true" className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white" />
 
-              <div className="mt-3">
-                <div
-                  className="text-[8px] font-bold uppercase tracking-wider"
-                  style={{ color: COLORS.textMuted }}
-                >
-                  Selected level
+            <div className="text-[11px] font-extrabold uppercase tracking-[0.16em]" style={{ color: COLORS.silver }}>Price Details</div>
+            <div className="mt-3 grid grid-cols-3 gap-3 pb-4 border-b-2 border-dashed" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
+              {[
+                ["Selected level", level.name],
+                ["Classes", classCount],
+                ["Per class", formatPrice(pricePerClass)],
+              ].map(([k, v]) => (
+                <div key={k}>
+                  <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: COLORS.silver }}>{k}</div>
+                  <div className="text-base sm:text-lg font-semibold text-white mt-0.5" style={{ fontFamily: FONTS.display }}>{v}</div>
                 </div>
-                <div
-                  className="text-sm sm:text-base font-black mt-0.5"
-                  style={{ color: COLORS.ink }}
-                >
-                  {level.name}
-                </div>
-              </div>
-
-              {/* Compact class + per-class summary */}
-              <div
-                className="mt-3 flex items-center gap-5 py-2.5 border-y"
-                style={{ borderColor: COLORS.border }}
-              >
-                <div>
-                  <div
-                    className="text-[8px] font-bold uppercase tracking-wider"
-                    style={{ color: COLORS.textMuted }}
-                  >
-                    Classes
-                  </div>
-                  <div
-                    className="text-base sm:text-lg font-black mt-0.5"
-                    style={{ color: COLORS.ink }}
-                  >
-                    {classCount}
-                  </div>
-                </div>
-
-                <div
-                  className="h-7 w-px"
-                  style={{ background: COLORS.border }}
-                />
-
-                <div>
-                  <div
-                    className="text-[8px] font-bold uppercase tracking-wider"
-                    style={{ color: COLORS.textMuted }}
-                  >
-                    Per class
-                  </div>
-                  <div
-                    className="text-base sm:text-lg font-black mt-0.5"
-                    style={{ color: COLORS.ink }}
-                  >
-                    {formatPrice(pricePerClass)}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <div
-                  className="text-[8px] font-black uppercase tracking-widest"
-                  style={{ color: COLORS.textMuted }}
-                >
-                  Total price
-                </div>
-                <div
-                  className="text-2xl sm:text-3xl font-black tracking-tight mt-0.5"
-                  style={{ color: COLORS.emerald }}
-                >
+              ))}
+            </div>
+            <div className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div>
+                <div className="text-[10px] font-extrabold uppercase tracking-[0.16em]" style={{ color: COLORS.silver }}>Total price</div>
+                <div className="text-4xl font-semibold leading-none mt-1" style={{ fontFamily: FONTS.display, color: COLORS.emerald }}>
                   {formatPrice(totalPrice)}
                 </div>
               </div>
+              <button onClick={handleEnquiry} className="px-btn px-btn--grad px-btn--sm">
+                Enquire about this course
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
-
-            <button
-              onClick={handleEnquiry}
-              className="w-full mt-3 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black text-white active:scale-[0.98] transition-transform"
-              style={{ background: GRADIENTS.primary, boxShadow: SHADOWS.glowEmer }}
-            >
-              Enquire about this course
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>

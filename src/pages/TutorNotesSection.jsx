@@ -11,20 +11,20 @@ import {
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://brainbugz-learning-management-system.onrender.com";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
   indigo: "#6366F1", indigoLight: "#EEF2FF",
   amber: "#F59E0B", amberLight: "#FFFBEB",
   red: "#EF4444", redLight: "#FEF2F2",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
   shadowModal: "0 24px 64px rgba(15,23,42,0.18)",
 };
 
 const inputStyle = {
   width: "100%", padding: "10px 12px", borderRadius: 10,
-  border: `1px solid ${C.border}`, fontSize: 13, color: C.textPrimary,
+  border: `2px solid ${C.border}`, fontSize: 13, color: C.textPrimary,
   background: "#fff", outline: "none", fontFamily: "inherit",
 };
 const labelStyle = { fontSize: 12, fontWeight: 700, color: C.textSecondary, marginBottom: 6, display: "block" };
@@ -144,14 +144,14 @@ export default function TutorNotesSection() {
           <Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} />
         </div>
       ) : notes.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `2px solid ${C.border}` }}>
           <FileText style={{ width: 32, height: 32, color: C.textMuted, opacity: 0.5, margin: "0 auto 10px" }} />
           <p style={{ fontSize: 13, color: C.textMuted, fontWeight: 500 }}>No notes published yet</p>
         </div>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
           {notes.map(note => (
-            <div key={note.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16, boxShadow: C.shadowCard, position: "relative" }}>
+            <div key={note.id} style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, padding: 16, boxShadow: C.shadowCard, position: "relative" }}>
               <button onClick={() => handleDelete(note.id)} disabled={deletingId === note.id}
                 style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", cursor: "pointer", color: C.textMuted }}>
                 {deletingId === note.id ? <Loader2 style={{ width: 14, height: 14, animation: "spin 1s linear infinite" }} /> : <Trash2 style={{ width: 14, height: 14 }} />}
@@ -194,7 +194,7 @@ export default function TutorNotesSection() {
               {/* Students */}
               <div style={{ marginBottom: 16 }}>
                 <label style={labelStyle}>Share with students</label>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, maxHeight: 140, overflowY: "auto", padding: 10, border: `1px solid ${C.border}`, borderRadius: 10 }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, maxHeight: 140, overflowY: "auto", padding: 10, border: `2px solid ${C.border}`, borderRadius: 10 }}>
                   {students.length === 0 ? (
                     <p style={{ fontSize: 12, color: C.textMuted }}>No students assigned to you yet.</p>
                   ) : students.map(s => {

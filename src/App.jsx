@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { motion } from "framer-motion";
-import { COLORS } from "./utils/theme";
+import { COLORS, FONTS } from "./utils/theme";
 import DemoBookingModal from "./components/Demobookingmodal";
 import DemoInterestPopup from "./components/DemoInterestPopup";
 import OfferCarousel from "./components/OfferCarousel";
@@ -29,9 +29,11 @@ function GuestHome({ openDemoModal }) {
     <>
       <HeroSection openDemoModal={openDemoModal} />
       <ServicesSection />
+      
       <SubjectSection />
-      <WhyPearlxSection />
       <ProcessSection openDemoModal={openDemoModal} />
+      <WhyPearlxSection />
+      
     </>
   );
 }
@@ -49,22 +51,22 @@ function MainApp() {
   if (!isAuthReady) {
     return (
       <div
-        className="min-h-screen flex flex-col items-center justify-center gap-3"
-        style={{ background: COLORS.bgPrimary }}
+        className="min-h-screen flex flex-col items-center justify-center gap-5"
+        style={{ background: "linear-gradient(180deg, #F0F9FF 0%, #ECFDF5 100%)" }}
       >
-        <motion.div
-          className="w-8 h-8 rounded-full border-2 border-t-transparent"
-          style={{
-            borderColor: COLORS.indigo,
-            borderTopColor: "transparent",
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-        />
-        <p
-          className="text-sm font-medium"
-          style={{ color: COLORS.textMuted }}
-        >
+        <img src="/pearlxlogo.webp" alt="Pearlx" className="h-14 w-auto" />
+        <div className="flex items-center gap-2" aria-hidden="true">
+          {[COLORS.cyan, COLORS.emerald, COLORS.gold, COLORS.indigo].map((c, i) => (
+            <motion.span
+              key={c}
+              className="block w-3.5 h-3.5 rounded-full"
+              style={{ background: c }}
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.12, ease: "easeInOut" }}
+            />
+          ))}
+        </div>
+        <p className="text-base font-bold" style={{ color: COLORS.textMuted, fontFamily: FONTS.display }}>
           Loading Pearlx...
         </p>
       </div>

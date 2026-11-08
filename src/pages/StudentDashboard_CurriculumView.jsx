@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import { CATEGORIES, MODULE_ICON, getEffectiveCourse } from "../utils/curriculumData";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
@@ -33,7 +33,7 @@ const tierColor = {
 function LessonCard({ lesson, col }) {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-      style={{ background: C.card, borderRadius: 12, border: `1px solid ${C.border}`, overflow: "hidden" }}>
+      style={{ background: C.card, borderRadius: 12, border: `2px solid ${C.border}`, overflow: "hidden" }}>
       <div style={{ width: "100%", aspectRatio: "16 / 9", background: col.light, position: "relative", overflow: "hidden" }}>
         {lesson.bannerImageUrl ? (
           <img src={lesson.bannerImageUrl} alt={lesson.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -73,7 +73,7 @@ function ModuleView({ module, col }) {
   return (
     <motion.div style={{ marginBottom: 16 }}>
       <motion.button onClick={() => setOpen(o => !o)} whileTap={{ scale: 0.98 }}
-        style={{ width: "100%", padding: "14px 16px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", marginBottom: 12 }}>
+        style={{ width: "100%", padding: "14px 16px", background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, display: "flex", alignItems: "center", gap: 12, cursor: "pointer", marginBottom: 12 }}>
 
         <div style={{ width: 44, height: 44, borderRadius: 12, background: col.light, border: `1px solid ${col.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <MODULE_ICON style={{ width: 20, height: 20, color: col.text }} />
@@ -148,7 +148,7 @@ function ChaptersView({ studentId }) {
       {chapters.map((chap, i) => {
         const isOpen = expanded[chap.id];
         return (
-          <div key={chap.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+          <div key={chap.id} style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
             <div onClick={() => setExpanded(p => ({ ...p, [chap.id]: !p[chap.id] }))}
               style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", cursor: "pointer" }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: C.indigoLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800, color: C.indigo, flexShrink: 0 }}>
@@ -162,7 +162,7 @@ function ChaptersView({ studentId }) {
             <AnimatePresence>
               {isOpen && chap.content && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
-                  <div style={{ borderTop: `1px solid ${C.border}`, padding: "14px 16px" }}>
+                  <div style={{ borderTop: `2px solid ${C.border}`, padding: "14px 16px" }}>
                     <p style={{ fontSize: 12, color: C.textSecondary, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{chap.content}</p>
                   </div>
                 </motion.div>
@@ -272,7 +272,7 @@ export function StudentCurriculumView() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
       {/* Header Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 28 }}>
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
+        <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
             <div>
               <p style={{ fontSize: 28, fontWeight: 800, color: C.indigo }}>{modules.length}</p>
@@ -282,7 +282,7 @@ export function StudentCurriculumView() {
           </div>
         </div>
 
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
+        <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
             <div>
               <p style={{ fontSize: 28, fontWeight: 800, color: C.emerald }}>{totalLessons}</p>
@@ -292,7 +292,7 @@ export function StudentCurriculumView() {
           </div>
         </div>
 
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
+        <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
             <div>
               <p style={{ fontSize: 16, fontWeight: 800, color: C.cyan, display: "flex", alignItems: "center", gap: 6 }}>

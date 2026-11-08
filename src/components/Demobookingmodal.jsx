@@ -18,7 +18,8 @@ import {
   Laptop,
 } from "lucide-react";
 
-import { COLORS, GRADIENTS, SHADOWS } from "../utils/theme";
+import { COLORS, GRADIENTS, FONTS, edgeOf } from "../utils/theme";
+import { Pearl } from "./ui/Brand";
 
 /*
   DemoBookingModal
@@ -346,28 +347,34 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <div
-                className="relative overflow-hidden rounded-[1.75rem] sm:rounded-[2rem] bg-white border-2 flex flex-col"
+                className="px-modal relative overflow-hidden rounded-[2rem] bg-white flex flex-col"
                 style={{
-                  borderColor: COLORS.border,
-                  boxShadow: SHADOWS.lg,
-                  maxHeight: "min(720px, calc(100vh - 24px))",
+                  border: "3px solid #fff",
+                  boxShadow: `0 10px 0 ${COLORS.emerald}, 0 30px 70px rgba(0,0,0,0.3)`,
+                  maxHeight: "min(740px, calc(100vh - 32px))",
                 }}
               >
                 {/* Branded top line */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-1.5"
-                  style={{ background: GRADIENTS.primary }}
-                />
+                  aria-hidden="true"
+                  className="absolute top-0 left-0 right-0 h-[132px] sm:h-[140px]"
+                  style={{ background: "linear-gradient(135deg, #F0F9FF 0%, #ECFDF5 100%)" }}
+                >
+                  <div className="absolute inset-0 px-dots opacity-70" />
+                  <Pearl size={18} color={COLORS.gold} className="hidden sm:block" style={{ top: 22, right: 76 }} float />
+                </div>
 
                 {/* Header */}
-                <div className="px-5 pt-6 pb-4 sm:px-7 sm:pt-7">
+                <div className="relative px-5 pt-6 pb-4 sm:px-7 sm:pt-7">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0"
+                        className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                         style={{
-                          background: COLORS.emeraldLight,
-                          color: COLORS.emerald,
+                          background: COLORS.emerald,
+                          color: COLORS.white,
+                          transform: "rotate(-6deg)",
+                          boxShadow: `0 4px 0 ${edgeOf(COLORS.emerald)}`,
                         }}
                       >
                         <Sparkles className="w-5 h-5" />
@@ -393,10 +400,11 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                       type="button"
                       onClick={onClose}
                       aria-label="Close"
-                      className="w-9 h-9 rounded-full border-2 flex items-center justify-center shrink-0"
+                      className="w-10 h-10 rounded-full border-2 flex items-center justify-center shrink-0 bg-white"
                       style={{
                         borderColor: COLORS.border,
-                        color: COLORS.textSecondary,
+                        color: COLORS.ink,
+                        boxShadow: "0 3px 0 rgba(15,23,42,0.08)",
                       }}
                     >
                       <X className="w-4.5 h-4.5" />
@@ -407,8 +415,8 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                     <>
                       <div className="flex items-center gap-2 mt-5">
                         <div
-                          className="h-1.5 flex-1 rounded-full overflow-hidden"
-                          style={{ background: COLORS.bgTertiary }}
+                          className="h-3 flex-1 rounded-full overflow-hidden bg-white"
+                          style={{ border: `2px solid ${COLORS.border}` }}
                         >
                           <motion.div
                             className="h-full rounded-full"
@@ -426,7 +434,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                         </span>
                       </div>
 
-                      <div className="flex gap-2 mt-3 overflow-x-auto">
+                      <div className="flex gap-3 mt-3 overflow-x-auto scrollbar-hide">
                         {STEPS.map((item) => {
                           const Icon = item.icon;
                           const active = step === item.id;
@@ -435,7 +443,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           return (
                             <div
                               key={item.id}
-                              className="shrink-0 flex items-center gap-1.5 text-[9px] font-black"
+                              className="shrink-0 flex items-center gap-1.5 text-[11px] font-extrabold"
                               style={{
                                 color: active || done
                                   ? COLORS.ink
@@ -443,19 +451,23 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                               }}
                             >
                               <div
-                                className="w-6 h-6 rounded-lg flex items-center justify-center"
+                                className="w-7 h-7 rounded-full flex items-center justify-center"
                                 style={{
-                                  background:
-                                    active || done
+                                  background: active
+                                    ? COLORS.emerald
+                                    : done
                                       ? COLORS.emeraldLight
-                                      : COLORS.bgTertiary,
-                                  color:
-                                    active || done
+                                      : COLORS.white,
+                                  color: active
+                                    ? COLORS.white
+                                    : done
                                       ? COLORS.emerald
                                       : COLORS.textMuted,
+                                  border: `2px solid ${active || done ? COLORS.emerald : COLORS.border}`,
+                                  boxShadow: active ? `0 2px 0 ${edgeOf(COLORS.emerald)}` : "none",
                                 }}
                               >
-                                <Icon className="w-3 h-3" />
+                                <Icon className="w-3.5 h-3.5" />
                               </div>
                               {item.label}
                             </div>
@@ -527,7 +539,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           >
                             <div>
                               <div
-                                className="text-[9px] font-black uppercase tracking-widest"
+                                className="inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-slate-50"
                                 style={{ color: COLORS.cyan }}
                               >
                                 Step 1
@@ -561,8 +573,12 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                         program.value
                                       )
                                     }
-                                    className="min-h-[76px] rounded-2xl border-2 px-4 py-3 text-left transition-all"
+                                    className="min-h-[80px] rounded-3xl border-2 px-4 py-3 text-left transition-all"
                                     style={{
+                                      boxShadow: selected
+                                        ? `0 4px 0 ${edgeOf(COLORS.emerald)}`
+                                        : "0 3px 0 rgba(15,23,42,0.04)",
+                                      transform: selected ? "translateY(-2px)" : "none",
                                       borderColor: selected
                                         ? COLORS.emerald
                                         : COLORS.border,
@@ -574,7 +590,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                         : COLORS.ink,
                                     }}
                                   >
-                                    <div className="text-sm font-black">
+                                    <div className="text-lg font-semibold" style={{ fontFamily: FONTS.display }}>
                                       {program.label}
                                     </div>
                                     <div
@@ -624,7 +640,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           >
                             <div>
                               <div
-                                className="text-[9px] font-black uppercase tracking-widest"
+                                className="inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-slate-50"
                                 style={{ color: COLORS.indigo }}
                               >
                                 Step 2
@@ -655,7 +671,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                 onChange={(e) =>
                                   updateField("studentGrade", e.target.value)
                                 }
-                                className="w-full h-13 px-4 rounded-2xl border-2 outline-none font-bold text-sm appearance-none bg-white"
+                                className="w-full h-13 px-4 rounded-2xl border-2 outline-none font-bold text-sm appearance-none bg-white transition-all focus:!border-sky-400 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]"
                                 style={{
                                   borderColor: COLORS.border,
                                   color: formData.studentGrade
@@ -684,7 +700,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           >
                             <div>
                               <div
-                                className="text-[9px] font-black uppercase tracking-widest"
+                                className="inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-slate-50"
                                 style={{ color: COLORS.cyan }}
                               >
                                 Step 3
@@ -736,7 +752,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           >
                             <div>
                               <div
-                                className="text-[9px] font-black uppercase tracking-widest"
+                                className="inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-slate-50"
                                 style={{ color: COLORS.emerald }}
                               >
                                 Step 4
@@ -800,7 +816,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           >
                             <div>
                               <div
-                                className="text-[9px] font-black uppercase tracking-widest"
+                                className="inline-block px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-slate-50"
                                 style={{ color: COLORS.goldDeep }}
                               >
                                 Step 5
@@ -832,8 +848,9 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                           updateField("preferredTime", "");
                                         }
                                       }}
-                                      className="rounded-2xl border-2 px-4 py-3 text-left text-xs font-black transition-all"
+                                      className="rounded-2xl border-2 px-4 py-3 text-left text-sm font-extrabold transition-all"
                                       style={{
+                                        boxShadow: selected ? `0 3px 0 ${edgeOf(COLORS.emerald)}` : "none",
                                         borderColor: selected ? COLORS.emerald : COLORS.border,
                                         background: selected ? COLORS.emeraldLight : COLORS.white,
                                         color: selected ? COLORS.emerald : COLORS.textSecondary,
@@ -866,6 +883,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                           onClick={() => updateField("preferredDate", date.value)}
                                           className="rounded-2xl border-2 p-3 text-left transition-all"
                                           style={{
+                                            boxShadow: selected ? `0 3px 0 ${edgeOf(COLORS.indigo)}` : "none",
                                             borderColor: selected ? COLORS.indigo : COLORS.border,
                                             background: selected ? COLORS.indigoLight : COLORS.white,
                                           }}
@@ -904,8 +922,9 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                                           key={time}
                                           type="button"
                                           onClick={() => updateField("preferredTime", time)}
-                                          className="py-3 rounded-xl border-2 text-xs font-black transition-all"
+                                          className="py-3 rounded-full border-2 text-xs font-extrabold transition-all"
                                           style={{
+                                            boxShadow: selected ? `0 3px 0 ${edgeOf(COLORS.indigo)}` : "none",
                                             borderColor: selected ? COLORS.indigo : COLORS.border,
                                             background: selected ? COLORS.indigo : COLORS.white,
                                             color: selected ? COLORS.white : COLORS.ink,
@@ -973,10 +992,12 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                         <button
                           type="button"
                           onClick={previousStep}
-                          className="w-12 h-12 rounded-2xl border-2 flex items-center justify-center shrink-0"
+                          aria-label="Back"
+                          className="w-[52px] h-[52px] rounded-full border-2 flex items-center justify-center shrink-0 bg-white active:translate-y-0.5"
                           style={{
                             borderColor: COLORS.border,
-                            color: COLORS.textSecondary,
+                            color: COLORS.ink,
+                            boxShadow: "0 4px 0 rgba(15,23,42,0.08)",
                           }}
                         >
                           <ChevronLeft className="w-5 h-5" />
@@ -987,8 +1008,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                         <button
                           type="button"
                           onClick={nextStep}
-                          className="flex-1 h-12 rounded-2xl text-sm font-black text-white inline-flex items-center justify-center gap-2"
-                          style={{ background: GRADIENTS.primary }}
+                          className="px-btn px-btn--grad flex-1"
                         >
                           Continue
                           <ChevronRight className="w-4 h-4" />
@@ -998,8 +1018,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                           type="button"
                           onClick={handleSubmit}
                           disabled={loading}
-                          className="flex-1 h-12 rounded-2xl text-sm font-black text-white inline-flex items-center justify-center gap-2 disabled:opacity-70"
-                          style={{ background: GRADIENTS.primary }}
+                          className="px-btn px-btn--grad flex-1"
                         >
                           {loading ? (
                             <>
@@ -1017,7 +1036,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
                     </div>
 
                     <div
-                      className="text-center text-[9px] font-bold mt-2.5"
+                      className="text-center text-[11px] font-bold mt-3"
                       style={{ color: COLORS.textMuted }}
                     >
                       Free demo · No payment required
@@ -1038,7 +1057,7 @@ const DemoBookingModal = ({ isOpen, onClose, source = "general" }) => {
 function Label({ children }) {
   return (
     <label
-      className="block text-[11px] font-black mb-2"
+      className="block text-[13px] font-extrabold mb-2"
       style={{ color: COLORS.ink }}
     >
       {children}
@@ -1077,7 +1096,7 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="w-full h-13 px-4 rounded-2xl border-2 outline-none font-bold text-sm bg-white placeholder:font-medium"
+          className="w-full h-13 px-4 rounded-2xl border-2 outline-none font-bold text-sm bg-white placeholder:font-medium transition-all focus:!border-sky-400 focus:shadow-[0_0_0_4px_rgba(14,165,233,0.15)]"
           style={{
             borderColor: COLORS.border,
             color: COLORS.ink,

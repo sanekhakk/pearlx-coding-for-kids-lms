@@ -26,11 +26,12 @@ import { DEFAULT_AVATARS, resolveAvatarUrl } from "../utils/defaultAvatars";
 import { getProgressRef } from "../utils/paths";
 import { getDisplayTime } from "../utils/timeUtils";
 import PearlxLogo from "../assets/flat_logo.webp";
+import bannerKid from "../assets/kids/LP1.webp";
 import StudentNotesSection from "./StudentNotesSection";
 import StudentReceiptsSection from "../components/StudentReceiptsSection";
 
 const C = {
-  bg: "#F4F6FB",
+  bg: "#F2F8FC",
   sidebar: "#FFFFFF",
   card: "#FFFFFF",
   border: "#E5E9F2",
@@ -54,8 +55,8 @@ const C = {
   gradEmerald: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
   gradIndigo: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
   gradRed: "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
-  shadowHover: "0 8px 24px rgba(15,23,42,0.1)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
+  shadowHover: "0 7px 0 rgba(14,165,233,0.16), 0 14px 28px rgba(15,23,42,0.08)",
 };
 
 const statusCfg = {
@@ -65,7 +66,7 @@ const statusCfg = {
 };
 
 const Empty = ({ icon: Icon, msg, color }) => (
-  <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `1px solid ${C.border}` }}>
+  <div style={{ textAlign: "center", padding: "40px 20px", borderRadius: 16, background: C.bg, border: `2px solid ${C.border}` }}>
     <div style={{ width: 52, height: 52, borderRadius: 14, background: color ? `${color}15` : "#F0F2F8", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
       <Icon style={{ width: 24, height: 24, color: color || C.textMuted, opacity: 0.5 }} />
     </div>
@@ -75,7 +76,7 @@ const Empty = ({ icon: Icon, msg, color }) => (
 
 const StatCard = ({ icon: Icon, label, value, light, iconColor }) => (
   <motion.div whileHover={{ y: -2, boxShadow: C.shadowHover }}
-    style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px", boxShadow: C.shadowCard }}>
+    style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: "20px", boxShadow: C.shadowCard }}>
     <div style={{ width: 40, height: 40, borderRadius: 12, background: light, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
       <Icon style={{ width: 20, height: 20, color: iconColor }} />
     </div>
@@ -345,14 +346,14 @@ const ClassCard = ({ cls, type, permanentClassLink, timezone, nextLesson }) => {
 };
 
 const SideNavItem = ({ tab, active, onClick }) => (
-  <motion.button onClick={onClick} whileTap={{ scale: 0.97 }}
-    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 12, border: `1px solid ${active ? C.emerald + "30" : "transparent"}`, background: active ? C.emeraldLight : "transparent", cursor: "pointer", transition: "all 0.15s" }}>
-    <div style={{ width: 34, height: 34, borderRadius: 10, background: active ? C.emerald : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+  <motion.button onClick={onClick} whileTap={{ scale: 0.97, y: 2 }}
+    style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "8px 12px 8px 8px", borderRadius: 999, border: `2px solid ${active ? C.emerald : "transparent"}`, background: active ? C.emerald : "transparent", boxShadow: active ? "0 4px 0 #047857" : "none", cursor: "pointer", transition: "background .2s, box-shadow .2s" }}>
+    <div style={{ width: 34, height: 34, borderRadius: "50%", background: active ? "rgba(255,255,255,0.25)" : C.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       <tab.icon style={{ width: 16, height: 16, color: active ? "#fff" : C.textMuted }} />
     </div>
-    <span style={{ fontSize: 13, fontWeight: 600, color: active ? C.textPrimary : C.textSecondary, flex: 1, textAlign: "left" }}>{tab.label}</span>
+    <span style={{ fontSize: 14, fontWeight: 700, color: active ? "#fff" : C.textSecondary, flex: 1, textAlign: "left" }}>{tab.label}</span>
     {tab.count !== undefined && (
-      <span style={{ background: active ? C.emerald : C.border, color: active ? "#fff" : C.textMuted, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20 }}>{tab.count}</span>
+      <span style={{ background: active ? "#fff" : C.border, color: active ? C.emerald : C.textMuted, fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 20 }}>{tab.count}</span>
     )}
   </motion.button>
 );
@@ -403,14 +404,14 @@ function StudentChaptersView({ studentId, category }) {
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center", padding: 40 }}><Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} /></div>
       ) : chapters.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "40px 20px", background: C.card, borderRadius: 16, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: "40px 20px", background: C.card, borderRadius: 16, border: `2px solid ${C.border}` }}>
           <p style={{ fontSize: 13, color: C.textMuted }}>Curriculum is being set up. Check back soon!</p>
         </div>
       ) : (
         chapters.map((chap, i) => {
           const isOpen = expanded[chap.id];
           return (
-            <div key={chap.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard }}>
+            <div key={chap.id} style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard }}>
               <div onClick={() => setExpanded(p => ({ ...p, [chap.id]: !p[chap.id] }))}
                 style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", cursor: "pointer" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 13, background: col.bg, border: `1px solid ${col.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: col.text, flexShrink: 0 }}>
@@ -424,7 +425,7 @@ function StudentChaptersView({ studentId, category }) {
               <AnimatePresence>
                 {isOpen && chap.content && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
-                    <div style={{ borderTop: `1px solid ${C.border}`, padding: "14px 18px" }}>
+                    <div style={{ borderTop: `2px solid ${C.border}`, padding: "14px 18px" }}>
                       <p style={{ fontSize: 12, color: C.textSecondary, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{chap.content}</p>
                     </div>
                   </motion.div>
@@ -473,7 +474,7 @@ function StudentCurriculumView({ course, category, studentName, studentId }) {
 
   if (!course || (course !== "academic_tuition" && !category)) {
     return (
-      <div style={{ textAlign: "center", padding: "48px 24px", background: C.card, borderRadius: 20, border: `1px solid ${C.border}` }}>
+      <div style={{ textAlign: "center", padding: "48px 24px", background: C.card, borderRadius: 20, border: `2px solid ${C.border}` }}>
         <BookOpen style={{ width: 36, height: 36, color: C.textMuted, margin: "0 auto 12px", display: "block", opacity: 0.4 }} />
         <p style={{ fontSize: 14, color: C.textMuted }}>No course/tier assigned yet. Contact your admin.</p>
       </div>
@@ -510,14 +511,14 @@ function StudentCurriculumView({ course, category, studentName, studentId }) {
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center", padding: 40 }}><Loader2 style={{ width: 24, height: 24, color: C.emerald, animation: "spin 1s linear infinite" }} /></div>
       ) : modules.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "40px 20px", background: C.card, borderRadius: 16, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: "40px 20px", background: C.card, borderRadius: 16, border: `2px solid ${C.border}` }}>
           <p style={{ fontSize: 13, color: C.textMuted }}>Curriculum is being set up. Check back soon!</p>
         </div>
       ) : (
         modules.map(mod => {
           const isOpen = expandedModules[mod.id];
           return (
-            <div key={mod.id} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard }}>
+            <div key={mod.id} style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard }}>
               <div onClick={() => setExpandedModules(p => ({ ...p, [mod.id]: !p[mod.id] }))}
                 style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", cursor: "pointer" }}>
                 <div style={{ width: 44, height: 44, borderRadius: 13, background: col.bg, border: `1px solid ${col.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -532,9 +533,9 @@ function StudentCurriculumView({ course, category, studentName, studentId }) {
               <AnimatePresence>
                 {isOpen && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
-                    <div style={{ borderTop: `1px solid ${C.border}`, padding: "14px 16px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
+                    <div style={{ borderTop: `2px solid ${C.border}`, padding: "14px 16px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
                       {(mod.lessons || []).sort((a, b) => a.lessonNumber - b.lessonNumber).map(lesson => (
-                        <div key={lesson.id} style={{ borderRadius: 14, background: C.bg, border: `1px solid ${C.border}`, overflow: "hidden" }}>
+                        <div key={lesson.id} style={{ borderRadius: 14, background: C.bg, border: `2px solid ${C.border}`, overflow: "hidden" }}>
                           {/* Banner image — 16:9, responsive via object-fit: cover */}
                           <div style={{ width: "100%", aspectRatio: "16 / 9", background: col.light, position: "relative", overflow: "hidden" }}>
                             {lesson.bannerImageUrl ? (
@@ -711,7 +712,7 @@ export default function StudentDashboard() {
 
   const SidebarContent = () => (
     <>
-      <div style={{ padding: "20px 20px 16px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ padding: "20px 20px 16px", borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <img src={PearlxLogo} alt="Pearlx" style={{ height: 40, width: "auto", objectFit: "contain" }} />
         {isMobile && (
           <button onClick={() => setSidebarOpen(false)} style={{ background: C.bg, border: "none", borderRadius: "50%", width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
@@ -720,7 +721,7 @@ export default function StudentDashboard() {
         )}
       </div>
 
-      <div style={{ padding: "16px 14px", borderBottom: `1px solid ${C.border}` }}>
+      <div style={{ padding: "16px 14px", borderBottom: `2px solid ${C.border}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
           <button onClick={() => setShowAvatarEdit(true)}
             style={{ position: "relative", background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0 }}
@@ -760,7 +761,7 @@ export default function StudentDashboard() {
         </div>
       )}
 
-      <div style={{ padding: "12px 10px", borderTop: `1px solid ${C.border}` }}>
+      <div style={{ padding: "12px 10px", borderTop: `2px solid ${C.border}` }}>
         <motion.button onClick={async () => { await logout(); navigate("/"); }} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
           style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderRadius: 12, border: `1px solid ${C.red}20`, background: C.redLight, color: C.red, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
           <LogOut style={{ width: 16, height: 16 }} /> Logout
@@ -770,7 +771,7 @@ export default function StudentDashboard() {
   );
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="px-dash" style={{ display: "flex", height: "100vh", overflow: "hidden", background: C.bg, fontFamily: "'Nunito', system-ui, sans-serif" }}>
 
       {/*  MOBILE BACKDROP  */}
       <AnimatePresence>
@@ -789,7 +790,7 @@ export default function StudentDashboard() {
         style={{
           width: 256, minWidth: 256, height: "100dvh",overflowY: "auto",paddingBottom: 100,
           WebkitOverflowScrolling: "touch", overscrollBehavior: "contain",
-          background: C.sidebar, borderRight: `1px solid ${C.border}`,
+          background: C.sidebar, borderRight: `2px solid ${C.border}`,
           display: "flex", flexDirection: "column", flexShrink: 0,
           position: isMobile ? "fixed" : "relative",
           zIndex: isMobile ? 1000 : "auto",
@@ -801,11 +802,11 @@ export default function StudentDashboard() {
       {/* ── MAIN ── */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
         {/* Topbar */}
-        <div style={{ height: 62, background: "rgba(244,246,251,0.96)", borderBottom: `1px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px 0 16px", flexShrink: 0, gap: 10, position: "relative", zIndex: 10, transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden" }}>
+        <div style={{ height: 62, background: "rgba(242,248,252,0.96)", borderBottom: `2px solid ${C.border}`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px 0 16px", flexShrink: 0, gap: 10, position: "relative", zIndex: 10, transform: "translateZ(0)", WebkitBackfaceVisibility: "hidden" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
             {isMobile && (
               <button onClick={() => setSidebarOpen(true)}
-                style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}>
+                style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 10, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}>
                 <Menu style={{ width: 18, height: 18, color: C.textPrimary }} />
               </button>
             )}
@@ -843,10 +844,15 @@ export default function StudentDashboard() {
               {activeTab === "overview" && (
                 <motion.div key="ov" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                   {/* Banner */}
-                  <div style={{ borderRadius: 20, padding: isMobile ? "20px 20px" : "24px 28px", marginBottom: 24, background: C.gradPrimary, position: "relative", overflow: "hidden" }}>
+                  <div style={{ borderRadius: 24, padding: isMobile ? "20px 20px" : "26px 30px", marginBottom: 26, background: C.gradPrimary, position: "relative", overflow: "hidden", boxShadow: "0 6px 0 #047857" }}>
+                    <div className="px-dots" style={{ position: "absolute", inset: 0, opacity: 0.35, filter: "invert(1)" }} />
                     <div style={{ position: "absolute", right: -20, top: -20, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.12)" }} />
                     <div style={{ position: "absolute", right: 30, bottom: -40, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
-                    <div style={{ position: "relative", zIndex: 1 }}>
+                    {!isMobile && (
+                      <img src={bannerKid} alt="" aria-hidden="true"
+                        style={{ position: "absolute", right: 28, bottom: 0, height: "calc(100% - 6px)", maxHeight: 180, width: "auto", objectFit: "contain", filter: "drop-shadow(0 10px 14px rgba(4,47,46,0.25))" }} />
+                    )}
+                    <div style={{ position: "relative", zIndex: 1, paddingRight: isMobile ? 0 : 170 }}>
                       <h2 style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#fff", marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}>
                         Welcome back, {profile?.name?.split(" ")[0] || "Student"}!
                         <Sparkles style={{ width: isMobile ? 16 : 18, height: isMobile ? 16 : 18 }} />
@@ -874,7 +880,7 @@ export default function StudentDashboard() {
                   {/* Two col */}
                   <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20 }}>
                     {/* Next class */}
-                    <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+                    <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
                       <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, display: "flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
                         <Calendar style={{ width: 15, height: 15, color: C.indigo }} />Next Class
                       </h3>
@@ -884,7 +890,7 @@ export default function StudentDashboard() {
                     </div>
 
                     {/* Subject progress */}
-                    <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+                    <div style={{ background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
                       <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, display: "flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
                         <TrendingUp style={{ width: 15, height: 15, color: C.emerald }} />Subject Progress
                       </h3>
@@ -914,7 +920,7 @@ export default function StudentDashboard() {
                   </div>
 
                   {/* Attendance summary */}
-                  <div style={{ marginTop: 20, background: C.card, borderRadius: 18, padding: 20, border: `1px solid ${C.border}`, boxShadow: C.shadowCard }}>
+                  <div style={{ marginTop: 20, background: C.card, borderRadius: 18, padding: 20, border: `2px solid ${C.border}`, boxShadow: C.shadowCard }}>
                     <h3 style={{ fontSize: 14, fontWeight: 800, color: C.textPrimary, marginBottom: 14 }}>Attendance Summary</h3>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
                       {[
@@ -1012,7 +1018,7 @@ export default function StudentDashboard() {
                     chapterList.length === 0 ? (
                       <Empty icon={TrendingUp} msg="No curriculum assigned yet" />
                     ) : (
-                      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard, maxWidth: 520 }}>
+                      <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard, maxWidth: 520 }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                           <div>
                             <h3 style={{ fontSize: 15, fontWeight: 700, color: C.textPrimary }}>Curriculum Progress</h3>
@@ -1046,7 +1052,7 @@ export default function StudentDashboard() {
                             const data = progressData[a.subject] || { completedChapters: [] };
                             const done = data.completedChapters?.length || 0;
                             return (
-                              <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard }}>
+                              <div key={i} style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, padding: 20, boxShadow: C.shadowCard }}>
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                                   <div>
                                     <h3 style={{ fontSize: 15, fontWeight: 700, color: C.textPrimary }}>{a.subject}</h3>

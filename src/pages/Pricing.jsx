@@ -2,13 +2,14 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Code2, Calculator, GraduationCap, BookOpen, Users, Sparkles,
-  Check, ChevronDown, ChevronUp, Gift, MessageCircle, Play,
+  Check, ChevronDown, Gift, MessageCircle, Play,
   Video, BarChart3, RefreshCw, PlayCircle, Award, ShieldCheck,
-  Zap, ArrowRight, Clock, Layers3, Heart, Star
+  Zap, ArrowRight, Clock, Layers3, Heart, Star, User,
 } from "lucide-react";
-
-import { COLORS, GRADIENTS, SHADOWS } from "../utils/theme";
+import { COLORS, FONTS, edgeOf } from "../utils/theme";
 import { getWhatsAppLink } from "../utils/whatsapp";
+import { SectionHeader, Scribble, FaqList, CtaPanel, ColorBtn, Pearl, IconBubble } from "../components/ui/Brand";
+import heroKid from "../assets/kids/LP1.webp";
 
 const TABS = [
   {
@@ -233,12 +234,15 @@ const FAQS = [
 ];
 
 const money = (value) => `₹${value.toLocaleString("en-IN")}`;
+const display = { fontFamily: FONTS.display };
+const ink = (c) => (c === COLORS.gold ? COLORS.goldDeep : c);
+const LEVEL_DOTS = [COLORS.gold, COLORS.emerald, COLORS.indigo];
 
 function Pill({ children, color, light }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black"
-      style={{ color, background: light, border: `1px solid ${color}25` }}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-extrabold"
+      style={{ color, background: light, border: `2px solid ${color}30` }}
     >
       {children}
     </span>
@@ -247,49 +251,82 @@ function Pill({ children, color, light }) {
 
 function IncludedStrip() {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1">
-      {INCLUDED.map(([Icon, label]) => (
-        <div
+    <div className="flex flex-wrap justify-center gap-2.5">
+      {INCLUDED.map(([Icon, label], i) => (
+        <motion.div
           key={label}
-          className="shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border-2 bg-white"
-          style={{ borderColor: COLORS.border }}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 + i * 0.05, type: "spring", stiffness: 300 }}
+          className="flex items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4"
+          style={{ border: `2px solid ${COLORS.border}`, boxShadow: "0 3px 0 rgba(15,23,42,0.05)", transform: `rotate(${i % 2 ? 1.2 : -1.2}deg)` }}
         >
-          <Icon className="w-3.5 h-3.5" style={{ color: COLORS.emerald }} />
-          <span className="text-[10px] font-black whitespace-nowrap">{label}</span>
-        </div>
+          <span className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: COLORS.emeraldLight, color: COLORS.emerald }}>
+            <Icon className="w-3.5 h-3.5" strokeWidth={2.5} />
+          </span>
+          <span className="text-sm font-extrabold whitespace-nowrap">{label}</span>
+        </motion.div>
       ))}
+    </div>
+  );
+}
+
+/* Solo / group switch */
+function ModeSwitch({ mode, setMode, color }) {
+  return (
+    <div className="inline-flex p-1.5 rounded-full bg-white" style={{ border: `2px solid ${COLORS.border}` }}>
+      {[
+        ["solo", "1:1", User],
+        ["group", "Group · 2–3", Users],
+      ].map(([id, label, Icon]) => {
+        const on = mode === id;
+        return (
+          <button
+            key={id}
+            onClick={() => setMode(id)}
+            className="relative flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold"
+            style={{ ...display, color: on ? (color === COLORS.gold ? COLORS.navDark : "#fff") : COLORS.textMuted }}
+          >
+            {on && (
+              <motion.span layoutId={`mode-${color}`} className="absolute inset-0 rounded-full" style={{ background: color, boxShadow: `0 3px 0 ${edgeOf(color)}` }} transition={{ type: "spring", bounce: 0.25, duration: 0.4 }} />
+            )}
+            <Icon className="relative w-4 h-4" />
+            <span className="relative">{label}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
 function PackageGrid({ packages, color }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {packages.map((pkg) => (
         <div
           key={`${pkg.label}-${pkg.c}`}
-          className="relative rounded-2xl border-2 bg-white p-3.5 text-center"
+          className="relative rounded-3xl p-4 text-center"
           style={{
-            borderColor: pkg.popular ? `${color}65` : COLORS.border,
-            boxShadow: pkg.popular ? SHADOWS.sm : "none",
+            background: pkg.popular ? color : "#fff",
+            color: pkg.popular ? "#fff" : COLORS.ink,
+            border: `2px solid ${pkg.popular ? color : COLORS.border}`,
+            boxShadow: pkg.popular ? `0 5px 0 ${edgeOf(color)}` : "0 4px 0 rgba(15,23,42,0.04)",
           }}
         >
           {pkg.popular && (
-            <div
-              className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-full text-[8px] font-black text-white whitespace-nowrap"
-              style={{ background: color }}
-            >
-              BEST VALUE
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-extrabold whitespace-nowrap" style={{ background: COLORS.gold, color: COLORS.navDark }}>
+              <Star className="w-3 h-3 fill-current" /> BEST VALUE
             </div>
           )}
-          <div className="text-[9px] font-black uppercase tracking-wider mt-1" style={{ color }}>
+          <div className="text-[11px] font-extrabold uppercase tracking-wider mt-1" style={{ color: pkg.popular ? "rgba(255,255,255,0.85)" : color }}>
             {pkg.label}
           </div>
-          <div className="font-black text-lg mt-2">{money(pkg.p)}</div>
-          <div className="text-[9px] font-bold mt-0.5" style={{ color: COLORS.textMuted }}>
-            {pkg.c} sessions
-          </div>
-          <div className="text-[9px] font-black mt-2" style={{ color }}>
+          <div className="text-2xl font-semibold mt-2" style={display}>{money(pkg.p)}</div>
+          <div className="text-xs font-bold mt-0.5" style={{ opacity: 0.7 }}>{pkg.c} sessions</div>
+          <div
+            className="inline-block mt-3 px-2.5 py-1 rounded-full text-[11px] font-extrabold"
+            style={{ background: pkg.popular ? "rgba(255,255,255,0.2)" : `${color}14`, color: pkg.popular ? "#fff" : color }}
+          >
             Save {pkg.d}%
           </div>
         </div>
@@ -303,6 +340,7 @@ function TierCard({ tier, color, mode, open, onToggle, index }) {
   const hourly = solo ? tier.hourly : tier.grpHourly;
   const monthly = solo ? tier.monthly : tier.grpMonthly;
   const packages = solo ? tier.packages : tier.grpPackages;
+  const dot = LEVEL_DOTS[index % 3];
 
   return (
     <motion.div
@@ -310,54 +348,43 @@ function TierCard({ tier, color, mode, open, onToggle, index }) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04 }}
-      className="rounded-[1.5rem] border-2 bg-white overflow-hidden"
-      style={{ borderColor: open ? `${color}65` : COLORS.border }}
+      className="rounded-[1.75rem] bg-white overflow-hidden"
+      style={{ border: `2px solid ${open ? color : COLORS.border}`, boxShadow: open ? `0 6px 0 ${color}40` : "0 4px 0 rgba(15,23,42,0.04)" }}
     >
-      <button
-        onClick={onToggle}
-        className="w-full text-left p-4 sm:p-5 flex items-center gap-3"
-      >
-        <div className="w-2 h-10 rounded-full shrink-0" style={{ background: color }} />
+      <button onClick={onToggle} aria-expanded={open} className="w-full text-left p-3.5 sm:p-5 flex items-center gap-2.5 sm:gap-4">
+        <span className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shrink-0 text-white text-lg font-semibold" style={{ ...display, background: dot, transform: "rotate(-5deg)" }}>
+          {index + 1}
+        </span>
         <div className="min-w-0 flex-1">
-          <div className="font-black text-sm sm:text-base">{tier.label}</div>
-          <div className="text-[10px] sm:text-xs font-bold mt-1 truncate" style={{ color: COLORS.textMuted }}>
+          <div className="text-base sm:text-xl font-semibold leading-tight" style={display}>{tier.label}</div>
+          <div className="text-xs sm:text-sm font-bold mt-0.5 truncate" style={{ color: COLORS.textMuted }}>
             {tier.tagline || tier.boards}
           </div>
         </div>
-
         <div className="text-right shrink-0">
-          <div className="font-black text-lg sm:text-xl" style={{ color }}>
+          <div className="text-xl sm:text-3xl font-semibold leading-none" style={{ ...display, color: ink(color) }}>
             {money(hourly)}
-            <span className="text-[9px] font-bold" style={{ color: COLORS.textMuted }}>/session</span>
+            <span className="hidden sm:inline text-xs font-bold" style={{ color: COLORS.textMuted, fontFamily: FONTS.body }}>/session</span>
           </div>
-          <div className="text-[9px] font-bold" style={{ color: COLORS.textMuted }}>
-            {money(monthly)} / 8 sessions
+          <div className="text-[10px] sm:text-xs font-bold mt-1" style={{ color: COLORS.textMuted }}>
+            <span className="sm:hidden">per session · </span>{money(monthly)} / 8 sessions
           </div>
         </div>
-
-        <div
-          className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: `${color}12`, color }}
+        <span
+          className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center shrink-0 transition-transform duration-300"
+          style={{ background: open ? color : `${color}14`, color: open ? "#fff" : color, transform: open ? "rotate(180deg)" : "none" }}
         >
-          {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </div>
+          <ChevronDown className="w-5 h-5" strokeWidth={2.8} />
+        </span>
       </button>
 
       <AnimatePresence initial={false}>
         {open && packages && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div
-              className="px-4 sm:px-5 pb-5 pt-4 border-t-2"
-              style={{ borderColor: `${color}18` }}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <Layers3 className="w-3.5 h-3.5" style={{ color }} />
-                <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: COLORS.textMuted }}>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+            <div className="px-4 sm:px-5 pb-6 pt-4 border-t-2 border-dashed" style={{ borderColor: `${color}25`, background: `${color}06` }}>
+              <div className="flex items-center gap-2 mb-5">
+                <Layers3 className="w-4 h-4" style={{ color }} />
+                <span className="text-[11px] font-extrabold uppercase tracking-widest" style={{ color: COLORS.textMuted }}>
                   Package savings
                 </span>
               </div>
@@ -376,33 +403,13 @@ function TierList({ tiers, color }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-3 mb-4">
-        <div className="text-[10px] font-black uppercase tracking-widest" style={{ color: COLORS.textMuted }}>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+        <div className="text-[11px] font-extrabold uppercase tracking-widest" style={{ color: COLORS.textMuted }}>
           Choose class format
         </div>
-
-        <div className="flex p-1 rounded-full border-2 bg-white" style={{ borderColor: COLORS.border }}>
-          {[
-            ["solo", "1:1"],
-            ["group", "Group · 2–3"],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              onClick={() => setMode(id)}
-              className="px-3 py-1.5 rounded-full text-[10px] font-black"
-              style={{
-                background: mode === id ? color : "transparent",
-                color: mode === id ? COLORS.white : COLORS.textMuted,
-              }}
-            >
-              <Users className="w-3 h-3 inline mr-1" />
-              {label}
-            </button>
-          ))}
-        </div>
+        <ModeSwitch mode={mode} setMode={setMode} color={color} />
       </div>
-
-      <div className="space-y-2.5">
+      <div className="space-y-3">
         {tiers.map((tier, index) => (
           <TierCard
             key={tier.label}
@@ -419,46 +426,45 @@ function TierList({ tiers, color }) {
   );
 }
 
+function PanelHeading({ icon, color, title, sub }) {
+  return (
+    <div className="flex items-center gap-4 mb-6">
+      <IconBubble icon={icon} color={color} size={56} iconSize={27} rotate={-6} />
+      <div>
+        <div className="text-2xl sm:text-3xl font-semibold" style={display}>{title}</div>
+        <div className="text-sm font-bold mt-0.5" style={{ color: COLORS.textMuted }}>{sub}</div>
+      </div>
+    </div>
+  );
+}
+
 function CodingMaths({ type, openDemoModal }) {
   const coding = type === "coding";
   const color = coding ? COLORS.indigo : COLORS.bronze;
-  const light = coding ? COLORS.indigoLight : COLORS.bronzeLight;
   const tiers = coding ? CODING_TIERS : MATHS_TIERS;
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: light, color }}>
-          {coding ? <Code2 className="w-6 h-6" /> : <Calculator className="w-6 h-6" />}
-        </div>
-        <div>
-          <div className="font-black text-xl">{coding ? "Kids Coding" : "Maths Classes"}</div>
-          <div className="text-[10px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-            {coding ? "Three Pearlx levels. Same simple pricing." : "Three Pearlx levels. Learn at the right pace."}
-          </div>
-        </div>
-      </div>
-
+      <PanelHeading
+        icon={coding ? Code2 : Calculator}
+        color={color}
+        title={coding ? "Kids Coding" : "Maths Classes"}
+        sub={coding ? "Three Pearlx levels. Same simple pricing." : "Three Pearlx levels. Learn at the right pace."}
+      />
       <TierList tiers={tiers} color={color} />
-
-      <div className="mt-4 flex flex-col sm:flex-row gap-2.5">
-        <button
-          onClick={() => openDemoModal?.(`pricing_${type}`)}
-          className="flex-1 inline-flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-black text-white"
-          style={{ background: color }}
-        >
+      <div className="mt-6 flex flex-col sm:flex-row gap-3">
+        <ColorBtn color={color} className="flex-1" onClick={() => openDemoModal?.(`pricing_${type}`)}>
           <Play className="w-4 h-4 fill-current" />
           Try a free class
-        </button>
+        </ColorBtn>
         <a
           href={getWhatsAppLink(`Hi! I'd like to know more about Pearlx ${coding ? "Kids Coding" : "Maths Classes"} pricing.`)}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl border-2 bg-white text-sm font-black"
-          style={{ borderColor: `${color}35`, color }}
+          className="px-btn px-btn--white"
         >
           Ask us
-          <MessageCircle className="w-4 h-4" />
+          <MessageCircle className="w-4 h-4" style={{ color: COLORS.emerald }} />
         </a>
       </div>
     </div>
@@ -470,102 +476,57 @@ function AcademicPricing({ openDemoModal }) {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: COLORS.emeraldLight, color: COLORS.emerald }}>
-          <BookOpen className="w-6 h-6" />
-        </div>
-        <div>
-          <div className="font-black text-xl">Academic Tuition</div>
-          <div className="text-[10px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-            One clear rate for the class band. Subjects can be mixed.
-          </div>
-        </div>
-      </div>
+      <PanelHeading icon={BookOpen} color={COLORS.emerald} title="Academic Tuition" sub="One clear rate for the class band. Subjects can be mixed." />
 
-      <div
-        className="rounded-2xl border-2 bg-white p-3.5 mb-4"
-        style={{ borderColor: `${COLORS.emerald}25` }}
-      >
-        <div className="flex flex-wrap gap-1.5">
+      <div className="rounded-3xl p-4 mb-5" style={{ background: COLORS.emeraldLight, border: `2px dashed ${COLORS.emerald}50` }}>
+        <div className="flex flex-wrap gap-2">
           {ACADEMIC_SUBJECTS.map((subject) => (
-            <span
-              key={subject}
-              className="px-2.5 py-1.5 rounded-full text-[9px] font-black"
-              style={{ background: COLORS.emeraldLight, color: COLORS.emerald }}
-            >
+            <span key={subject} className="px-3 py-1.5 rounded-full text-xs font-extrabold bg-white" style={{ color: COLORS.emerald }}>
               {subject}
             </span>
           ))}
         </div>
       </div>
 
-      <div className="flex justify-end mb-4">
-        <div className="flex p-1 rounded-full border-2 bg-white" style={{ borderColor: COLORS.border }}>
-          {[
-            ["solo", "1:1"],
-            ["group", "Group · 2–3"],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              onClick={() => setMode(id)}
-              className="px-3 py-1.5 rounded-full text-[10px] font-black"
-              style={{
-                background: mode === id ? COLORS.emerald : "transparent",
-                color: mode === id ? COLORS.white : COLORS.textMuted,
-              }}
-            >
-              <Users className="w-3 h-3 inline mr-1" />
-              {label}
-            </button>
-          ))}
-        </div>
+      <div className="flex justify-end mb-5">
+        <ModeSwitch mode={mode} setMode={setMode} color={COLORS.emerald} />
       </div>
 
-      <div className="grid md:grid-cols-3 gap-3">
+      <div className="grid md:grid-cols-3 gap-4">
         {ACADEMIC_TIERS.map((tier, index) => {
           const hourly = mode === "solo" ? tier.hourly : tier.grpHourly;
           const monthly = mode === "solo" ? tier.monthly : tier.grpMonthly;
-
+          const dot = LEVEL_DOTS[index];
           return (
             <motion.div
               key={tier.label}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="rounded-[1.5rem] border-2 bg-white p-5"
-              style={{ borderColor: `${COLORS.emerald}28`, boxShadow: SHADOWS.sm }}
+              className="relative rounded-[1.75rem] bg-white p-5 overflow-hidden"
+              style={{ border: `2px solid ${COLORS.emerald}35`, boxShadow: `0 6px 0 ${COLORS.emerald}30` }}
             >
-              <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: COLORS.emerald }}>
+              <span aria-hidden="true" className="absolute -right-8 -top-8 w-24 h-24 rounded-full" style={{ background: `${dot}20` }} />
+              <div className="relative text-[11px] font-extrabold uppercase tracking-widest" style={{ color: COLORS.emerald }}>
                 {tier.label}
               </div>
-              <div className="font-black text-2xl mt-2">{money(hourly)}</div>
-              <div className="text-[10px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-                per session
+              <div className="relative text-4xl font-semibold mt-2" style={display}>{money(hourly)}</div>
+              <div className="text-xs font-bold mt-0.5" style={{ color: COLORS.textMuted }}>per session</div>
+              <div className="mt-4 pt-4 border-t-2 border-dashed" style={{ borderColor: COLORS.border }}>
+                <div className="text-sm font-extrabold">{money(monthly)} / 8 sessions</div>
+                <div className="text-xs font-bold mt-1" style={{ color: COLORS.textMuted }}>{tier.boards}</div>
               </div>
-              <div className="mt-4 pt-4 border-t" style={{ borderColor: COLORS.border }}>
-                <div className="text-[10px] font-black">{money(monthly)} / 8 sessions</div>
-                <div className="text-[9px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-                  {tier.boards}
-                </div>
-              </div>
-              <button
-                onClick={() => openDemoModal?.(`pricing_academic_${index}`)}
-                className="w-full mt-4 py-3 rounded-xl text-[11px] font-black text-white"
-                style={{ background: COLORS.emerald }}
-              >
+              <ColorBtn color={COLORS.emerald} className="w-full mt-5 px-btn--sm" onClick={() => openDemoModal?.(`pricing_academic_${index}`)}>
                 Try a free class
-              </button>
+              </ColorBtn>
             </motion.div>
           );
         })}
       </div>
 
-      <div
-        className="mt-3 rounded-2xl px-4 py-3 flex items-center gap-2.5"
-        style={{ background: COLORS.emeraldLight, color: COLORS.emerald }}
-      >
+      <div className="mt-5 rounded-full px-5 py-3 flex items-center gap-2.5 w-fit" style={{ background: COLORS.goldLight, color: COLORS.goldDeep }}>
         <Gift className="w-4 h-4 shrink-0" />
-        <span className="text-[10px] font-black">Bundle 2+ subjects and save up to 20%.</span>
+        <span className="text-sm font-extrabold">Bundle 2+ subjects and save up to 20%.</span>
       </div>
     </div>
   );
@@ -574,91 +535,69 @@ function AcademicPricing({ openDemoModal }) {
 function CoursePricing() {
   return (
     <div>
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: COLORS.cyanLight, color: COLORS.cyan }}>
-          <GraduationCap className="w-6 h-6" />
-        </div>
-        <div>
-          <div className="font-black text-xl">Computer Science Courses</div>
-          <div className="text-[10px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-            Bootcamp pricing is shown upfront. Intensive programmes are enquiry based.
-          </div>
-        </div>
-      </div>
+      <PanelHeading icon={GraduationCap} color={COLORS.cyan} title="Computer Science Courses" sub="Bootcamp pricing is shown upfront. Intensive programmes are enquiry based." />
 
-      <div
-        className="rounded-2xl border-2 p-4 mb-4 flex flex-col sm:flex-row sm:items-center gap-3"
-        style={{ borderColor: `${COLORS.emerald}30`, background: COLORS.emeraldLight }}
-      >
-        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0">
-          <Gift className="w-5 h-5" style={{ color: COLORS.emerald }} />
-        </div>
-        <div className="flex-1">
-          <div className="text-[11px] font-black">2026 +2 Passed Students</div>
-          <div className="text-[10px] font-bold mt-0.5" style={{ color: COLORS.textSecondary }}>
-            Get 20% OFF all bootcamps.
-          </div>
+      <div className="relative overflow-hidden rounded-3xl p-4 sm:p-5 mb-5 flex flex-col sm:flex-row sm:items-center gap-4" style={{ background: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)", boxShadow: `0 6px 0 ${edgeOf(COLORS.emerald)}` }}>
+        <Pearl size={22} color={COLORS.gold} style={{ top: 12, right: 18 }} float />
+        <span className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shrink-0" style={{ transform: "rotate(-6deg)" }}>
+          <Gift className="w-6 h-6" style={{ color: COLORS.emerald }} />
+        </span>
+        <div className="flex-1 text-white">
+          <div className="text-lg font-semibold" style={display}>2026 +2 Passed Students</div>
+          <div className="text-sm font-bold opacity-90">Get 20% OFF all bootcamps.</div>
         </div>
         <a
           href={getWhatsAppLink("Hi! I'd like to claim the 20% OFF bootcamp offer for +2 passed students at Pearlx.")}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-[10px] font-black text-white"
-          style={{ background: GRADIENTS.primary }}
+          className="px-btn px-btn--sm relative"
+          style={{ "--btn-bg": "#fff", "--btn-fg": COLORS.ink, "--btn-edge": "rgba(0,0,0,0.2)" }}
         >
           Claim offer
         </a>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {CS_COURSES.map((course) => (
           <div
             key={course.lang}
-            className="rounded-[1.5rem] border-2 bg-white overflow-hidden"
-            style={{ borderColor: `${course.color}30` }}
+            className="rounded-[1.75rem] bg-white overflow-hidden"
+            style={{ border: `2px solid ${course.color}45`, boxShadow: `0 6px 0 ${course.color}30` }}
           >
-            <div className="px-4 sm:px-5 py-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: course.light, color: course.color }}>
-                <span className="font-black text-xs">{course.lang === "Web Development" ? "</>" : course.lang.slice(0, 2).toUpperCase()}</span>
-              </div>
-              <div className="font-black text-sm">{course.lang}</div>
+            <div className="px-4 sm:px-5 py-4 flex items-center gap-3" style={{ background: course.light }}>
+              <span className="w-11 h-11 rounded-2xl flex items-center justify-center text-white" style={{ background: course.color, transform: "rotate(-5deg)" }}>
+                <span className="text-sm font-semibold" style={display}>{course.lang === "Web Development" ? "</>" : course.lang.slice(0, 2).toUpperCase()}</span>
+              </span>
+              <div className="text-xl font-semibold" style={display}>{course.lang}</div>
             </div>
-
-            <div className="grid md:grid-cols-2 border-t-2" style={{ borderColor: `${course.color}18` }}>
+            <div className="grid md:grid-cols-2">
               <div className="p-4 sm:p-5">
                 <Pill color={course.color} light={course.light}>
                   <Zap className="w-3 h-3" /> BOOTCAMP · {course.bootcamp.duration}
                 </Pill>
-                <div className="flex items-end gap-2 mt-3">
-                  <span className="text-xs line-through" style={{ color: COLORS.textMuted }}>
-                    {money(course.bootcamp.price)}
-                  </span>
-                  <span className="font-black text-2xl">{money(course.bootcamp.offerPrice)}</span>
-                  <span className="text-[9px] font-black px-2 py-1 rounded-full text-white" style={{ background: course.color }}>
+                <div className="flex flex-wrap items-end gap-2 mt-3">
+                  <span className="text-sm font-bold line-through" style={{ color: COLORS.textMuted }}>{money(course.bootcamp.price)}</span>
+                  <span className="text-3xl font-semibold leading-none" style={display}>{money(course.bootcamp.offerPrice)}</span>
+                  <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full text-white" style={{ background: course.color, transform: "rotate(-4deg)" }}>
                     {course.bootcamp.discount}% OFF
                   </span>
                 </div>
-                <div className="text-[10px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-                  {course.bootcamp.name}
-                </div>
+                <div className="text-sm font-bold mt-2" style={{ color: COLORS.textMuted }}>{course.bootcamp.name}</div>
               </div>
-
-              <div className="p-4 sm:p-5 border-t-2 md:border-t-0 md:border-l-2" style={{ borderColor: `${course.color}18`, background: `${course.color}06` }}>
+              <div className="p-4 sm:p-5 border-t-2 md:border-t-0 md:border-l-2 border-dashed" style={{ borderColor: `${course.color}30` }}>
                 <Pill color={COLORS.goldDeep} light={COLORS.goldLight}>
                   <Clock className="w-3 h-3" /> INTENSIVE · {course.intense.duration}
                 </Pill>
-                <div className="font-black text-xl mt-3">Custom pricing</div>
-                <div className="text-[10px] font-bold mt-1" style={{ color: COLORS.textMuted }}>
-                  {course.intense.name}
-                </div>
+                <div className="text-2xl font-semibold mt-3" style={display}>Custom pricing</div>
+                <div className="text-sm font-bold mt-1" style={{ color: COLORS.textMuted }}>{course.intense.name}</div>
                 <a
                   href={getWhatsAppLink(`Hi! I'm interested in ${course.intense.name} at Pearlx. Please share details.`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 mt-3 px-4 py-2.5 rounded-xl border-2 text-[10px] font-black"
-                  style={{ borderColor: `${course.color}45`, color: course.color }}
+                  className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 rounded-full text-sm font-extrabold"
+                  style={{ border: `2px solid ${course.color}`, color: course.color }}
                 >
-                  Enquire <ArrowRight className="w-3 h-3" />
+                  Enquire <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
             </div>
@@ -671,98 +610,71 @@ function CoursePricing() {
 
 export default function Pricing({ openDemoModal }) {
   const [activeTab, setActiveTab] = useState("coding");
-  const [openFaq, setOpenFaq] = useState(null);
-
   const activeTabData = TABS.find((tab) => tab.id === activeTab);
 
   return (
-    <main
-      className="min-h-screen overflow-hidden pt-48 sm:pt-48 pb-16"
-      style={{ background: COLORS.bgSecondary, color: COLORS.ink }}
-    >
+    <main className="min-h-screen overflow-hidden" style={{ background: COLORS.bgSecondary, color: COLORS.ink }}>
       <section className="relative">
-        <div
-          className="absolute -top-32 right-[-8rem] w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none"
-          style={{ background: COLORS.cyanLight }}
-        />
-        <div
-          className="absolute top-64 left-[-10rem] w-[26rem] h-[26rem] rounded-full blur-3xl pointer-events-none"
-          style={{ background: COLORS.emeraldLight }}
+        <div className="absolute inset-x-0 top-0 h-[560px]" style={{ background: "linear-gradient(180deg, #F0F9FF 0%, #F8FAFC 100%)" }} />
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-[560px] px-dots opacity-70" />
+        <Pearl size={26} color={COLORS.gold} style={{ top: 220, left: "8%" }} float />
+        <Pearl size={16} color={COLORS.indigo} style={{ top: 300, right: "12%" }} float delay={1} />
+        <img
+          src={heroKid}
+          alt=""
+          aria-hidden="true"
+          className="hidden xl:block absolute right-[3%] top-[150px] h-[300px] w-auto object-contain px-float px-float--slow"
+          style={{ "--r": "4deg", filter: "drop-shadow(0 16px 18px rgba(15,23,42,0.15))" }}
         />
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-40 sm:pt-44 pb-16">
           {/* HERO */}
           <div className="text-center max-w-3xl mx-auto">
-            {/* <Pill color={COLORS.goldDeep} light={COLORS.goldLight}>
-              <Sparkles className="w-3 h-3" />
-              PEARLX PRICING
-            </Pill> */}
-
-            <h1
-              className="font-black text-5xl sm:text-6xl lg:text-7xl leading-[0.95] mt-4"
-              style={{ letterSpacing: "-0.065em" }}
-            >
+            <h1 className="text-[3.2rem] sm:text-7xl font-semibold leading-[1]" style={{ ...display, color: COLORS.ink }}>
               Pick a plan.
               <br />
-              <span
-                style={{
-                  background: GRADIENTS.textGlow,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Keep learning.
-              </span>
+              <Scribble color={COLORS.gold} textColor={COLORS.emerald}>Keep learning.</Scribble>
             </h1>
-
-            <p
-              className="text-sm sm:text-base font-medium max-w-xl mx-auto mt-5 leading-relaxed"
-              style={{ color: COLORS.textSecondary }}
-            >
+            <p className="text-lg sm:text-xl font-semibold max-w-xl mx-auto mt-7 leading-relaxed" style={{ color: COLORS.textSecondary }}>
               Clear prices, flexible formats and no surprise charges.
               Choose what fits your child and change it when you need to.
             </p>
-
-            <div className="mt-6">
+            <div className="mt-8">
               <IncludedStrip />
             </div>
           </div>
 
           {/* CATEGORY PICKER */}
-          <div className="mt-8">
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {TABS.map((tab) => {
-                const active = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className="shrink-0 min-w-[145px] sm:min-w-0 sm:flex-1 rounded-2xl border-2 p-3.5 text-left transition-all"
-                    style={{
-                      background: active ? tab.light : COLORS.white,
-                      borderColor: active ? tab.color : COLORS.border,
-                      boxShadow: active ? SHADOWS.sm : "none",
-                    }}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center"
-                        style={{ background: active ? `${tab.color}18` : tab.light, color: tab.color }}
-                      >
-                        <tab.icon className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className="font-black text-[11px]">{tab.label}</div>
-                        <div className="text-[9px] font-bold mt-0.5" style={{ color: COLORS.textMuted }}>
-                          {tab.id === "courses" ? "Bootcamps & intensives" : tab.id === "academic" ? "School subjects" : "Flexible classes"}
-                        </div>
+          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {TABS.map((tab) => {
+              const active = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className="rounded-3xl p-4 text-left transition-all duration-200"
+                  style={{
+                    background: active ? tab.color : "#fff",
+                    color: active ? "#fff" : COLORS.ink,
+                    border: `2px solid ${active ? tab.color : COLORS.border}`,
+                    boxShadow: active ? `0 6px 0 ${edgeOf(tab.color)}` : "0 4px 0 rgba(15,23,42,0.05)",
+                    transform: active ? "translateY(-3px)" : "none",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0" style={{ background: active ? "rgba(255,255,255,0.22)" : tab.light, color: active ? "#fff" : tab.color }}>
+                      <tab.icon className="w-5 h-5" strokeWidth={2.4} />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-base sm:text-lg font-semibold leading-tight" style={display}>{tab.label}</div>
+                      <div className="text-[11px] sm:text-xs font-bold mt-0.5" style={{ opacity: active ? 0.85 : 0.6 }}>
+                        {tab.id === "courses" ? "Bootcamps & intensives" : tab.id === "academic" ? "School subjects" : "Flexible classes"}
                       </div>
                     </div>
-                  </button>
-                );
-              })}
-            </div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           {/* ACTIVE PRICING */}
@@ -770,156 +682,58 @@ export default function Pricing({ openDemoModal }) {
             key={activeTab}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.22 }}
-            className="mt-5 rounded-[2rem] border-2 bg-white p-4 sm:p-6 lg:p-7"
-            style={{
-              borderColor: `${activeTabData.color}25`,
-              boxShadow: SHADOWS.card,
-            }}
+            transition={{ duration: 0.25 }}
+            className="mt-6 rounded-[2.25rem] bg-white p-4 sm:p-7 lg:p-8"
+            style={{ border: `3px solid ${activeTabData.color}`, boxShadow: `0 9px 0 ${edgeOf(activeTabData.color)}` }}
           >
-            {activeTab === "coding" && (
-              <CodingMaths type="coding" openDemoModal={openDemoModal} />
-            )}
-            {activeTab === "maths" && (
-              <CodingMaths type="maths" openDemoModal={openDemoModal} />
-            )}
+            {activeTab === "coding" && <CodingMaths type="coding" openDemoModal={openDemoModal} />}
+            {activeTab === "maths" && <CodingMaths type="maths" openDemoModal={openDemoModal} />}
             {activeTab === "courses" && <CoursePricing />}
-            {activeTab === "academic" && (
-              <AcademicPricing openDemoModal={openDemoModal} />
-            )}
+            {activeTab === "academic" && <AcademicPricing openDemoModal={openDemoModal} />}
           </motion.div>
 
           {/* VALUE NOTE */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
             {[
-              [ShieldCheck, "No hidden fees", "What you see is what you pay", COLORS.emerald, COLORS.emeraldLight],
-              [Heart, "Free demo", "Try before you commit", COLORS.cyan, COLORS.cyanLight],
-              [Star, "Flexible learning", "Solo or small group", COLORS.goldDeep, COLORS.goldLight],
-            ].map(([Icon, title, sub, color, light]) => (
-              <div
-                key={title}
-                className="rounded-2xl border-2 bg-white p-4 flex items-center gap-3"
-                style={{ borderColor: COLORS.border }}
-              >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: light, color }}>
-                  <Icon className="w-5 h-5" />
-                </div>
+              [ShieldCheck, "No hidden fees", "What you see is what you pay", COLORS.emerald],
+              [Heart, "Free demo", "Try before you commit", COLORS.cyan],
+              [Star, "Flexible learning", "Solo or small group", COLORS.goldDeep],
+            ].map(([Icon, title, sub, color]) => (
+              <div key={title} className="px-card flex items-center gap-4 p-5" style={{ borderColor: `${color}30`, boxShadow: `0 6px 0 ${color}25` }}>
+                <IconBubble icon={Icon} color={color} size={50} iconSize={24} />
                 <div>
-                  <div className="text-xs font-black">{title}</div>
-                  <div className="text-[9px] font-bold mt-1" style={{ color: COLORS.textMuted }}>{sub}</div>
+                  <div className="text-lg font-semibold" style={display}>{title}</div>
+                  <div className="text-sm font-bold mt-0.5" style={{ color: COLORS.textMuted }}>{sub}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* FAQ */}
-          <section className="max-w-4xl mx-auto mt-16">
-            <div className="text-center mb-6">
-              <Pill color={COLORS.cyan} light={COLORS.cyanLight}>
-                <MessageCircle className="w-3 h-3" />
-                QUICK ANSWERS
-              </Pill>
-              <h2 className="font-black text-3xl sm:text-4xl mt-3" style={{ letterSpacing: "-0.05em" }}>
-                Pricing questions, answered.
-              </h2>
-            </div>
-
-            <div className="space-y-2.5">
-              {FAQS.map(([question, answer], index) => {
-                const open = openFaq === index;
-                return (
-                  <div
-                    key={question}
-                    className="rounded-2xl border-2 bg-white overflow-hidden"
-                    style={{ borderColor: open ? `${COLORS.cyan}45` : COLORS.border }}
-                  >
-                    <button
-                      onClick={() => setOpenFaq(open ? null : index)}
-                      className="w-full flex items-center justify-between gap-4 p-4 text-left"
-                    >
-                      <span className="text-xs sm:text-sm font-black">{question}</span>
-                      <ChevronDown
-                        className="w-4 h-4 shrink-0 transition-transform"
-                        style={{
-                          color: COLORS.cyan,
-                          transform: open ? "rotate(180deg)" : "none",
-                        }}
-                      />
-                    </button>
-
-                    <AnimatePresence initial={false}>
-                      {open && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                        >
-                          <div
-                            className="px-4 pb-4 text-[11px] leading-relaxed"
-                            style={{ color: COLORS.textSecondary }}
-                          >
-                            {answer}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* FINAL CTA */}
-          <section className="mt-12">
-            <div
-              className="relative overflow-hidden rounded-[2.3rem] border-2 bg-white p-7 sm:p-10 text-center"
-              style={{ borderColor: `${COLORS.gold}30`, boxShadow: SHADOWS.lg }}
-            >
-              <div
-                className="absolute top-0 left-0 right-0 h-1.5"
-                style={{ background: GRADIENTS.primary }}
-              />
-
-              <div
-                className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center"
-                style={{ background: COLORS.goldLight, color: COLORS.goldDeep }}
-              >
-                <Gift className="w-7 h-7" />
-              </div>
-
-              <h2 className="font-black text-3xl sm:text-5xl mt-4" style={{ letterSpacing: "-0.055em" }}>
-                Not sure where to start?
-              </h2>
-
-              <p className="text-sm mt-3" style={{ color: COLORS.textSecondary }}>
-                Try one free class. We'll help you pick the right fit.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-2.5 mt-5">
-                <button
-                  onClick={() => openDemoModal?.("pricing_cta_bottom")}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-black text-white"
-                  style={{ background: GRADIENTS.primary }}
-                >
-                  <Play className="w-4 h-4 fill-current" />
-                  Book Free Demo
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
-                <a
-                  href={getWhatsAppLink("Hi! I'd like to know more about Pearlx pricing and book a free demo class.")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border-2 bg-white text-sm font-black"
-                  style={{ color: COLORS.ink, borderColor: COLORS.border }}
-                >
-                  Chat on WhatsApp
-                  <MessageCircle className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
+          <section className="max-w-3xl mx-auto mt-20">
+            <SectionHeader eyebrow="QUICK ANSWERS" eyebrowIcon={MessageCircle} color={COLORS.cyan} title="Pricing questions, answered." className="mb-9" />
+            <FaqList items={FAQS.map(([q, a]) => ({ q, a }))} color={COLORS.cyan} />
           </section>
         </div>
+
+        {/* FINAL CTA */}
+        <CtaPanel title="Not sure where to start?" sub="Try one free class. We'll help you pick the right fit." image={heroKid} color={COLORS.gold}>
+          <button onClick={() => openDemoModal?.("pricing_cta_bottom")} className="px-btn px-btn--grad px-btn--lg">
+            <Play className="w-4 h-4 fill-current" />
+            Book Free Demo
+            <ArrowRight className="w-5 h-5" />
+          </button>
+          <a
+            href={getWhatsAppLink("Hi! I'd like to know more about Pearlx pricing and book a free demo class.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-btn px-btn--lg"
+            style={{ "--btn-bg": "rgba(255,255,255,0.1)", "--btn-edge": "rgba(255,255,255,0.15)", border: "2px solid rgba(255,255,255,0.2)" }}
+          >
+            Chat on WhatsApp
+            <MessageCircle className="w-5 h-5" />
+          </a>
+        </CtaPanel>
       </section>
     </main>
   );

@@ -1,60 +1,225 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap');
 
 @import "tailwindcss";
 
+/* =========================================================
+   PEARLX BRAND — "Where Little Gems Shine"
+   Palette is unchanged (sky · emerald · gold · indigo · navy).
+   Display type: Fredoka (rounded, friendly)  ·  Body: Nunito
+========================================================= */
+
+:root {
+  --px-sky: #0EA5E9;
+  --px-sky-deep: #0284C7;
+  --px-emerald: #10B981;
+  --px-emerald-deep: #059669;
+  --px-gold: #C9A84C;
+  --px-gold-deep: #A07830;
+  --px-indigo: #6366F1;
+  --px-indigo-deep: #4F46E5;
+  --px-bronze: #B87333;
+  --px-ink: #0F172A;
+  --px-navy: #0B1120;
+  --px-text: #334155;
+  --px-muted: #64748B;
+  --px-line: rgba(15, 23, 42, 0.09);
+  --px-cloud: #F8FAFC;
+  --px-sky-wash: #F0F9FF;
+  --px-mint-wash: #ECFDF5;
+  --px-grad: linear-gradient(135deg, #0EA5E9 0%, #10B981 100%);
+  --px-font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --px-font-body: 'Nunito', system-ui, sans-serif;
+}
 
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  background-color: #FAF8F3;
-  color: #0D1B2A;
+  font-family: var(--px-font-body);
+  background-color: #FFFFFF;
+  color: var(--px-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  
 }
 
-.font-display { font-family: 'Fraunces', Georgia, serif; }
+/* Display font — used by every heading on the public site */
+.font-display,
+.px-display {
+  font-family: var(--px-font-display);
+  letter-spacing: -0.01em;
+}
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #FAF8F3; }
-::-webkit-scrollbar-thumb { background: rgba(13,27,42,0.15); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(13,27,42,0.25); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: rgba(14,165,233,0.35); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(16,185,129,0.55); }
 
-::selection { background: rgba(79,70,229,0.15); color: #0D1B2A; }
+::selection { background: rgba(16,185,129,0.22); color: var(--px-ink); }
 
-/* Marquee */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { scrollbar-width: none; }
+
+:focus-visible {
+  outline: 3px solid rgba(14,165,233,0.55);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+@layer components {
+/* =========================================================
+   CHUNKY BUTTONS — the signature "press-down" toy button
+========================================================= */
+.px-btn {
+  --btn-bg: var(--px-ink);
+  --btn-fg: #fff;
+  --btn-edge: #000;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--px-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.95rem 1.5rem;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  box-shadow: 0 5px 0 var(--btn-edge);
+  transform: translateY(0);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  text-decoration: none;
+}
+.px-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--btn-edge); filter: saturate(1.08); }
+.px-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--btn-edge); }
+.px-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.px-btn--grad  { --btn-bg: var(--px-grad); --btn-edge: #047857; }
+.px-btn--sky   { --btn-bg: var(--px-sky); --btn-edge: #0369A1; }
+.px-btn--green { --btn-bg: var(--px-emerald); --btn-edge: #047857; }
+.px-btn--gold  { --btn-bg: var(--px-gold); --btn-edge: #7C5A1E; --btn-fg: var(--px-navy); }
+.px-btn--indigo{ --btn-bg: var(--px-indigo); --btn-edge: #3730A3; }
+.px-btn--ink   { --btn-bg: var(--px-ink); --btn-edge: #000; }
+.px-btn--white {
+  --btn-bg: #fff; --btn-fg: var(--px-ink); --btn-edge: rgba(15,23,42,0.16);
+  border: 2px solid rgba(15,23,42,0.12);
+}
+.px-btn--sm { font-size: 0.85rem; padding: 0.7rem 1.1rem; }
+.px-btn--lg { font-size: 1.08rem; padding: 1.1rem 1.9rem; }
+.px-btn--block { width: 100%; }
+
+/* =========================================================
+   STICKER CARDS — thick soft border + solid offset shadow
+========================================================= */
+.px-card {
+  background: #fff;
+  border: 2px solid var(--px-line);
+  border-radius: 28px;
+  box-shadow: 0 6px 0 rgba(15,23,42,0.06);
+}
+.px-card--lift {
+  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.px-card--lift:hover {
+  transform: translateY(-6px) rotate(-0.4deg);
+  box-shadow: 0 12px 0 rgba(15,23,42,0.07);
+}
+
+/* Small tilted label that sits above headings */
+.px-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--px-font-display);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+  border: 2px dashed currentColor;
+}
+
+/* Hand-drawn underline that sits under a highlighted word */
+.px-scribble { position: relative; display: inline-block; white-space: nowrap; }
+.px-scribble > svg {
+  position: absolute;
+  left: -2%;
+  bottom: -0.28em;
+  width: 104%;
+  height: 0.42em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Pearl — glossy bubble used as decoration everywhere */
+.px-pearl {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0 12%, rgba(255,255,255,0) 34%),
+    radial-gradient(circle at 50% 50%, var(--pearl, #0EA5E9) 0%, color-mix(in srgb, var(--pearl, #0EA5E9) 72%, #000) 100%);
+  box-shadow: inset -4px -6px 10px rgba(0,0,0,0.12), 0 8px 18px rgba(15,23,42,0.10);
+}
+
+/* Soft dotted paper texture */
+.px-dots {
+  background-image: radial-gradient(rgba(15,23,42,0.08) 1.3px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+
+}
+
+/* Floating animation for stickers */
+@keyframes px-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+}
+.px-float { animation: px-float 4.5s ease-in-out infinite; }
+.px-float--slow { animation-duration: 6.5s; }
+
+@keyframes px-spin { to { transform: rotate(360deg); } }
+.px-spin-slow { animation: px-spin 28s linear infinite; }
+
+@keyframes px-wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+.px-wiggle { animation: px-wiggle 2.8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .px-float, .px-spin-slow, .px-wiggle, .marquee-inner { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* =========================================================
+   LEGACY UTILITIES (kept — used elsewhere in the app)
+========================================================= */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.marquee-inner { animation: marquee 22s linear infinite; }
+.marquee-inner { animation: marquee 28s linear infinite; }
 .marquee-inner:hover { animation-play-state: paused; }
 
-/* Diagonal clip paths */
-.clip-diagonal-down {
-  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
-}
-.clip-diagonal-up {
-  clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
-}
+.clip-diagonal-down { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); }
+.clip-diagonal-up { clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%); }
 
-/* Tilt card */
 .tilt-card {
   transform-style: preserve-3d;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
-.tilt-card:hover {
-  transform: perspective(800px) rotateY(-4deg) rotateX(2deg) translateY(-6px);
-}
+.tilt-card:hover { transform: perspective(800px) rotateY(-4deg) rotateX(2deg) translateY(-6px); }
 
-/* Underline draw */
-.underline-draw {
-  position: relative;
-}
+.underline-draw { position: relative; }
 .underline-draw::after {
   content: '';
   position: absolute;
@@ -62,31 +227,73 @@ body {
   left: 0;
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, #4F46E5, #7C3AED);
+  background: var(--px-grad);
   border-radius: 2px;
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .underline-draw:hover::after { width: 100%; }
 
-/* Grain overlay */
-
-.grain::before {
-  content: '';
-  position: fixed;
-  inset: 0; 
-  width: 100%;
-  height: 100%;
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg"); 
-  opacity: 0.015; 
-  pointer-events: none;
-  z-index: 50;
-  will-change: transform;
-  transform: translateZ(0);
-}
+.grain { position: relative; }
 
 .dashboard-container {
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+/* =========================================================
+   DASHBOARD BRAND SKIN
+   Dashboards use inline styles; this layer gives them the
+   PearlX type, rounded inputs and friendlier controls.
+========================================================= */
+.px-dash {
+  font-family: var(--px-font-body);
+}
+.px-dash h1, .px-dash h2, .px-dash h3 {
+  font-family: var(--px-font-display);
+  letter-spacing: -0.005em;
+}
+.px-dash input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+.px-dash select,
+.px-dash textarea {
+  font-family: var(--px-font-body);
+  border-radius: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.px-dash input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):focus,
+.px-dash select:focus,
+.px-dash textarea:focus {
+  outline: none;
+  border-color: var(--px-sky) !important;
+  box-shadow: 0 0 0 4px rgba(14,165,233,0.15) !important;
+}
+.px-dash button { font-family: var(--px-font-body); }
+
+/* Booking modal — brand headings */
+.px-modal h2,
+.px-modal h3 {
+  font-family: var(--px-font-display);
+  font-weight: 600 !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Dashboard headings & big numbers use the rounded display face */
+.px-dash [style*="font-weight: 800"],
+.px-dash [style*="font-weight: 900"] {
+  font-family: var(--px-font-display);
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Gradient action buttons get the chunky press-down feel */
+.px-dash button[style*="linear-gradient"],
+.px-dash a[style*="linear-gradient"] {
+  box-shadow: 0 4px 0 rgba(15, 23, 42, 0.2) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.px-dash button[style*="linear-gradient"]:hover:not(:disabled) { transform: translateY(-1px); }
+.px-dash button[style*="linear-gradient"]:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.2) !important;
 }

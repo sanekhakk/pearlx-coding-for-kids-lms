@@ -93,4 +93,34 @@ export const DARK = {
   shadowGlow:  "0 0 24px rgba(16,185,129,0.35)",
 };
 
-export default { COLORS, GRADIENTS, SHADOWS, ANIMATIONS, DARK };
+// ─── PearlX brand layer ───────────────────────────────────────────────────
+// Same palette as above, plus the "deep" edge colours used for the chunky
+// press-down buttons and sticker shadows, and the brand fonts.
+export const FONTS = {
+  display: "'Fredoka', 'Nunito', system-ui, sans-serif",
+  body: "'Nunito', system-ui, sans-serif",
+};
+
+export const BRAND = {
+  sky:        { base: "#0EA5E9", deep: "#0369A1", wash: "#F0F9FF", light: "rgba(14,165,233,0.1)" },
+  emerald:    { base: "#10B981", deep: "#047857", wash: "#ECFDF5", light: "rgba(16,185,129,0.1)" },
+  gold:       { base: "#C9A84C", deep: "#7C5A1E", wash: "#FBF6E9", light: "rgba(201,168,76,0.12)" },
+  indigo:     { base: "#6366F1", deep: "#3730A3", wash: "#EEF2FF", light: "rgba(99,102,241,0.1)" },
+  bronze:     { base: "#B87333", deep: "#7A4A1F", wash: "#FBF1E8", light: "rgba(184,115,51,0.12)" },
+  tagline:    "Where Little Gems Shine",
+};
+
+// Darker edge for any accent colour (used for solid "sticker" shadows).
+export const edgeOf = (hex) => {
+  const map = {
+    [COLORS.emerald]: BRAND.emerald.deep,
+    [COLORS.cyan]: BRAND.sky.deep,
+    [COLORS.gold]: BRAND.gold.deep,
+    [COLORS.goldDeep]: BRAND.gold.deep,
+    [COLORS.indigo]: BRAND.indigo.deep,
+    [COLORS.bronze]: BRAND.bronze.deep,
+  };
+  return map[hex] || "rgba(15,23,42,0.35)";
+};
+
+export default { COLORS, GRADIENTS, SHADOWS, ANIMATIONS, DARK, FONTS, BRAND };

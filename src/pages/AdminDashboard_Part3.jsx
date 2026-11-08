@@ -5,7 +5,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
@@ -15,12 +15,12 @@ const C = {
   violet: "#8B5CF6", violetLight: "#F5F3FF",
   gradPrimary: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)",
   gradViolet: "linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
-  shadowHover: "0 8px 24px rgba(15,23,42,0.1)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
+  shadowHover: "0 7px 0 rgba(14,165,233,0.16), 0 14px 28px rgba(15,23,42,0.08)",
 };
 
 const fieldStyle = {
-  width: "100%", padding: "10px 14px", borderRadius: 12, border: `1px solid ${C.border}`,
+  width: "100%", padding: "10px 14px", borderRadius: 12, border: `2px solid ${C.border}`,
   background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none",
   fontFamily: "inherit", boxSizing: "border-box",
 };
@@ -44,9 +44,9 @@ export function StudentSelectionView({ students, onSelectStudent, setActiveView,
   });
 
   return (
-    <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
+    <div style={{ background: C.card, borderRadius: 20, border: `2px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
       {/* Header */}
-      <div style={{ padding: "20px 24px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+      <div style={{ padding: "20px 24px", borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
         <div>
           <h2 style={{ fontSize: 17, fontWeight: 800, color: C.textPrimary }}>Select Student</h2>
           <p style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>Choose a student to schedule a class session</p>
@@ -59,14 +59,14 @@ export function StudentSelectionView({ students, onSelectStudent, setActiveView,
             </motion.button>
           )}
           <motion.button onClick={() => setActiveView("list")} whileHover={{ scale: 1.05 }}
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
             <ArrowLeft style={{ width: 14, height: 14 }} />Back
           </motion.button>
         </div>
       </div>
 
       {/* Search */}
-      <div style={{ padding: "16px 24px", borderBottom: `1px solid ${C.border}` }}>
+      <div style={{ padding: "16px 24px", borderBottom: `2px solid ${C.border}` }}>
         <div style={{ position: "relative" }}>
           <Search style={{ width: 15, height: 15, color: C.textMuted, position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or ID..."
@@ -83,7 +83,7 @@ export function StudentSelectionView({ students, onSelectStudent, setActiveView,
         ) : filtered.map(student => (
           <motion.div key={student.uid} whileHover={{ x: 4, boxShadow: C.shadowHover }}
             onClick={() => onSelectStudent(student)}
-            style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", borderRadius: 14, border: `1px solid ${C.border}`, background: C.bg, cursor: "pointer", transition: "all 0.15s" }}>
+            style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", borderRadius: 14, border: `2px solid ${C.border}`, background: C.bg, cursor: "pointer", transition: "all 0.15s" }}>
             <div style={{ width: 44, height: 44, borderRadius: 14, background: C.gradPrimary, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 18, flexShrink: 0 }}>
               {student.name?.charAt(0)}
             </div>
@@ -181,9 +181,9 @@ export function ClassSchedulingForm({ selectedStudent, onBack, adminScheduleClas
   const missedOptions  = missedClasses.map(c => ({ value: c.classDate, label: `${c.classDate} at ${c.classTime}` }));
 
   return (
-    <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
+    <div style={{ background: C.card, borderRadius: 20, border: `2px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
       {/* Header */}
-      <div style={{ padding: "20px 24px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ padding: "20px 24px", borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <h2 style={{ fontSize: 17, fontWeight: 800, color: C.textPrimary }}>Schedule Class</h2>
           <p style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>
@@ -191,7 +191,7 @@ export function ClassSchedulingForm({ selectedStudent, onBack, adminScheduleClas
           </p>
         </div>
         <motion.button onClick={onBack} whileHover={{ scale: 1.05 }}
-          style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
           <ArrowLeft style={{ width: 14, height: 14 }} />Back
         </motion.button>
       </div>
@@ -245,7 +245,7 @@ export function ClassSchedulingForm({ selectedStudent, onBack, adminScheduleClas
             </div>
 
             {/* Reschedule */}
-            <div style={{ padding: "14px 16px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
+            <div style={{ padding: "14px 16px", borderRadius: 12, background: C.bg, border: `2px solid ${C.border}` }}>
               <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
                 <input type="checkbox" name="isRescheduled" checked={form.isRescheduled} onChange={handleChange}
                   style={{ width: 16, height: 16, accentColor: C.emerald }} />
@@ -330,12 +330,12 @@ function TutorSearchSelect({ tutors, selectedTutor, onSelect }) {
         )}
       </div>
       {open && !selectedTutor && (
-        <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, maxHeight: 220, overflowY: "auto", background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, boxShadow: C.shadowHover, zIndex: 20 }}>
+        <div style={{ position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, maxHeight: 220, overflowY: "auto", background: C.card, border: `2px solid ${C.border}`, borderRadius: 12, boxShadow: C.shadowHover, zIndex: 20 }}>
           {filtered.length === 0 ? (
             <div style={{ padding: 14, fontSize: 12, color: C.textMuted, textAlign: "center" }}>No teachers found</div>
           ) : filtered.map(t => (
             <div key={t.uid} onMouseDown={e => e.preventDefault()} onClick={() => { onSelect(t); setQuery(""); setOpen(false); }}
-              style={{ padding: "10px 14px", cursor: "pointer", fontSize: 13, fontWeight: 600, color: C.textPrimary, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}
+              style={{ padding: "10px 14px", cursor: "pointer", fontSize: 13, fontWeight: 600, color: C.textPrimary, borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}
               onMouseEnter={e => e.currentTarget.style.background = C.bg}
               onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
               <span>{t.name}</span>
@@ -420,9 +420,9 @@ export function DemoClassSchedulingForm({ tutors, onBack, adminScheduleDemoClass
   };
 
   return (
-    <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
+    <div style={{ background: C.card, borderRadius: 20, border: `2px solid ${C.border}`, overflow: "hidden", boxShadow: C.shadowCard }}>
       {/* Header */}
-      <div style={{ padding: "20px 24px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ padding: "20px 24px", borderBottom: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 34, height: 34, borderRadius: 10, background: C.violetLight, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Sparkles style={{ width: 17, height: 17, color: C.violet }} />
@@ -433,7 +433,7 @@ export function DemoClassSchedulingForm({ tutors, onBack, adminScheduleDemoClass
           </div>
         </div>
         <motion.button onClick={onBack} whileHover={{ scale: 1.05 }}
-          style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
           <ArrowLeft style={{ width: 14, height: 14 }} />Back
         </motion.button>
       </div>

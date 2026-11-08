@@ -18,7 +18,7 @@ import {
 } from "../utils/curriculumData";
 
 const C = {
-  bg: "#F4F6FB", card: "#FFFFFF", border: "#E5E9F2",
+  bg: "#F2F8FC", card: "#FFFFFF", border: "#E5E9F2",
   textPrimary: "#0F172A", textSecondary: "#475569", textMuted: "#94A3B8",
   emerald: "#10B981", emeraldLight: "#ECFDF5", emeraldDark: "#059669",
   cyan: "#0EA5E9", cyanLight: "#E0F2FE",
@@ -28,12 +28,12 @@ const C = {
   violet: "#8B5CF6", violetLight: "#F5F3FF",
   gradPrimary: "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)",
   gradEmerald: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
-  shadowCard: "0 1px 4px rgba(15,23,42,0.06), 0 4px 16px rgba(15,23,42,0.04)",
+  shadowCard: "0 4px 0 rgba(15,23,42,0.05), 0 8px 22px rgba(15,23,42,0.04)",
   shadowModal: "0 24px 64px rgba(15,23,42,0.18)",
 };
 
 const fieldStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 10, border: `1px solid ${C.border}`,
+  width: "100%", padding: "10px 12px", borderRadius: 10, border: `2px solid ${C.border}`,
   background: C.bg, fontSize: 13, color: C.textPrimary, outline: "none",
   fontFamily: "inherit", boxSizing: "border-box",
 };
@@ -206,7 +206,7 @@ function LessonModal({ lesson, course, category, moduleId, onClose, onSave }) {
         <div style={{ marginBottom: 14 }}>
           <FieldLabel>Banner Image <span style={{ color: C.textMuted, fontWeight: 500 }}>(optional — shown to students &amp; tutors, not in this dashboard's list view)</span></FieldLabel>
           {previewUrl ? (
-            <div style={{ position: "relative", borderRadius: 10, overflow: "hidden", border: `1px solid ${C.border}`, aspectRatio: "16 / 9", background: C.bg }}>
+            <div style={{ position: "relative", borderRadius: 10, overflow: "hidden", border: `2px solid ${C.border}`, aspectRatio: "16 / 9", background: C.bg }}>
               <img src={previewUrl} alt="Lesson banner preview" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               <button onClick={handleRemoveImage} type="button"
                 style={{ position: "absolute", top: 8, right: 8, width: 28, height: 28, borderRadius: 8, border: "none", background: "rgba(15,23,42,0.7)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
@@ -268,7 +268,7 @@ function ConfirmModal({ title, message, onCancel, onConfirm }) {
         <h3 style={{ fontSize: 15, fontWeight: 800, color: C.textPrimary, marginBottom: 8 }}>{title}</h3>
         <p style={{ fontSize: 13, color: C.textMuted, marginBottom: 20 }}>{message}</p>
         <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={onCancel} style={{ flex: 1, padding: "10px", borderRadius: 10, border: `1px solid ${C.border}`, background: C.bg, color: C.textSecondary, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>Cancel</button>
+          <button onClick={onCancel} style={{ flex: 1, padding: "10px", borderRadius: 10, border: `2px solid ${C.border}`, background: C.bg, color: C.textSecondary, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>Cancel</button>
           <button onClick={async () => { setBusy(true); await onConfirm(); }} disabled={busy}
             style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: C.red, color: "#fff", fontWeight: 700, fontSize: 13, cursor: "pointer", opacity: busy ? 0.6 : 1 }}>
             {busy ? "Deleting..." : "Delete"}
@@ -281,8 +281,8 @@ function ConfirmModal({ title, message, onCancel, onConfirm }) {
 
 function LessonRow({ lesson, onEdit, onDelete }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
-      <div style={{ width: 26, height: 26, borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 11, fontWeight: 800, color: C.textSecondary }}>
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", borderRadius: 12, background: C.bg, border: `2px solid ${C.border}` }}>
+      <div style={{ width: 26, height: 26, borderRadius: 8, background: C.card, border: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 11, fontWeight: 800, color: C.textSecondary }}>
         {lesson.lessonNumber}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -320,10 +320,10 @@ function ModuleCard({ module, course, category, onRename, onDeleteModule, onAddL
   const lessons = (module.lessons || []).slice().sort((a, b) => a.lessonNumber - b.lessonNumber);
 
   return (
-    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard, marginBottom: 12 }}>
+    <div style={{ background: C.card, border: `2px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: C.shadowCard, marginBottom: 12 }}>
       <div onClick={() => setOpen(o => !o)}
         style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", cursor: "pointer" }}>
-        <div style={{ width: 40, height: 40, borderRadius: 12, background: C.bg, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <div style={{ width: 40, height: 40, borderRadius: 12, background: C.bg, border: `2px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <MODULE_ICON style={{ width: 18, height: 18, color: C.textSecondary }} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -342,7 +342,7 @@ function ModuleCard({ module, course, category, onRename, onDeleteModule, onAddL
       <AnimatePresence>
         {open && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
-            <div style={{ borderTop: `1px solid ${C.border}`, padding: "12px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ borderTop: `2px solid ${C.border}`, padding: "12px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
               {lessons.length === 0 ? (
                 <p style={{ textAlign: "center", fontSize: 12, color: C.textMuted, padding: "8px 0" }}>No lessons yet</p>
               ) : (
@@ -487,7 +487,7 @@ function CodingMathCurriculumManager() {
       </div>
 
       {/* Summary bar */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "14px 18px", marginBottom: 18, boxShadow: C.shadowCard }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, background: C.card, border: `2px solid ${C.border}`, borderRadius: 14, padding: "14px 18px", marginBottom: 18, boxShadow: C.shadowCard }}>
         <div style={{ width: 44, height: 44, borderRadius: 12, background: (courseColor[course] || courseColor.coding).bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           {courseInfo?.icon ? <courseInfo.icon style={{ width: 20, height: 20, color: (courseColor[course] || courseColor.coding).text }} /> : <BookOpen style={{ width: 20, height: 20, color: (courseColor[course] || courseColor.coding).text }} />}
         </div>
@@ -506,7 +506,7 @@ function CodingMathCurriculumManager() {
           <Loader2 style={{ width: 26, height: 26, color: C.emerald, animation: "spin 1s linear infinite" }} />
         </div>
       ) : modules.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "48px 20px", background: C.card, borderRadius: 16, border: `1px solid ${C.border}` }}>
+        <div style={{ textAlign: "center", padding: "48px 20px", background: C.card, borderRadius: 16, border: `2px solid ${C.border}` }}>
           <BookOpen style={{ width: 36, height: 36, color: C.textMuted, opacity: 0.4, margin: "0 auto 10px" }} />
           <p style={{ fontSize: 13, color: C.textMuted }}>No modules yet for {courseInfo?.label} · {catInfo?.label}. Add the first one above.</p>
         </div>
@@ -588,7 +588,7 @@ function ChapterModal({ chapter, onClose, onSave }) {
           </div>
 
           <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
-            <button onClick={onClose} style={{ flex: 1, padding: "11px", borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg, fontSize: 13, fontWeight: 700, color: C.textSecondary, cursor: "pointer" }}>Cancel</button>
+            <button onClick={onClose} style={{ flex: 1, padding: "11px", borderRadius: 12, border: `2px solid ${C.border}`, background: C.bg, fontSize: 13, fontWeight: 700, color: C.textSecondary, cursor: "pointer" }}>Cancel</button>
             <button onClick={handleSave} disabled={saving}
               style={{ flex: 2, padding: "11px", borderRadius: 12, border: "none", background: C.gradPrimary, color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, opacity: saving ? 0.7 : 1 }}>
               {saving ? <Loader2 style={{ width: 16, height: 16, animation: "spin 1s linear infinite" }} /> : (isEdit ? "Save Changes" : "Add Chapter")}
@@ -693,7 +693,7 @@ function StudentChaptersManager({ studentId, studentName }) {
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 520, overflowY: "auto" }}>
           {chapters.map((chap, i) => (
-            <div key={chap.id} style={{ display: "flex", gap: 10, padding: "12px 14px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
+            <div key={chap.id} style={{ display: "flex", gap: 10, padding: "12px 14px", borderRadius: 12, background: C.bg, border: `2px solid ${C.border}` }}>
               <div style={{ width: 34, height: 34, borderRadius: 10, background: C.violetLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <FileText style={{ width: 16, height: 16, color: C.violet }} />
               </div>
@@ -703,11 +703,11 @@ function StudentChaptersManager({ studentId, studentName }) {
               </div>
               <div style={{ display: "flex", gap: 5, flexShrink: 0, alignItems: "flex-start" }}>
                 <button onClick={() => handleMove(i, -1)} disabled={i === 0}
-                  style={{ padding: "4px 6px", borderRadius: 7, background: C.card, border: `1px solid ${C.border}`, cursor: i === 0 ? "not-allowed" : "pointer", opacity: i === 0 ? 0.4 : 1 }}>
+                  style={{ padding: "4px 6px", borderRadius: 7, background: C.card, border: `2px solid ${C.border}`, cursor: i === 0 ? "not-allowed" : "pointer", opacity: i === 0 ? 0.4 : 1 }}>
                   <ArrowUp style={{ width: 12, height: 12, color: C.textSecondary }} />
                 </button>
                 <button onClick={() => handleMove(i, 1)} disabled={i === chapters.length - 1}
-                  style={{ padding: "4px 6px", borderRadius: 7, background: C.card, border: `1px solid ${C.border}`, cursor: i === chapters.length - 1 ? "not-allowed" : "pointer", opacity: i === chapters.length - 1 ? 0.4 : 1 }}>
+                  style={{ padding: "4px 6px", borderRadius: 7, background: C.card, border: `2px solid ${C.border}`, cursor: i === chapters.length - 1 ? "not-allowed" : "pointer", opacity: i === chapters.length - 1 ? 0.4 : 1 }}>
                   <ArrowDown style={{ width: 12, height: 12, color: C.textSecondary }} />
                 </button>
                 <button onClick={() => { setEditChapter(chap); setShowModal(true); }}
@@ -756,8 +756,8 @@ function AcademicTuitionManager() {
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 16, minHeight: 500 }}>
-      <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, overflow: "hidden", height: "fit-content", position: "sticky", top: 20 }}>
-        <div style={{ padding: 14, borderBottom: `1px solid ${C.border}`, background: C.bg }}>
+      <div style={{ background: C.card, borderRadius: 14, border: `2px solid ${C.border}`, overflow: "hidden", height: "fit-content", position: "sticky", top: 20 }}>
+        <div style={{ padding: 14, borderBottom: `2px solid ${C.border}`, background: C.bg }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: C.textMuted, textTransform: "uppercase" }}>Academic Tuition Students</p>
         </div>
         {loadingStudents ? (
@@ -770,7 +770,7 @@ function AcademicTuitionManager() {
           <div style={{ maxHeight: 600, overflowY: "auto" }}>
             {students.map(s => (
               <button key={s.uid} onClick={() => setSelectedStudentId(s.uid)}
-                style={{ width: "100%", padding: "12px 14px", borderBottom: `1px solid ${C.border}`, background: selectedStudentId === s.uid ? C.indigoLight : "transparent", color: C.textPrimary, border: "none", cursor: "pointer", textAlign: "left", fontSize: 13, fontWeight: selectedStudentId === s.uid ? 700 : 500 }}>
+                style={{ width: "100%", padding: "12px 14px", borderBottom: `2px solid ${C.border}`, background: selectedStudentId === s.uid ? C.indigoLight : "transparent", color: C.textPrimary, border: "none", cursor: "pointer", textAlign: "left", fontSize: 13, fontWeight: selectedStudentId === s.uid ? 700 : 500 }}>
                 <p style={{ fontWeight: 700 }}>{s.name}</p>
                 <p style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{s.customId || "—"}</p>
               </button>
@@ -779,7 +779,7 @@ function AcademicTuitionManager() {
         )}
       </div>
 
-      <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 16 }}>
+      <div style={{ background: C.card, borderRadius: 14, border: `2px solid ${C.border}`, padding: 16 }}>
         {!selectedStudent ? (
           <div style={{ textAlign: "center", padding: 40, color: C.textMuted }}>Select a student to edit their chapters</div>
         ) : (
