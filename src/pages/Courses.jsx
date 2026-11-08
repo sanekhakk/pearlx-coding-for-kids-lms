@@ -8,6 +8,7 @@ import { COLORS, FONTS, edgeOf } from "../utils/theme";
 import { getWhatsAppLink } from "../utils/whatsapp";
 import kidImage from "../assets/kids/courseskid.webp";
 import { HeroStage, Sticker, SectionHeader, Scribble, CtaPanel, ColorBtn, Wave, IconBubble, PearlScatter } from "../components/ui/Brand";
+import Subjects from "../components/SubjectSection"
 
 const LOGOS = {
   python: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
@@ -422,6 +423,8 @@ const Courses = ({ openDemoModal }) => {
           </div>
         </div>
       </section>
+
+      <Subjects/>
 
       {/* WHY PEARLX */}
       <section className="relative py-16 sm:py-20" style={{ background: COLORS.bgSecondary }}>

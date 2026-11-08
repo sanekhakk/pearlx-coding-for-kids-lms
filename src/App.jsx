@@ -30,7 +30,7 @@ function GuestHome({ openDemoModal }) {
       <HeroSection openDemoModal={openDemoModal} />
       <ServicesSection />
       
-      <SubjectSection />
+      {/* <SubjectSection /> */}
       <ProcessSection openDemoModal={openDemoModal} />
       <WhyPearlxSection />
       
