@@ -89,13 +89,79 @@ const PROGRAM_INTEREST_LABELS = {
   courses: "Courses",
 };
 
+/*
+  EMAIL DELIVERY
+  Render's free plan blocks outgoing SMTP (ports 25/465/587), so Gmail via
+  nodemailer times out there. Email is sent over HTTPS instead, using the
+  first provider that is configured:
+
+    1. BREVO_API_KEY   — Brevo (free, 300 emails/day). Sender = BREVO_SENDER_EMAIL
+                         (or SMTP_USER), which must be a verified sender in Brevo.
+    2. RESEND_API_KEY  — Resend. Sender = RESEND_FROM (default onboarding@resend.dev,
+                         which can only deliver to your own Resend account email).
+    3. SMTP_USER + SMTP_APP_PASSWORD — Gmail SMTP (works locally / on paid hosting).
+*/
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_APP_PASSWORD,
   },
-}); 
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+});
+
+async function sendEmail({ to, subject, html, fromName = "Pearlx Demo Bookings" }) {
+  const recipients = String(to || "").split(",").map((e) => e.trim()).filter(Boolean);
+  if (recipients.length === 0) throw new Error("NOTIFICATION_EMAIL is not set");
+
+  if (process.env.BREVO_API_KEY) {
+    const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER;
+    if (!senderEmail) throw new Error("Set BREVO_SENDER_EMAIL (a verified sender in Brevo)");
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": process.env.BREVO_API_KEY,
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        sender: { name: fromName, email: senderEmail },
+        to: recipients.map((email) => ({ email })),
+        subject,
+        htmlContent: html,
+      }),
+    });
+    if (!res.ok) throw new Error(`Brevo ${res.status}: ${await res.text()}`);
+    return "brevo";
+  }
+
+  if (process.env.RESEND_API_KEY) {
+    const from = process.env.RESEND_FROM || "onboarding@resend.dev";
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ from: `${fromName} <${from}>`, to: recipients, subject, html }),
+    });
+    if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
+    return "resend";
+  }
+
+  if (process.env.SMTP_USER && process.env.SMTP_APP_PASSWORD) {
+    await transporter.sendMail({
+      from: `"${fromName}" <${process.env.SMTP_USER}>`,
+      to: recipients.join(","),
+      subject,
+      html,
+    });
+    return "smtp";
+  }
+
+  throw new Error("No email provider configured (set BREVO_API_KEY, RESEND_API_KEY or SMTP_USER/SMTP_APP_PASSWORD)");
+}
 
 // Appends one booking row to the sheet, retrying transient Google API errors.
 async function appendBookingToSheet(spreadsheetId, rowData) {
@@ -126,8 +192,7 @@ async function sendBookingEmail({
   const programName =
     PROGRAM_INTEREST_LABELS[programInterest] || programInterest || "N/A";
 
-  await transporter.sendMail({
-    from: `"Pearlx Demo Bookings" <${process.env.SMTP_USER}>`,
+  return sendEmail({
     to: process.env.NOTIFICATION_EMAIL,
     subject: `🔔 New Pearlx Demo Booking — ${studentName}`,
     html: `
@@ -190,6 +255,22 @@ async function sendBookingEmail({
   });
 }
 
+// GET /api/test-email — open this URL in a browser after deploying to check
+// email delivery. Sends a test message to NOTIFICATION_EMAIL.
+router.get("/test-email", async (req, res) => {
+  try {
+    const provider = await sendEmail({
+      to: process.env.NOTIFICATION_EMAIL,
+      subject: "✅ Pearlx test email",
+      html: "<p>Email delivery from the Pearlx backend is working.</p>",
+    });
+    res.json({ success: true, provider, sentTo: process.env.NOTIFICATION_EMAIL });
+  } catch (err) {
+    console.error("❌ Test email failed:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // GET /api/ping — tiny warm-up route. The modal calls it when it opens so a
 // sleeping server (e.g. Render free tier) is already awake by submit time.
 router.get("/ping", (req, res) => res.status(200).json({ ok: true }));
@@ -197,12 +278,8 @@ router.get("/ping", (req, res) => res.status(200).json({ ok: true }));
 // POST /api/submit-demo-booking
 router.post("/submit-demo-booking", async (req, res) => {
   try {
-    if (!authClient) {
-      return res.status(503).json({
-        success: false,
-        error: "Google Sheets is not configured on the server right now. Check the server logs for the Sheets auth error.",
-      });
-    }
+    // Note: a Google Sheets problem no longer blocks the booking — the email
+    // is still sent, and the Sheets error is logged below.
 
     const {
       source,
@@ -238,12 +315,6 @@ router.post("/submit-demo-booking", async (req, res) => {
     // Get Spreadsheet ID
     const spreadsheetId =
       process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
-
-    if (!spreadsheetId) {
-      throw new Error(
-        "GOOGLE_SHEETS_SPREADSHEET_ID is missing"
-      );
-    }
 
     // Timestamp
     const timestamp = new Date().toLocaleString("en-IN", {
@@ -284,8 +355,14 @@ router.post("/submit-demo-booking", async (req, res) => {
       preferredDate, preferredTime,
     };
 
+    const saveToSheet = () => {
+      if (!authClient) return Promise.reject(new Error("Google Sheets auth not initialised (check startup logs)"));
+      if (!spreadsheetId) return Promise.reject(new Error("GOOGLE_SHEETS_SPREADSHEET_ID is missing"));
+      return appendBookingToSheet(spreadsheetId, rowData);
+    };
+
     Promise.allSettled([
-      appendBookingToSheet(spreadsheetId, rowData),
+      saveToSheet(),
       sendBookingEmail(booking),
     ]).then(([sheetResult, emailResult]) => {
       if (sheetResult.status === "rejected") {
@@ -294,8 +371,11 @@ router.post("/submit-demo-booking", async (req, res) => {
       if (emailResult.status === "rejected") {
         console.error("❌ Failed to send booking notification email:", emailResult.reason, "\nBooking payload:", JSON.stringify(booking));
       }
-      if (sheetResult.status === "fulfilled" && emailResult.status === "fulfilled") {
-        console.log("✅ Booking saved to sheet and notification email sent");
+      if (emailResult.status === "fulfilled") {
+        console.log(`✅ Booking notification email sent via ${emailResult.value}`);
+      }
+      if (sheetResult.status === "fulfilled") {
+        console.log("✅ Booking saved to Google Sheet");
       }
     });
 
